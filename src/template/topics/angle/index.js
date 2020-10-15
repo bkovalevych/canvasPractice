@@ -3,6 +3,8 @@ import {Step, Stepper, StepContent, StepLabel} from "@material-ui/core"
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Holst from "./../../holst"
+import dataResponse from './json_data'
+import Renderer from '../../renderer'
 export default function(props) {
     const [stepPosition, setStepPosition] = useState(1)
     const angle = useRef(0)
@@ -110,17 +112,18 @@ export default function(props) {
         <div>
             Углом называется геометрическая фигура, которая состоит из двух различных лучей, исходящих из одной точки.
         </div>,
-        <div>
-            <Holst initDraw={initDraw} overCanvas={overCanvas} cellSizeProp={1} zoomProp={180}  visualNumber={true}/>
-            <Holst overCanvas={otherCanvas} cellSizeProp={1} zoomProp={60} visualNumber={true} width={400} height={120} offsetYProp={60} offsetXProp={200}/>
-            <div style={{display: "grid", gridTemplateColumns: "1fr 1fr"}}>
-                <div style={{textAlign: "right"}}>Угол</div>
-                <div style={{textAlign: "left", paddingLeft: "10px"}} ref={angleDiv}/>
-                <div style={{color: "red", textAlign: "right"}}>Sin</div>
-                <div style={{textAlign: "left", paddingLeft: "10px"}} ref={sinDiv}/>
-                <div style={{color: "green", textAlign: "right"}}>Cos</div>
-                <div style={{textAlign: "left", paddingLeft: "10px"}} ref={cosDiv}/>
-            </div>
+        <div style={{marginLeft: "calc(50% - 200px)"}}>
+            <Renderer {...dataResponse}/>
+
+            {/*<Holst visualNumbers={true} width={200} height={400} xmin={-Math.PI * 4} xmax={Math.PI * 4} xstep={Math.PI} ymin={-1} ymax={1} ystep={0.25}/>*/}
+            {/*<div style={{display: "grid", gridTemplateColumns: "1fr 1fr"}}>*/}
+            {/*    <div style={{textAlign: "right"}}>Угол</div>*/}
+            {/*    <div style={{textAlign: "left", paddingLeft: "10px"}} ref={angleDiv}/>*/}
+            {/*    <div style={{color: "red", textAlign: "right"}}>Sin</div>*/}
+            {/*    <div style={{textAlign: "left", paddingLeft: "10px"}} ref={sinDiv}/>*/}
+            {/*    <div style={{color: "green", textAlign: "right"}}>Cos</div>*/}
+            {/*    <div style={{textAlign: "left", paddingLeft: "10px"}} ref={cosDiv}/>*/}
+            {/*</div>*/}
         </div>,
         <div>
             Next step info
@@ -143,10 +146,10 @@ export default function(props) {
                 )}
             </Stepper>
             <div>
-                <div>
+                <div >
                     <Typography>{getContent(stepPosition)}</Typography>
-                    <Button disabled={stepPosition === 0}  onClick={() => setStepPosition(val => val - 1)}>Back</Button>
-                    <Button disabled={stepPosition === 3} onClick={() => setStepPosition(val => val + 1)}>Next</Button>
+                    <Button style={{marginLeft: "50%"}} disabled={stepPosition === 0}  onClick={() => setStepPosition(val => val - 1)}>Back</Button>
+                    <Button style={{marginLeft: "50%"}} disabled={stepPosition === 3} onClick={() => setStepPosition(val => val + 1)}>Next</Button>
                 </div>
             </div>
 

@@ -1,97 +1,60 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Form} from "react-bootstrap"
-export default function({width=400,
-                            height=400,
-                            visualInputs={},
-                            cellSizeProp=1,
-                            visualNumber=false,
-                            zoomProp=33,
-                            initDraw,
-                            offsetXProp=200,
-                            offsetYProp=200,
-                            overCanvas}) {
-    const [zoom, setZoom] = useState(zoomProp);
-    const [cellSize, setCellSize] = useState(cellSizeProp);
-    const [offsetX, setOffsetX] = useState(offsetXProp);
-    const [offsetY, setOffsetY] = useState(offsetYProp);
-    const [angels, setAngels] = useState([]);
+export default function(
+    {
+        xmin=0,
+        xmax=10,
+        xstep=1,
+        ymin=0,
+        ymax=10,
+        ystep=10,
+        visualNumbers=false,
+        placement,
+        labelsX,
+        labelsY
+    }) {
+    let width = placement.width;
+    let height = placement.height;
     const canvasRef = useRef(null);
-
-
-
-
-
-    const drawCells = (ctx) => {
-        ctx.save();
-        ctx.clearRect(-2 * width, -2* height, 4 * width, 4 * height);
-        ctx.font = '15px serif';
-        ctx.strokeStyle = "#3e3e3e";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.translate(offsetX, offsetY);
-        if (visualNumber) {
-            ctx.fillText('0', 1, -1)
-        }
-        for (let i = 0; i < 2 * width; i += cellSize) {
-            ctx.moveTo(i * zoom, -2 * height);
-            ctx.lineTo(i * zoom, 2 * height);
-            if (!i) continue;
-            ctx.moveTo(-i * zoom, -2 * height);
-            ctx.lineTo(-i * zoom, 2 * height);
-            if(visualNumber) {
-                ctx.fillText(`${i}`, i * zoom, 0);
-                ctx.fillText(`${-i}`, -i * zoom, 0);
+    function drawCells(ctx, canvas) {
+        let sizeX = width / (xmax - xmin)
+        let sizeY = height / (ymax - ymin)
+        ctx.lineWidth = '0.5'
+        ctx.setLineDash([15, 7]);
+        if (visualNumbers) {
+            sizeX = (width) / (xmax - xmin);
+            sizeY = (height) / (ymax - ymin);
+            for (let i = 0; i <= xmax - xmin; i += xstep) {
+                ctx.fillText((i + xmin).toFixed(2), i * sizeX + 25, 15);
             }
-        }
-        for (let i = 0; i < 2 * height; i += cellSize) {
-            ctx.moveTo(-2 * width, i * zoom);
-            ctx.lineTo(2 * width, i * zoom);
-            if (!i) continue;
-            ctx.moveTo(-2 * width, -i * zoom);
-            ctx.lineTo(2 * width, -i * zoom);
-            if (visualNumber) {
-                ctx.fillText(`${-i}`, 0, i * zoom - 5);
-                ctx.fillText(`${i}`, 0, -i * zoom - 5);
+            for (let i = 0; i <= ymax - ymin; i += ystep) {
+                ctx.fillText(`${i + ymin}`, 10, i * sizeY + 35);
             }
-
+            ctx.translate(35, 35);
         }
-        ctx.stroke();
-
-        if (initDraw) {
-            initDraw(overCanvas, ctx, cellSize * zoom);
+        ctx.beginPath()
+        for (let i = 0; i <= xmax - xmin; i += xstep) {
+            ctx.moveTo(i * sizeX, 0)
+            ctx.lineTo(i * sizeX, (ymax - ymin) * sizeY)
         }
-        ctx.restore();
+        for (let i = 0; i <= ymax - ymin; i += ystep) {
+            ctx.moveTo(0, i * sizeY)
+            ctx.lineTo((xmax - xmin) * sizeX, i * sizeY)
+        }
+        ctx.stroke()
     }
-
-    const onChange = (e) => {
-        const el = e.target;
-        // eslint-disable-next-line no-eval
-        eval(`set${el.name[0].toUpperCase()}${el.name.substr(1)}(${el.value})`)
-    }
-
     useEffect(() => {
-        if (angels.length === 0) {
-            const ctx = canvasRef.current.getContext('2d');
-            drawCells(ctx);
+        if (canvasRef.current) {
+            drawCells(canvasRef.current.getContext("2d"),canvasRef.current)
         }
-    })
-
-    useEffect(() => {
-        const ctx = canvasRef.current.getContext('2d');
-
-        drawCells(ctx);
-        // ctx.save();
-        // ctx.translate(offsetX, offsetY);
-        // drawArm(angels, sizePalm * zoom, ctx);
-        // ctx.restore();
-    }, [angels, cellSize, offsetX, offsetY, zoom]);
-    const styleCanvas = {position: "absolute"}
-    return (<div style={{position: "relative", width:width, height: height, marginLeft: `calc(50% - ${width}px)`}}>
-        <canvas
+    }, [canvasRef])
+    const add = visualNumbers? -35: 0;
+    const styleCanvas = {
+        position: "absolute" ,
+        marginLeft: placement.marginLeft + add,
+        marginTop: placement.marginTop + add
+    }
+    return (<canvas
         style={styleCanvas}
-            width={width} height={height} ref={canvasRef}/>
-        <canvas
-            style={styleCanvas}
-            width={width} height={height} ref={overCanvas}/>
-    </div>);
+            width={width - add} height={height - add} ref={canvasRef}/>);
 }
