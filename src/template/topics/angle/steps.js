@@ -42,7 +42,7 @@ export default function({name, steps}) {
             refCount.current = refCount.current + 1
             customBlock = <><Renderer {...step.view}/>
                 <NormalText >
-                    <input  id='seen' type="checkbox" value={done} onChange={(e) => { e.target.checked = !e.target.checked; update(1);}}/>
+                    <input  id='seen' type="checkbox" onChange={(e) => { e.target.checked = true; update(1);}}/>
                     <label style={{textAlign: 'center'}} htmlFor="seen">Увидел</label>
                 </NormalText>
             </>
@@ -63,7 +63,7 @@ export default function({name, steps}) {
                 <div style={{
                     textAlign: 'center'
                 }}>
-                    <Button disabled={stepPosition === 0}  onClick={() => setStepPosition(val => val - 1)}>Дальше</Button>
+                    <Button disabled={stepPosition === 0}  onClick={() => setStepPosition(val => val - 1)}>Назад</Button>
                     <Button disabled={stepPosition > steps.length || !done} onClick={() => setStepPosition(val => val + 1)}>Дальше</Button>
                 </div>
                 <Typography>{getContent(stepPosition)}</Typography>
