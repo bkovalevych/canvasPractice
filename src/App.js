@@ -1,13 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Holst from './template/holst';
-import Angle from "./template/topics/angle/index"
+import Content from "./template/topics/angle/topics"
 
 function App() {
   return (
     <div className="App">
-      <Angle />
+      <Content />
     </div>
   );
 }

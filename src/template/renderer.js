@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react"
-import HolstCells from './holst'
+import drawCells from './holst'
 
 export default function({layers_width, layers_height, variables, places, layers, controls}) {
     const refVariables = useRef({});
@@ -7,15 +7,7 @@ export default function({layers_width, layers_height, variables, places, layers,
     variables.forEach(({name, value}) => {
         refVariables.current[name] = value;
     })
-    const refUpdates = useRef(layers.map(layer => {
-        if (!layer.update) {
-            return (canvas, ctx) => {};
-        }
-        const prepare = layer.update.replaceAll(
-            /(\$[_a-zA-Z]+)/gi,
-            "refVariables.current['$1']");
-        return eval(prepare);
-    }));
+    const refUpdates = useRef();
     const placeControl = (control, places, index) => {
         const place = places[control.place];
         const val = typeof(control.value) === typeof "" ?
@@ -49,24 +41,37 @@ export default function({layers_width, layers_height, variables, places, layers,
         if (!refCanvases.current) return
         layers.forEach((layer, index) => {
             const canvas = refCanvases.current.children[index];
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(-1000, -1000, 2000, 2000);
+            if (layer.type === 'cells') {
 
-            if (!layer.initDraw || layer.initDraw === "") {
+                drawCells({ctx, canvas,...layer})
                 return
             }
-            const ctx = canvas.getContext("2d");
+            if (!layer.initDraw || layer.initDraw === "") return;
             const prepare = layer.initDraw.replaceAll(/\$[_a-zA-Z]+/gi, (val) => {
                 return refVariables.current[val]
             })
             const f = eval(prepare);
             f(canvas, ctx)
         })
-    }, )
+        refUpdates.current = layers.map(layer => {
+            if (!layer.update) {
+                return () => {};
+            }
+            const prepare = layer.update.replaceAll(
+                /(\$[_a-zA-Z]+)/gi,
+                "refVariables.current['$1']");
+            return eval(prepare);
+        })
+    }, [layers])
     return (
         <div
             style={{
-            position: "relative",
-            width: `${layers_width}px`,
-            height: `${layers_height}px`,
+                position: "relative",
+                width: `${layers_width}px`,
+                height: `${layers_height}px`,
+                margin: "35px 0 0 35px"
         }}>
             <div
                 ref={refCanvases}
@@ -89,27 +94,17 @@ const placeLayer = (layer, places, index) => {
     const height = place.height;
     layer.key = index;
     layer.placement = place;
-    switch (layer.type) {
-        case 'custom':
-            return (
-                <canvas width={width} height={height}
-                        style={{
-                            border: "solid thin black",
-                            position: 'absolute' ,
-                            marginLeft: place.marginLeft,
-                            marginTop: place.marginTop
-                        }}
-                        key={index}
 
-                />
-            )
-        case 'cells':
-            return (<HolstCells {...layer}/>)
-    }
-
-}
-
-const useInit = (layer, canvas) => {
-
+    return (
+        <canvas width={width}
+                height={height}
+                style={{
+                    position: 'absolute' ,
+                    marginLeft: place.marginLeft,
+                    marginTop: place.marginTop
+                }}
+                key={index}
+        />
+        )
 
 }
