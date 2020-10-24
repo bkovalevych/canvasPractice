@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Content from "./template/topics/angle/topics"
+import Content from "./template/topics"
 
 function App() {
   return (
