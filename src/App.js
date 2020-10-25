@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import Content from "./template/topics"
 import Authorization from "./pages/authorization";
 
