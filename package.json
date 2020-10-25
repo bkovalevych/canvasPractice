@@ -20,9 +20,12 @@
     "react-redux": "^7.2.1",
     "axios": "^0.21.0",
     "lodash": "^4.17.20",
+    "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-router-redux": "^4.0.8",
-    "cookie-parser": "^1.4.5"
+    "cookie-parser": "^1.4.5",
+    "node-sass": "^4.14.1",
+    "bootstrap": "^4.5.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -44,5 +47,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "node-sass": "^4.14.1",
+    "sass-loader": "^10.0.4"
   }
 }

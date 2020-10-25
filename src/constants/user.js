@@ -1,0 +1,12 @@
+export default {
+  SIGN_UP: {
+    FETCH: "SIGN_UP_FETCH",
+    SUCCESS: "SIGN_UP_SUCCESS",
+    ERROR: "SIGN_UP_ERROR",
+  },
+  GET_PROFILE: {
+    FETCH: "GET_PROFILE_FETCH",
+    SUCCESS: "GET_PROFILE_SUCCESS",
+    ERROR: "GET_PROFILE_ERROR",
+  },
+};
