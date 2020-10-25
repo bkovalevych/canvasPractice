@@ -126,7 +126,7 @@ export default [{
             view: {
 
                 layers_width: 400,
-                layers_height: 700,
+                layers_height: 500,
                 variables: [
                     {
                         name: "$angle",

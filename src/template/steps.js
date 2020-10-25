@@ -5,16 +5,28 @@ import Button from "@material-ui/core/Button";
 import TextCounter from "./textCounter"
 import Renderer from '../utils/renderer'
 import styled from 'styled-components';
+import {getTopic} from "../functions/topics"
 
-export default function({name, steps}) {
+export default function({idTopic}) {
+    const [fetch, setFetch] = useState("idle");
     const [stepPosition, setStepPosition] = useState(0)
     const [done, setDone] = useState(false);
     const refCount = useRef(0);
+    const content = useRef(null)
+    useEffect(() => {
+        if(fetch === 'idle') {
+            getTopic(idTopic).then(topic => {
+                content.current = topic
+                setFetch("done")
+            })
+            setFetch('waiting');
+        }
+    }, [fetch])
     useEffect(() => {
         setDone(false);
     }, [stepPosition])
     const getContent = (index) => {
-        return parseContent(steps[index]);
+        return parseContent(content.current.steps[index]);
     }
     const update = (val) => {
         refCount.current -= val;
@@ -49,13 +61,15 @@ export default function({name, steps}) {
         }
         return [customBlock, textBlock]
     }
-
+    if (fetch === 'waiting' || fetch === 'idle') {
+        return "waiting";
+    }
 
     return (
         <div>
-            <h2>{name}</h2>
+            <h2>{content.current.name}</h2>
             <Stepper activeStep={stepPosition}>
-                {steps.map(({type}, index) =>
+                {content.current.steps.map(({type}, index) =>
                     <Step key={index} onClick={() => setStepPosition(index)}><StepLabel>{type}</StepLabel></Step>
                 )}
             </Stepper>
@@ -64,13 +78,13 @@ export default function({name, steps}) {
                     textAlign: 'center'
                 }}>
                     <Button disabled={stepPosition === 0}  onClick={() => setStepPosition(val => val - 1)}>Назад</Button>
-                    <Button disabled={stepPosition > steps.length || !done} onClick={() => setStepPosition(val => val + 1)}>Дальше</Button>
+                    <Button disabled={stepPosition > content.current.steps.length || !done} onClick={() => setStepPosition(val => val + 1)}>Дальше</Button>
                 </div>
                 <Typography>{getContent(stepPosition)}</Typography>
                 <div style={{
                     textAlign: 'center'
                 }}>
-                    <Button disabled={stepPosition > steps.length || !done} onClick={() => setStepPosition(val => val + 1)}>Дальше</Button>
+                    <Button disabled={stepPosition > content.current.steps.length || !done} onClick={() => setStepPosition(val => val + 1)}>Дальше</Button>
                 </div>
             </div>
 
