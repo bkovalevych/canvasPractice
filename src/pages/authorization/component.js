@@ -5,9 +5,10 @@ import {useLocation, useRouteMatch} from "react-router";
 import {Link, Switch, Route, Redirect} from "react-router-dom";
 import routePaths from "../../constants/routes"
 import "./auth.css"
+import SignIn from "./signIn";
 
 export const Authorization = ({signUp}) => {
-    const submit = useCallback(event => {
+    const handleSignUp = useCallback(event => {
         setValidated(true);
         event.preventDefault();
 
@@ -40,9 +41,13 @@ export const Authorization = ({signUp}) => {
                         <Switch>
                             <Route path={`${match.path}${routePaths.SIGN_IN}`}>
 
+                                <SignIn/>
 
-                                <Form noValidate validated={validated} onSubmit={submit}>
-                                    <Form.Group controlId="formBasicEmail">
+                            </Route>
+                            <Route path={`${match.path}${routePaths.SIGN_UP}`}>
+
+                                <Form noValidate validated={validated} onSubmit={handleSignUp}>
+                                    <Form.Group controlId="singUpForm">
                                         <Form.Label>Email address</Form.Label>
                                         <Form.Control
                                             required
@@ -51,6 +56,17 @@ export const Authorization = ({signUp}) => {
                                             placeholder="Enter email"/>
                                         <Form.Control.Feedback type="invalid">
                                             Invalid Email
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicEmail">
+                                        <Form.Label>Email address</Form.Label>
+                                        <Form.Control
+                                            required
+                                            name='fullName'
+                                            type="text"
+                                            placeholder="Enter email"/>
+                                        <Form.Control.Feedback type="invalid">
+                                            Invalid Name
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group controlId="formBasicPassword">
@@ -65,11 +81,6 @@ export const Authorization = ({signUp}) => {
                                         Submit
                                     </Button>
                                 </Form>
-
-                            </Route>
-                            <Route path={`${match.path}${routePaths.SIGN_UP}`}>
-
-                                <p>Sign up block there</p>
 
                             </Route>
                             <Route>

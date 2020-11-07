@@ -9,4 +9,9 @@ export default {
     SUCCESS: "GET_PROFILE_SUCCESS",
     ERROR: "GET_PROFILE_ERROR",
   },
+  SIGN_IN: {
+    FETCH: "SIGN_IN_FETCH",
+    SUCCESS: "SIGN_IN_SUCCESS",
+    ERROR: "SIGN_IN_ERROR"
+  }
 };
