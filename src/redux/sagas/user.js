@@ -16,7 +16,7 @@ export const signUpRequest = ({email, password}) => {
 export function* signUp(props) {
     try {
         const response = yield call(signUpRequest, props.payload);
-        if (response.ok) {
+        if (response.status === 200) {
             yield put({type: CNST.USER.SIGN_UP.SUCCESS, payload: response});
         }
     } catch (error) {
@@ -43,7 +43,8 @@ export const signInRequest = ({email, password}) => {
 export function* signIn(props) {
     try {
         const response = yield call(signInRequest, props.payload);
-        if (response.ok) {
+        console.log(response);
+        if (response.status === 200) {
             yield put({type: CNST.USER.SIGN_IN.SUCCESS, payload: response});
         }
     } catch (error) {

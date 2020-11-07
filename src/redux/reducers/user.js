@@ -43,6 +43,7 @@ export default function (state = user, action) {
       return {
         ...state,
         fetching: false,
+        isLoggedIn: true
       };
     case CNST.USER.SIGN_IN.ERROR:
       return {
