@@ -1,24 +1,14 @@
-import React, {useCallback, useState} from "react";
-import {Nav, Form, Button} from "react-bootstrap";
-import styles from "./style.module.scss";
+import React from "react";
+import {Nav} from "react-bootstrap";
 import {useLocation, useRouteMatch} from "react-router";
 import {Link, Switch, Route, Redirect} from "react-router-dom";
 import routePaths from "../../constants/routes"
 import "./auth.css"
 import SignIn from "./signIn";
+import SignUp from "./signUp";
 
-export const Authorization = ({signUp}) => {
-    const handleSignUp = useCallback(event => {
-        setValidated(true);
-        event.preventDefault();
+export const Authorization = () => {
 
-        signUp({
-            email: "email",
-            password: "password"
-        });
-    }, []);
-
-    const [validated, setValidated] = useState(false)
     let location = useLocation()
     let match = useRouteMatch()
 
@@ -46,41 +36,7 @@ export const Authorization = ({signUp}) => {
                             </Route>
                             <Route path={`${match.path}${routePaths.SIGN_UP}`}>
 
-                                <Form noValidate validated={validated} onSubmit={handleSignUp}>
-                                    <Form.Group controlId="singUpForm">
-                                        <Form.Label>Email address</Form.Label>
-                                        <Form.Control
-                                            required
-                                            name='email'
-                                            type="email"
-                                            placeholder="Enter email"/>
-                                        <Form.Control.Feedback type="invalid">
-                                            Invalid Email
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Email address</Form.Label>
-                                        <Form.Control
-                                            required
-                                            name='fullName'
-                                            type="text"
-                                            placeholder="Enter email"/>
-                                        <Form.Control.Feedback type="invalid">
-                                            Invalid Name
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicPassword">
-                                        <Form.Label>Password</Form.Label>
-                                        <Form.Control
-                                            required
-                                            name="password"
-                                            type="password"
-                                            placeholder="Enter password"/>
-                                    </Form.Group>
-                                    <Button variant="info" type="submit" block>
-                                        Submit
-                                    </Button>
-                                </Form>
+                                <SignUp/>
 
                             </Route>
                             <Route>

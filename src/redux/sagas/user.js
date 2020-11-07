@@ -2,10 +2,7 @@ import {call, put} from "redux-saga/effects";
 import CNST from "../../constants";
 import axios from "axios";
 
-export const signUpRequest = ({
-                                  email,
-                                  password,
-                              }) => {
+export const signUpRequest = ({email, password}) => {
     return axios
         .post(`/signUp`, {
             email: email,
@@ -32,7 +29,7 @@ export function* signUp(props) {
     }
 }
 
-export const signInRequest = ({email, password,}) => {
+export const signInRequest = ({email, password}) => {
     return axios
         .post(`/login`, {
             email: email,

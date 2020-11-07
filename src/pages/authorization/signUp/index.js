@@ -1,6 +1,6 @@
-import {SignInForm} from "./signInForm";
+import {SignUpForm} from "./signUpForm";
 import get from "lodash/get";
-import { signInAction } from "../../../redux/actions/user";
+import { signUpAction } from "../../../redux/actions/user";
 import { connect } from "react-redux";
 
 export const mapStateToProps = (state) => {
@@ -11,7 +11,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = (dispatch) => ({
-    signIn: (props) => dispatch(signInAction(props))
+    signUp: (props) => dispatch(signUpAction(props))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
