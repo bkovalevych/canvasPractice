@@ -14,6 +14,10 @@ export default function({idTopic}) {
     const refCount = useRef(0);
     const content = useRef(null)
     useEffect(() => {
+        setStepPosition(1);
+        setFetch("idle")
+    }, [idTopic])
+    useEffect(() => {
         if(fetch === 'idle') {
             getTopic(idTopic).then(topic => {
                 content.current = topic
@@ -51,12 +55,13 @@ export default function({idTopic}) {
             </div>
         }
         if (step.type === 'custom') {
-            refCount.current = refCount.current + 1
-            customBlock = <><Renderer {...step.view}/>
-                <NormalText >
-                    <input  id='seen' type="checkbox" onChange={(e) => { e.target.checked = true; update(1);}}/>
-                    <label style={{textAlign: 'center'}} htmlFor="seen">Увидел</label>
-                </NormalText>
+            let triggers = 0;
+            if (step.view["task_triggers"]) {
+                triggers = step.view["task_triggers"].length;
+            }
+            refCount.current = refCount.current + triggers
+
+            customBlock = <><Renderer update={update}{...step.view}/>
             </>
         }
         return [customBlock, textBlock]

@@ -2,10 +2,10 @@ import React, {useEffect, useRef, useState} from 'react';
 //import responseTopics from './json_data';
 import styled from 'styled-components';
 import Steps from './steps';
-import {getTopic, getTopicsLabels} from '../functions/topics'
+import {getTopicsLabels} from '../functions/topics'
 
 export default function () {
-    const [selectedTopic, setSelectedTopic] = useState(0);
+    const [selectedTopic, setSelectedTopic] = useState(1);
     const [fetch, setFetch] = useState("idle");
     const labels = useRef(null);
     useEffect(() => {
@@ -28,7 +28,9 @@ export default function () {
             return "waiting";
         }
         return labels.current.map((val, index) =>
-            <Link key={index} onClick={() => {setSelectedTopic(index)}}>{val.name}</Link>
+            <Link key={index} onClick={() => {
+                setSelectedTopic(index)
+            }}>{val.name}</Link>
         )
     }
     return <Parent>
