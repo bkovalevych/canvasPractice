@@ -90,7 +90,6 @@ export default [{
             "view": {
 
                 "layers_width": 400,
-                "layers_height": 500,
                 "task_triggers": [
                     {
                         "describe": "Найдите все значения угла при которых синус равен 0 в в диапазоне -720 - 720 градусов",
@@ -108,6 +107,10 @@ export default [{
                     }
                 ],
                 "variables": [
+                    {
+                        "name": "$showTan",
+                        "value": 0
+                    },
                     {
                         "name": "$testValues",
                         "value": 0
@@ -138,11 +141,17 @@ export default [{
                         "marginLeft": 400,
                         "marginTop": 0
                     },
+                    "third_window": {
+                        "width": 200,
+                        "height": 50,
+                        "marginLeft": 420,
+                        "marginTop": -550
+                    },
                     "place_control": {
-                        "width": 400,
+                        "width": "200%",
                         "height": 30,
                         "marginLeft": 0,
-                        "marginTop": 425
+                        "marginTop": 475
                     }
                 },
                 "controls": [
@@ -154,6 +163,13 @@ export default [{
                         "step": 0.01,
                         "value": "$angle",
                         "onUpdate": "(val) => {\nlet next = val / 180 * Math.PI;\n$angle = next;\n}"
+                    },
+                    {
+                        "place": "third_window",
+                        "type": "checkbox",
+                        "label": "Включить тангенс",
+                        "value": "$angle",
+                        "onUpdate": "() => {if ($showTan == 0) {$showTan = 1; return true} else {$showTan = 0; return false}}"
                     }
                 ],
                 "layers": [
@@ -179,7 +195,9 @@ export default [{
                         "place": "first_window",
                         "type": "custom",
                         "initDraw": "(canvas, ctx) => {\nctx.save();\nctx.beginPath();\nctx.strokeStyle = 'blue';\nctx.translate($width / 2, $width / 2);\nctx.moveTo(0, 0);\nctx.lineTo( $sizeCell, 0);\nctx.stroke();\nctx.font = '25px Serif' \nctx.fillText('A', Math.cos($angle) * $sizeCell, -Math.sin($angle) * $sizeCell - 5) \nctx.restore();\n}",
-                        "update": "(canvas, ctx) => {\nctx.save();\nctx.strokeStyle = 'blue';\n ctx.translate($width / 2, $width / 2);\nctx.clearRect(-2 * $sizeCell, -2 * $sizeCell, 4 * $sizeCell, 4 * $sizeCell); ctx.fillText($testValues.toString(), 20, 20); \nctx.beginPath();\nctx.moveTo(0, 0);\nctx.lineTo(Math.cos($angle) * $sizeCell, -Math.sin($angle) * $sizeCell);\nctx.stroke();\nctx.beginPath();\nctx.strokeStyle = 'red';\nctx.moveTo(Math.cos($angle) * $sizeCell, -Math.sin($angle) * $sizeCell);\nctx.stroke();\nctx.beginPath();\nctx.fillStyle = 'red';\nctx.strokeStyle = 'red';\nctx.moveTo(Math.cos($angle) * $sizeCell, -Math.sin($angle) * $sizeCell);\nctx.fillText(Math.sin($angle).toFixed(1), Math.cos($angle) * $sizeCell, -0.5 * Math.sin($angle) * $sizeCell);\nctx.lineTo(Math.cos($angle) * $sizeCell, 0);\nctx.stroke();\nctx.beginPath();\nctx.strokeStyle = 'green';\nctx.fillStyle = 'green'; \nctx.fillText(Math.cos($angle).toFixed(1), 0.5 * Math.cos($angle) * $sizeCell, -Math.sin($angle) * $sizeCell);\nctx.moveTo(Math.cos($angle) * $sizeCell, -Math.sin($angle) * $sizeCell);\nctx.lineTo(0, -Math.sin($angle) * $sizeCell);\nctx.stroke();\nctx.beginPath();\nctx.strokeStyle = 'black';\nctx.fillStyle = 'black';\nctx.fillText(Math.floor($angle / Math.PI * 180).toString(), Math.cos($angle/ 2) * $sizeCell / 4, -Math.sin($angle / 2) * $sizeCell / 4);\nlet smallPart = Math.abs($angle) > Math.PI * 2? 5: 0;\nif ($angle >= 0) {\n    ctx.arc(0, 0, $sizeCell / 4, 0, -$angle, true);\n    ctx.moveTo($sizeCell / 4, 0);\n    if (smallPart) ctx.arc(0, 0, $sizeCell / 4 + smallPart, 0, -$angle + Math.PI * 2, true);\n} else {\n    ctx.arc(0, 0, $sizeCell / 4, 0, -$angle, false);\n    ctx.moveTo($sizeCell / 4, 0);\n    if (smallPart) ctx.arc(0, 0, $sizeCell / 4 + smallPart, 0, -$angle - Math.PI * 2, false);\n}\nctx.stroke();\nctx.font = '25px Serif' \nctx.fillText('A', Math.cos($angle) * $sizeCell, -Math.sin($angle) * $sizeCell - 5) \nctx.restore();\n}"
+                        "update": "(canvas, ctx) => {\nctx.save();\nctx.strokeStyle = 'blue';\n ctx.translate($width / 2, $width / 2);\n" +
+                            "ctx.clearRect(-2 * $sizeCell, -2 * $sizeCell, 4 * $sizeCell, 4 * $sizeCell); " +
+                            "\nctx.beginPath();\nctx.moveTo($showTan? -$sizeCell : 0, $showTan? Math.tan($angle) * $sizeCell : 0);\n ctx.lineTo($showTan? $sizeCell : Math.cos($angle) * $sizeCell, $showTan? -Math.tan($angle) * $sizeCell : -Math.sin($angle) * $sizeCell);\nctx.stroke();\nctx.beginPath();\nctx.strokeStyle = 'red';\nctx.moveTo($showTan? $sizeCell : Math.cos($angle) * $sizeCell, $showTan? -Math.tan($angle) * $sizeCell: -Math.sin($angle) * $sizeCell);\nctx.stroke();\nctx.beginPath();\nctx.fillStyle = 'red';\nctx.strokeStyle = 'red';\nctx.moveTo($showTan? $sizeCell : Math.cos($angle) * $sizeCell, $showTan? -Math.tan($angle) * $sizeCell : -Math.sin($angle) * $sizeCell);\nctx.fillText(($showTan? Math.tan($angle): Math.sin($angle)).toFixed(1), Math.cos($angle) * $sizeCell, -0.5 * Math.sin($angle) * $sizeCell);\nctx.lineTo( $showTan? $sizeCell : Math.cos($angle) * $sizeCell, 0);\nctx.stroke();\nctx.beginPath();\nctx.strokeStyle = 'green';\nctx.fillStyle = 'green'; \nctx.fillText(Math.cos($angle).toFixed(1), 0.5 * Math.cos($angle) * $sizeCell, -Math.sin($angle) * $sizeCell);\nctx.moveTo(Math.cos($angle) * $sizeCell, -Math.sin($angle) * $sizeCell);\nctx.lineTo(0, -Math.sin($angle) * $sizeCell);\nctx.stroke();\nctx.beginPath();\nctx.strokeStyle = 'black';\nctx.fillStyle = 'black';\nctx.fillText(Math.floor($angle / Math.PI * 180).toString(), Math.cos($angle/ 2) * $sizeCell / 4, -Math.sin($angle / 2) * $sizeCell / 4);\nlet smallPart = Math.abs($angle) > Math.PI * 2? 5: 0;\nif ($angle >= 0) {\n    ctx.arc(0, 0, $sizeCell / 4, 0, -$angle, true);\n    ctx.moveTo($sizeCell / 4, 0);\n    if (smallPart) ctx.arc(0, 0, $sizeCell / 4 + smallPart, 0, -$angle + Math.PI * 2, true);\n} else {\n    ctx.arc(0, 0, $sizeCell / 4, 0, -$angle, false);\n    ctx.moveTo($sizeCell / 4, 0);\n    if (smallPart) ctx.arc(0, 0, $sizeCell / 4 + smallPart, 0, -$angle - Math.PI * 2, false);\n}\nctx.stroke();\nctx.font = '25px Serif' \nctx.fillText('A', Math.cos($angle) * $sizeCell, -Math.sin($angle) * $sizeCell - 5) \nctx.restore();\n}"
                     },
                     {
                         "place": "second_window",
@@ -197,13 +215,14 @@ export default [{
                     {
                         "place": "second_window",
                         "type": "custom",
-                        "initDraw": "(canvas, ctx) => {\nlet width = canvas.width; \nlet height = canvas.height; \nctx.beginPath()\nctx.moveTo(0, height / 2)\nctx.lineTo(width, height / 2)\nctx.lineTo(width - 10, height / 2 + 10)\nctx.moveTo(width, height / 2)\nctx.lineTo(width - 10, height / 2 - 10)\nctx.moveTo(width / 2, height)\nctx.lineTo(width / 2, 0)\nctx.lineTo(width / 2 - 10, 10)\nctx.moveTo(width / 2, 0)\nctx.lineTo(width / 2 + 10, 10)\nctx.stroke()\nctx.font = '18px Serif'\nctx.fillText('sin', width / 2 + 10, 20)\nctx.fillText('Angle', width - 50, height / 2 - 10)\n}\n"
+                        "initDraw": "(canvas, ctx) => {\nlet width = canvas.width; \nlet height = canvas.height; \nctx.beginPath()\nctx.moveTo(0, height / 2)\nctx.lineTo(width, height / 2)\nctx.lineTo(width - 10, height / 2 + 10)\nctx.moveTo(width, height / 2)\nctx.lineTo(width - 10, height / 2 - 10)\nctx.moveTo(width / 2, height)\nctx.lineTo(width / 2, 0)\nctx.lineTo(width / 2 - 10, 10)\nctx.moveTo(width / 2, 0)\nctx.lineTo(width / 2 + 10, 10)\nctx.stroke()\nctx.font = '18px Serif'\nctx.fillText($showTan? 'tan': 'sin', width / 2 + 10, 20)\nctx.fillText('Angle', width - 50, height / 2 - 10)\n}\n",
+                        "update": "(canvas, ctx) => {\nlet width = canvas.width; \nlet height = canvas.height;\n ctx.clearRect(0, 0, width, height); \nctx.beginPath()\nctx.moveTo(0, height / 2)\nctx.lineTo(width, height / 2)\nctx.lineTo(width - 10, height / 2 + 10)\nctx.moveTo(width, height / 2)\nctx.lineTo(width - 10, height / 2 - 10)\nctx.moveTo(width / 2, height)\nctx.lineTo(width / 2, 0)\nctx.lineTo(width / 2 - 10, 10)\nctx.moveTo(width / 2, 0)\nctx.lineTo(width / 2 + 10, 10)\nctx.stroke()\nctx.font = '18px Serif'\nctx.fillText($showTan? 'tan': 'sin', width / 2 + 10, 20)\nctx.fillText('Angle', width - 50, height / 2 - 10)\n}\n"
                     },
                     {
                         "place": "second_window",
                         "type": "custom",
                         "initDraw": "",
-                        "update": "(canvas, ctx) => {\nctx.clearRect(0, 0, $width, $width);\nctx.save();\nctx.translate($width / 2, $width / 2);\nctx.beginPath();\nctx.moveTo(0, 0);\nlet sign = $angle < 0? -1 : 1;\nfor (let i = 0; i <= Math.abs($angle); i += 0.01) {\n    ctx.lineTo(i * 15.5 * sign, -Math.sin(i * sign) * $sizeCell);\n}\nctx.stroke();\nctx.beginPath();\nctx.strokeStyle = 'red';\nctx.moveTo($angle * 15.5, -Math.sin($angle) * $sizeCell)\nctx.lineTo($angle * 15.5, 0)\nctx.stroke();\nctx.restore();\n}"
+                        "update": "(canvas, ctx) => {\nctx.clearRect(0, 0, $width, $width);\nctx.save();\nctx.translate($width / 2, $width / 2);\nctx.beginPath();\nctx.moveTo(0, 0);\nlet sign = $angle < 0? -1 : 1;\nfor (let i = 0; i <= Math.abs($angle); i += 0.01) {\n    ctx.lineTo(i * 15.5 * sign, $showTan? -Math.tan(i * sign) * $sizeCell : -Math.sin(i * sign) * $sizeCell);\n}\nctx.stroke();\nctx.beginPath();\nctx.strokeStyle = 'red';\nctx.moveTo($angle * 15.5, $showTan? -Math.tan( $angle) * $sizeCell :-Math.sin( $angle) * $sizeCell)\nctx.lineTo($angle * 15.5, 0)\nctx.stroke();\nctx.restore();\n}"
                     }
                 ]
             }
@@ -220,11 +239,35 @@ export default [{
             },
             {
                 "type": "custom",
-                "text": ["Попробуем решить задачу.", "Дан треугольник ABC", "Нам известны все его углы и одна сторона AB", "Нужно найти остальные стороны"],
+                "text": ["Попробуем решить задачу.", "Дан треугольник ABC", "Нам известны 2 угла и одна сторона AB", "Нужно найти остальные стороны"],
                 "view": {
                     "layers_width": 400,
-                    "layers_height": 350,
+                    "layers_height": 400,
                     "variables": [
+                        {
+                            "name": "$AB",
+                            "value": 0
+                        },
+                        {
+                            "name": "$AC",
+                            "value": 0
+                        },
+                        {
+                            "name": "$BC",
+                            "value": 0
+                        },
+                        {
+                            "name": "$Aangle",
+                            "value": 64
+                        },
+                        {
+                            "name": "$Bangle",
+                            "value": 41
+                        },
+                        {
+                            "name": "$Cangle",
+                            "value": 74
+                        },
                         {
                             "name": "$A",
                             "value": [50, 50]
@@ -253,6 +296,12 @@ export default [{
                             "marginLeft": 0,
                             "marginTop": 0
                         },
+                        "second_window": {
+                            "width": 400,
+                            "height": 300,
+                            "marginLeft": 450,
+                            "marginTop": 0
+                        },
                         "place_control": {
                             "width": 100,
                             "height": 30,
@@ -270,6 +319,39 @@ export default [{
                         },
                     ],
                     "layers": [
+                        {
+                          "place": "second_window",
+                          "type": "custom",
+                          "update": "(canvas, ctx) => {\n" +
+                              " const width = canvas.width;\n" +
+                              " const height = canvas.height;\n" +
+                              " ctx.clearRect(0, 0, width, height)\n" +
+                              " const getAngle = (val) => {\n" +
+                              "     return (val / Math.PI * 180).toFixed(2);\n" +
+                              " }\n" +
+                              " if (!$showMore) return;\n" +
+                              " ctx.save()\n" +
+                              " ctx.fillStyle = 'black';\n" +
+                              " ctx.font = '18px Serif';\n" +
+                              " let r2 = $AB / Math.sin($Cangle)\n" +
+                              " let blocks = ['Найдем 3 угол', " +
+                              "   '1) A = 180 - B - C = 180 - ' + " +
+                              "       getAngle($Bangle) + ' - ' + " +
+                              "       getAngle($Cangle) + ' = ' + getAngle($Aangle)," +
+                              "   'Отношение стороны к синусу противоположного'," +
+                              "   ' угла одинаково для всех сторон и равно 2R'," +
+                              "   '(теорема синусов)', " +
+                              "   '2) 2R = AB / sin(C) = ' + $AB.toFixed(2) + ' / ' +" +
+                              "       Math.sin($Cangle).toFixed(2) + ' = ' + (r2).toFixed(2)," +
+                              "   '3) BC = 2R * sin(A) = ' + r2.toFixed() + ' * ' + Math.sin($A).toFixed() +" +
+                              "       ' = ' +  $BC.toFixed()," +
+                              "   '4) AC = 2R * sin(B) = ' + r2.toFixed() + ' * ' + Math.sin($B).toFixed() +" +
+                              "       ' = ' +  $AC.toFixed()" +
+                              " ];\n" +
+                              " blocks.forEach((a, index) => ctx.fillText(a, 10, (index + 1) * 30))\n" +
+                              " ctx.restore()\n" +
+                              "}"
+                        },
                         {
                             "place": "first_window",
                             "type": "cells",
@@ -381,7 +463,15 @@ export default [{
                                 "const getLen = (a, b) => {" +
                                 "  return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)\n" +
                                 "}\n" +
-                                "const writeAngle = (a, b, c) => {\n " +
+                                "const writeLen = (a, b, color='black') => {\n" +
+                                "    let len = getLen(a, b) \n" +
+                                "    ctx.save()\n" +
+                                "    ctx.fillStyle = color;\n" +
+                                "    ctx.fillText(len.toFixed(2), (a[0] + b[0]) / 2, " +
+                                "        (a[1] + b[1]) / 2) \n" +
+                                "    ctx.restore();\n" +
+                                "}\n" +
+                                "const writeAngle = (a, b, c, color='black') => {\n " +
                                 "    ctx.moveTo(a[0], a[1])\n" +
                                 "    let startAngle = Math.acos((b[0] - a[0]) / getLen(b, a));\n" +
                                 "    let finishAngle = Math.acos((c[0] - a[0]) / getLen(c, a));\n" +
@@ -401,9 +491,55 @@ export default [{
                                 "        Math.PI * 2 -angle : angle; \n " +
                                 "    let minAngle = Math.min(startAngle, finishAngle);\n" +
                                 "    minAngle += Math.abs(startAngle - finishAngle) / 2;\n" +
-                                "    let neg = startAngle < 0 && finishAngle > 0? -1.5: 1;" +
+                                "    let neg = startAngle < 0 && finishAngle > 0? -1.5: 1;\n" +
+                                "    ctx.save()\n" +
+                                "    ctx.fillStyle = color\n" +
                                 "    ctx.fillText((angle / Math.PI * 180).toFixed(2), a[0] + neg * Math.cos(minAngle) * 28, a[1] + neg * Math.sin(minAngle) * 28);\n" +
+                                "    ctx.restore()\n" +
                                 "    return angle;" +
+                                "}\n" +
+                                "const writeRound = () => {\n" +
+                                "    let ab = [$B[0] - $A[0], $B[1] - $A[1]]\n" +
+                                "    let ac = [$A[0] - $C[0], $A[1] - $C[1]]\n" +
+                                "    let abPer = [0, 0]\n" +
+                                "    let acPer = [0, 0]\n" +
+                                "    abPer = [ab[1], -ab[0]]\n" +
+                                "    acPer = [ac[1], -ac[0]]\n" +
+                                "    if (ab[0] === 0 ) {\n" +
+                                "        abPer[0] = 1\n" +
+                                "        abPer[1] = 0\n" +
+                                "    }\n" +
+                                "    if (ac[0] === 0) {\n" +
+                                "        acPer[0] = 1\n" +
+                                "        acPer[1] = 0\n" +
+                                "    }\n" +
+                                "    let cAC = [($A[0] + $C[0]) / 2, ($A[1] + $C[1]) / 2]\n" +
+                                "    let cAB = [($A[0] + $B[0]) / 2, ($A[1] + $B[1]) / 2]\n" +
+                                "    let cAC2 = [cAC[0] + acPer[0], cAC[1] + acPer[1]]\n" +
+                                "    let cAB2 = [cAB[0] + abPer[0], cAB[1] + abPer[1]]\n" +
+
+                                "    let a1 = cAC2[1] - cAC[1]\n" +
+                                "    let b1 = cAC[0] - cAC2[0]\n" +
+                                "    let c1 = - cAC[0] * cAC2[1] + cAC[1] * cAC2[0]\n" +
+
+                                "    let a2 = cAB2[1] - cAB[1]\n" +
+                                "    let b2 = cAB[0] - cAB2[0]\n" +
+                                "    let c2 = - cAB[0] * cAB2[1] + cAB[1] * cAB2[0]\n" +
+
+                                "    let centerX = (b1 * c2 - b2 * c1) / (a1 * b2 - a2 * b1) \n" +
+                                "    let centerY = (a2 * c1 - a1 * c2) / (b2 * a1 - b1 * a2)\n" +
+                                "    let co = [centerX - $A[0], centerY - $A[1]] \n" +
+                                "    ctx.beginPath()\n" +
+                                "    ctx.moveTo(centerX, centerY)\n" +
+                                "    ctx.fillStyle = 'blue'\n" +
+                                "    ctx.font = '20px Serif'\n" +
+                                "    ctx.fillText('O', centerX, centerY)\n" +
+                                "    ctx.arc(centerX, centerY," +
+                                "        getLen($A, [centerX, centerY]), " +
+                                "        Math.acos(co[0] / getLen([centerX, centerY], $A)) - Math.PI, " +
+                                "        Math.acos(co[0] / getLen([centerX, centerY], $A)) + Math.PI," +
+                                "        )\n" +
+                                "    ctx.stroke()\n" +
                                 "}\n" +
                                 "ctx.save();\n" +
                                 "ctx.clearRect(0, 0, canvas.width, canvas.height);ctx.beginPath(); \n" +
@@ -412,52 +548,18 @@ export default [{
                                 "ctx.lineTo($C[0], $C[1]);\n" +
                                 "ctx.lineTo($A[0], $A[1]);\n" +
                                 "ctx.stroke()\n" +
-                                "let a = writeAngle($A, $B, $C)\n" +
-                                "let b = writeAngle($B, $A, $C)\n" +
-                                "let c = writeAngle($C, $B, $A)\n" +
-                                "ctx.fillText(((a + b + c) / Math.PI * 180).toString(), 30, 30)\n" +
-                                "let ab = [$B[0] - $A[0], $B[1] - $A[1]]\n" +
-                                "let ac = [$A[0] - $C[0], $A[1] - $C[1]]\n" +
-                                "let abPer = [0, 0]\n" +
-                                "let acPer = [0, 0]\n" +
-                                "abPer = [ab[1], -ab[0]]\n" +
-                                "acPer = [ac[1], -ac[0]]\n" +
-                                "if (ab[0] === 0 ) {\n" +
-                                "    abPer[0] = 1\n" +
-                                "    abPer[1] = 0\n" +
-                                "}\n" +
-                                "if (ac[0] === 0) {\n" +
-                                "    acPer[0] = 1\n" +
-                                "    acPer[1] = 0\n" +
-                                "}\n" +
-                                "let cAC = [($A[0] + $C[0]) / 2, ($A[1] + $C[1]) / 2]\n" +
-                                "let cAB = [($A[0] + $B[0]) / 2, ($A[1] + $B[1]) / 2]\n" +
-                                "let cAC2 = [cAC[0] + acPer[0], cAC[1] + acPer[1]]\n" +
-                                "let cAB2 = [cAB[0] + abPer[0], cAB[1] + abPer[1]]\n" +
-
-                                "let a1 = cAC2[1] - cAC[1]\n" +
-                                "let b1 = cAC[0] - cAC2[0]\n" +
-                                "let c1 = - cAC[0] * cAC2[1] + cAC[1] * cAC2[0]\n" +
-
-                                "let a2 = cAB2[1] - cAB[1]\n" +
-                                "let b2 = cAB[0] - cAB2[0]\n" +
-                                "let c2 = - cAB[0] * cAB2[1] + cAB[1] * cAB2[0]\n" +
-
-                                "let centerX = (b1 * c2 - b2 * c1) / (a1 * b2 - a2 * b1) \n" +
-                                "let centerY = (a2 * c1 - a1 * c2) / (b2 * a1 - b1 * a2)\n" +
-                                "let co = [centerX - $A[0], centerY - $A[1]] \n" +
-                                "ctx.beginPath()\n" +
-                                "ctx.moveTo($A[0], $A[1])\n" +
-                                "ctx.arc(centerX, centerY," +
-                                "        getLen($A, [centerX, centerY]), " +
-                                "        Math.acos(co[0] / getLen([centerX, centerY], $A)) + Math.PI, " +
-                                "        Math.acos(co[0] / getLen([centerX, centerY], $A)) + 3 * Math.PI," +
-                                "        )\n" +
-                                "ctx.stroke()\n" +
-
+                                "let defColor = $showMore? 'green': 'transparent' \n" +
+                                "$Aangle = writeAngle($A, $B, $C, defColor)\n" +
+                                "$Bangle = writeAngle($B, $A, $C)\n" +
+                                "$Cangle = writeAngle($C, $B, $A)\n" +
+                                "$AB = getLen($A, $B)\n" +
+                                "$AC = getLen($A, $C)\n" +
+                                "$BC = getLen($C, $B)\n" +
+                                "writeLen($A, $B)\n" +
+                                "writeLen($A, $C, defColor)\n" +
+                                "writeLen($C, $B, defColor)\n" +
+                                "if ($showMore) writeRound()\n" +
                                 "ctx.beginPath() \n" +
-                                "let len = Math.sqrt(($A[0] - $B[0])**2 + ($A[1] - $B[1])** 2) \n" +
-                                "ctx.fillText(len.toFixed(2), Math.min($A[0], $B[0]) + Math.abs($A[0] - $B[0]) / 2, Math.min($A[1], $B[1]) + Math.abs($A[1] - $B[1]) / 2) \n" +
                                 "ctx.fillStyle = 'red'\n" +
                                 "ctx.arc($A[0], $A[1], 5, 0, Math.PI * 4) \n" +
                                 "ctx.moveTo($B[0], $B[1]) \n" +

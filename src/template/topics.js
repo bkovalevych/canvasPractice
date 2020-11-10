@@ -5,9 +5,14 @@ import Steps from './steps';
 import {getTopicsLabels} from '../functions/topics'
 
 export default function () {
-    const [selectedTopic, setSelectedTopic] = useState(1);
+    const [selectedTopic, setSelectedTopic] = useState(null);
     const [fetch, setFetch] = useState("idle");
     const labels = useRef(null);
+    const nextTopic = () => {
+        if (labels && selectedTopic < labels.current.length) {
+            setSelectedTopic(val => val + 1);
+        }
+    }
     useEffect(() => {
         if (fetch === 'idle') {
             getTopicsLabels().then(topics => {
@@ -21,7 +26,7 @@ export default function () {
         if (selectedTopic === null) {
             return <NormalText>Выберите тему</NormalText>;
         }
-        return <Steps idTopic={selectedTopic}/>;
+        return <Steps idTopic={selectedTopic} nextTopic={nextTopic}/>;
     }
     const showTopicLabel = () => {
         if (fetch === 'idle' || fetch === 'waiting') {
@@ -50,7 +55,7 @@ color: blue;
 
 const Parent = styled.div`
 display: grid;
-height: 100vh;
+min-height: 100vh;
 grid-template-columns: 1fr 3fr;
 `
 

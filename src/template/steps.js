@@ -4,17 +4,16 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextCounter from "./textCounter"
 import Renderer from '../utils/renderer'
-import styled from 'styled-components';
 import {getTopic} from "../functions/topics"
 
-export default function({idTopic}) {
+export default function({idTopic, nextTopic}) {
     const [fetch, setFetch] = useState("idle");
     const [stepPosition, setStepPosition] = useState(0)
     const [done, setDone] = useState(false);
     const refCount = useRef(0);
     const content = useRef(null)
     useEffect(() => {
-        setStepPosition(1);
+        setStepPosition(0);
         setFetch("idle")
     }, [idTopic])
     useEffect(() => {
@@ -40,6 +39,7 @@ export default function({idTopic}) {
     }
 
     const parseContent = (step) => {
+        if (!step) return;
         let textBlock = ""
         let customBlock = ""
         if (step.text) {
@@ -47,7 +47,8 @@ export default function({idTopic}) {
                 step.text.length
                 :
                 step.text.reduce((prev, next) => prev + next.length,0)
-            textBlock = <div style={{textAlign: "center"}}>
+
+            textBlock = <div key={0} style={{textAlign: "center"}}>
                 {typeof(step.text) === typeof ""?
                     <TextCounter text={step.text} update={update}/>:
                     step.text.map(text => <TextCounter text={text} update={update}/>)
@@ -61,10 +62,9 @@ export default function({idTopic}) {
             }
             refCount.current = refCount.current + triggers
 
-            customBlock = <><Renderer update={update}{...step.view}/>
-            </>
+            customBlock = <Renderer key={1} update={update}{...step.view}/>
         }
-        return [customBlock, textBlock]
+        return [textBlock, customBlock]
     }
     if (fetch === 'waiting' || fetch === 'idle') {
         return "waiting";
@@ -83,25 +83,27 @@ export default function({idTopic}) {
                     textAlign: 'center'
                 }}>
                     <Button disabled={stepPosition === 0}  onClick={() => setStepPosition(val => val - 1)}>Назад</Button>
-                    <Button disabled={stepPosition > content.current.steps.length || !done} onClick={() => setStepPosition(val => val + 1)}>Дальше</Button>
+                    <Button disabled={stepPosition > content.current.steps.length || !done} onClick={() => {
+                        if (stepPosition + 1 >= content.current.steps.length) {
+                            nextTopic();
+                            return;
+                        }
+                        setStepPosition(val => val + 1)}}
+                    >Дальше</Button>
                 </div>
                 <Typography>{getContent(stepPosition)}</Typography>
                 <div style={{
                     textAlign: 'center'
                 }}>
-                    <Button disabled={stepPosition > content.current.steps.length || !done} onClick={() => setStepPosition(val => val + 1)}>Дальше</Button>
+                    <Button disabled={stepPosition > content.current.steps.length || !done} onClick={() => {
+                        if (stepPosition + 1 >= content.current.steps.length) {
+                            nextTopic();
+                            return;
+                        }
+                        setStepPosition(val => val + 1)}}>Дальше</Button>
                 </div>
             </div>
 
         </div>
     )
 }
-
-
-const NormalText = styled.div`
-font-size: 20px;
-padding: 20px;
-textAlign: center;
-margin: 20px;
-background: rgb(204,203,229)
-`;

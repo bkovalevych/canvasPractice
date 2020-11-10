@@ -26,7 +26,8 @@ export default function({layers_width, layers_height, variables, places, layers,
         refTriggers.current.forEach((val, index) => {
             let allDone = true;
             for (let key in val) {
-                allDone = allDone && val[key](refVariables.current[key])
+                if (val.hasOwnProperty(key))
+                    allDone = allDone && val[key](refVariables.current[key])
             }
             if (allDone && refBlockTriggers.current) {
                 update(1)
@@ -58,12 +59,11 @@ export default function({layers_width, layers_height, variables, places, layers,
         }
         switch (control.type) {
             case "checkbox":
-                return <label><input
+                return <label style={{position: "absolute", ...place}}><input
                     key={index}
                     onChange={_update}
                     type={control.type}
                     defaultChecked={control.checked}
-                    style={place}
                 />{control.label}</label>
         }
         return <input
@@ -180,8 +180,10 @@ export default function({layers_width, layers_height, variables, places, layers,
 
             refTriggers.current.push({})
             for (let key in val.test) {
-                const prepareFunctionText = prepareRegex(val.test[key]);
-                refTriggers.current[index][key] = eval(prepareFunctionText)
+                if (val.test.hasOwnProperty(key)) {
+                    const prepareFunctionText = prepareRegex(val.test[key]);
+                    refTriggers.current[index][key] = eval(prepareFunctionText)
+                }
             }
 
             return <NormalText key={index}>{val.describe}</NormalText>
@@ -203,9 +205,12 @@ export default function({layers_width, layers_height, variables, places, layers,
                     placeLayer(val, places, index)
                 )}
             </div>
-            {controls.map((val, index) =>
-                placeControl(val, places, index)
-            )}
+            <div>
+                {controls.map((val, index) =>
+                    placeControl(val, places, index)
+                )}
+            </div>
+
             <div ref={refBlockTriggers}>
                 {placeTriggers()}
             </div>
