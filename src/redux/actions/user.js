@@ -19,3 +19,9 @@ export function getUserAction() {
     type: CNST.USER.GET_PROFILE.FETCH,
   };
 }
+
+export function logoutAction() {
+  return {
+    type: CNST.USER.LOGOUT.FETCH
+  }
+}

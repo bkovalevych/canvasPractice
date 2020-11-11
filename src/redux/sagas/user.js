@@ -43,7 +43,6 @@ export const signInRequest = ({email, password}) => {
 export function* signIn(props) {
     try {
         const response = yield call(signInRequest, props.payload);
-        console.log(response);
         if (response.status === 200) {
             yield put({type: CNST.USER.SIGN_IN.SUCCESS, payload: response});
         }
@@ -58,7 +57,7 @@ export function* signIn(props) {
 }
 
 export const getUserRequest = () => {
-    return axios.get(`/user-service/me`).catch(function (error) {
+    return axios.get(`/profile`).catch(function (error) {
         throw error.response.data;
     });
 };
@@ -71,6 +70,30 @@ export function* getUser() {
         // removeToken();
         yield put({
             type: CNST.USER.GET_PROFILE.ERROR,
+        });
+    }
+}
+
+export const logoutRequest = () => {
+    return axios
+        .post(`/logout`)
+        .catch(function (error) {
+            throw error.response.data;
+        });
+};
+
+export function* logout(props) {
+    try {
+        const response = yield call(logoutRequest, props.payload);
+        if (response.status === 200) {
+            yield put({type: CNST.USER.LOGOUT.SUCCESS, payload: response});
+        }
+    } catch (error) {
+        yield put({
+            type: CNST.USER.LOGOUT.ERROR,
+            payload: {
+                // errors: error,
+            },
         });
     }
 }

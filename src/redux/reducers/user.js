@@ -57,6 +57,28 @@ export default function (state = user, action) {
         ...action.payload,
         fetching: true,
       };
+    case CNST.USER.LOGOUT.SUCCESS:
+      return {
+        fetching: false,
+        email: "",
+        isLoggedIn: false,
+        isGetUserFetched: false,
+        topics: []
+      };
+    case CNST.USER.LOGOUT.FETCH:
+      return {
+        ...state,
+        ...action.payload,
+        fetching: true,
+      };
+    case CNST.USER.LOGOUT.ERROR:
+      return {
+        fetching: false,
+        email: "",
+        isLoggedIn: false,
+        isGetUserFetched: false,
+        topics: []
+      };
     default:
       return state;
   }
