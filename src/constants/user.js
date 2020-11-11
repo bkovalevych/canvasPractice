@@ -13,5 +13,10 @@ export default {
     FETCH: "SIGN_IN_FETCH",
     SUCCESS: "SIGN_IN_SUCCESS",
     ERROR: "SIGN_IN_ERROR"
+  },
+  LOGOUT: {
+    FETCH: "LOGOUT_FETCH",
+    SUCCESS: "LOGOUT_SUCCESS",
+    ERROR: "LOGOUT_ERROR"
   }
 };
