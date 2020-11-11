@@ -39,6 +39,24 @@ export default function (state = user, action) {
         isGetUserFetched: false,
         isLoggedIn: false,
       };
+    case CNST.USER.SIGN_IN.SUCCESS:
+      return {
+        ...state,
+        fetching: false,
+        isLoggedIn: true
+      };
+    case CNST.USER.SIGN_IN.ERROR:
+      return {
+        ...state,
+        ...action.payload,
+        fetching: false,
+      };
+    case CNST.USER.SIGN_IN.FETCH:
+      return {
+        ...state,
+        ...action.payload,
+        fetching: true,
+      };
     default:
       return state;
   }

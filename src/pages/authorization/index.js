@@ -11,7 +11,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = (dispatch) => ({
-  signUp: (props) => dispatch(signUpAction(props))
+  signUp: (props) => dispatch(signUpAction(props)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Authorization);
