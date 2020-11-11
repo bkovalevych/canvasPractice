@@ -222,7 +222,14 @@ export default [{
                         "place": "second_window",
                         "type": "custom",
                         "initDraw": "",
-                        "update": "(canvas, ctx) => {\nctx.clearRect(0, 0, $width, $width);\nctx.save();\nctx.translate($width / 2, $width / 2);\nctx.beginPath();\nctx.moveTo(0, 0);\nlet sign = $angle < 0? -1 : 1;\nfor (let i = 0; i <= Math.abs($angle); i += 0.01) {\n    ctx.lineTo(i * 15.5 * sign, $showTan? -Math.tan(i * sign) * $sizeCell : -Math.sin(i * sign) * $sizeCell);\n}\nctx.stroke();\nctx.beginPath();\nctx.strokeStyle = 'red';\nctx.moveTo($angle * 15.5, $showTan? -Math.tan( $angle) * $sizeCell :-Math.sin( $angle) * $sizeCell)\nctx.lineTo($angle * 15.5, 0)\nctx.stroke();\nctx.restore();\n}"
+                        "update": "(canvas, ctx) => {\nctx.clearRect(0, 0, $width, $width);\nctx.save();\nctx.translate($width / 2, $width / 2);\nctx.beginPath();\nctx.moveTo(0, 0);\nlet sign = $angle < 0? -1 : 1;\n" +
+                            "for (let i = 0; i <= Math.abs($angle); i += 0.01) {\n    " +
+                            "    let isMove = $showTan && Math.abs(Math.sin(i * sign)) > 0.98\n" +
+                            "    if (isMove)" +
+                            "ctx.moveTo(i * 15.5 * sign, $showTan? -Math.tan(i * sign) * $sizeCell : -Math.sin(i * sign) * $sizeCell)\n" +
+                            "    else\n " +
+                            "ctx.lineTo(i * 15.5 * sign, $showTan? -Math.tan(i * sign) * $sizeCell : -Math.sin(i * sign) * $sizeCell)\n" +
+                            "\n}\nctx.stroke();\nctx.beginPath();\nctx.strokeStyle = 'red';\nctx.moveTo($angle * 15.5, $showTan? -Math.tan( $angle) * $sizeCell :-Math.sin( $angle) * $sizeCell)\nctx.lineTo($angle * 15.5, 0)\nctx.stroke();\nctx.restore();\n}"
                     }
                 ]
             }
@@ -335,9 +342,9 @@ export default [{
                               " ctx.font = '18px Serif';\n" +
                               " let r2 = $AB / Math.sin($Cangle)\n" +
                               " let blocks = ['Найдем 3 угол', " +
-                              "   '1) A = 180 - B - C = 180 - ' + " +
+                              "   '1) C = 180 - B - A = 180 - ' + " +
                               "       getAngle($Bangle) + ' - ' + " +
-                              "       getAngle($Cangle) + ' = ' + getAngle($Aangle)," +
+                              "       getAngle($Aangle) + ' = ' + getAngle($Cangle)," +
                               "   'Отношение стороны к синусу противоположного'," +
                               "   ' угла одинаково для всех сторон и равно 2R'," +
                               "   '(теорема синусов)', " +
@@ -406,60 +413,6 @@ export default [{
                                 "$clicked = 0;\n" +
                                 "}\n",
                             "initDraw": "(canvas, ctx) => {\n" +
-                                "const getLen = (a, b) => {" +
-                                "  return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)\n" +
-                                "}\n" +
-                                "const writeAngle = (a, b, c) => {\n " +
-                                "    ctx.moveTo(a[0], a[1]);\n" +
-                                "    let startAngle = Math.acos((b[0] - a[0]) / getLen(b, a));\n" +
-                                "    let finishAngle = Math.acos((c[0] - a[0]) / getLen(c, a));\n" +
-                                "    let rotStart = b[1] - a[1] > 0? 1 : -1;\n" +
-                                "    let rotFinish = c[1] - a[1] > 0? 1 : -1;\n" +
-                                "    startAngle *= rotStart;\n" +
-                                "    finishAngle *= rotFinish;\n" +
-                                "    ctx.arc(a[0], a[1], " +
-                                "        15, " +
-                                "        Math.min(startAngle, finishAngle)," +
-                                "        Math.max(startAngle, finishAngle)," +
-                                "        Math.max(startAngle, finishAngle) - Math.min(startAngle, finishAngle) > Math.PI" +
-                                "    )\n" +
-                                "    ctx.stroke()\n" +
-                                "    let angle = Math.abs(startAngle - finishAngle);\n" +
-                                "    angle -= angle > Math.PI ? " +
-                                "        Math.PI : 0; \n " +
-                                "    let minAngle = Math.min(startAngle, finishAngle); \n" +
-                                "    minAngle += Math.abs(startAngle - finishAngle) / 2; \n" +
-                                "    ctx.fillText(Math.round(angle / Math.PI * 180).toString(), Math.cos(minAngle) * 20, Math.sin(minAngle) * 20);\n" +
-                                "}\n" +
-                                "ctx.save();\n" +
-                                "ctx.clearRect(0, 0, canvas.width, canvas.height);ctx.beginPath(); \n" +
-                                "ctx.moveTo($A[0], $A[1]);\n" +
-                                "ctx.lineTo($B[0], $B[1]);\n" +
-                                "ctx.lineTo($C[0], $C[1]);\n" +
-                                "ctx.lineTo($A[0], $A[1]);\n" +
-                                "ctx.stroke()\n" +
-                                "ctx.beginPath() \n" +
-                                "writeAngle($A, $B, $C)\n" +
-                                "writeAngle($B, $A, $C)\n" +
-                                "writeAngle($C, $B, $A)\n" +
-                                "ctx.beginPath() \n" +
-                                "let len = Math.sqrt(($A[0] - $B[0])**2 + ($A[1] - $B[1])** 2) \n" +
-                                "ctx.fillText(len.toFixed(2), Math.min($A[0], $B[0]) + Math.abs($A[0] - $B[0]) / 2, Math.min($A[1], $B[1]) + Math.abs($A[1] - $B[1]) / 2) \n" +
-                                "ctx.fillStyle = 'red'\n" +
-                                "ctx.arc($A[0], $A[1], 5, 0, Math.PI * 2) \n" +
-                                "ctx.moveTo($B[0], $B[1]) \n" +
-                                "ctx.arc($B[0], $B[1], 5, 0, Math.PI * 2) \n" +
-                                "ctx.moveTo($C[0], $C[1]) \n" +
-                                "ctx.arc($C[0], $C[1], 5, 0, Math.PI * 2) \n" +
-                                "ctx.fill() \n" +
-                                "ctx.font = '21px Serif'\n" +
-                                "ctx.fillStyle = 'blue'\n" +
-                                "ctx.fillText('A', $A[0] - 15, $A[1]);\n" +
-                                "ctx.fillText('B', $B[0] - 15, $B[1]);\n" +
-                                "ctx.fillText('C', $C[0] - 15, $C[1]);\n" +
-                                "ctx.restore();\n" +
-                                "}\n",
-                            "update": "(canvas, ctx) => {\n" +
                                 "const getLen = (a, b) => {" +
                                 "  return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)\n" +
                                 "}\n" +
@@ -549,9 +502,124 @@ export default [{
                                 "ctx.lineTo($A[0], $A[1]);\n" +
                                 "ctx.stroke()\n" +
                                 "let defColor = $showMore? 'green': 'transparent' \n" +
-                                "$Aangle = writeAngle($A, $B, $C, defColor)\n" +
+                                "$Aangle = writeAngle($A, $B, $C)\n" +
                                 "$Bangle = writeAngle($B, $A, $C)\n" +
-                                "$Cangle = writeAngle($C, $B, $A)\n" +
+                                "$Cangle = writeAngle($C, $B, $A, defColor)\n" +
+                                "$AB = getLen($A, $B)\n" +
+                                "$AC = getLen($A, $C)\n" +
+                                "$BC = getLen($C, $B)\n" +
+                                "writeLen($A, $B)\n" +
+                                "writeLen($A, $C, defColor)\n" +
+                                "writeLen($C, $B, defColor)\n" +
+                                "if ($showMore) writeRound()\n" +
+                                "ctx.beginPath() \n" +
+                                "ctx.fillStyle = 'red'\n" +
+                                "ctx.arc($A[0], $A[1], 5, 0, Math.PI * 4) \n" +
+                                "ctx.moveTo($B[0], $B[1]) \n" +
+                                "ctx.arc($B[0], $B[1], 5, 0, Math.PI * 2) \n" +
+                                "ctx.moveTo($C[0], $C[1]) \n" +
+                                "ctx.arc($C[0], $C[1], 5, 0, Math.PI * 2) \n" +
+                                "ctx.fill() \n" +
+                                "ctx.font = '21px Serif'\n" +
+                                "ctx.fillStyle = 'blue'\n" +
+                                "ctx.fillText('A', $A[0] - 15, $A[1]);\n" +
+                                "ctx.fillText('B', $B[0] - 15, $B[1]);\n" +
+                                "ctx.fillText('C', $C[0] - 15, $C[1]);\n" +
+                                "ctx.restore(); \n}",
+                            "update": "(canvas, ctx) => {\n" +
+                                "const getLen = (a, b) => {" +
+                                "  return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)\n" +
+                                "}\n" +
+                                "const writeLen = (a, b, color='black') => {\n" +
+                                "    let len = getLen(a, b) \n" +
+                                "    ctx.save()\n" +
+                                "    ctx.fillStyle = color;\n" +
+                                "    ctx.fillText(len.toFixed(2), (a[0] + b[0]) / 2, " +
+                                "        (a[1] + b[1]) / 2) \n" +
+                                "    ctx.restore();\n" +
+                                "}\n" +
+                                "const writeAngle = (a, b, c, color='black') => {\n " +
+                                "    ctx.moveTo(a[0], a[1])\n" +
+                                "    let startAngle = Math.acos((b[0] - a[0]) / getLen(b, a));\n" +
+                                "    let finishAngle = Math.acos((c[0] - a[0]) / getLen(c, a));\n" +
+                                "    let rotStart = b[1] - a[1] > 0? 1: -1;\n" +
+                                "    let rotFinish = c[1] - a[1] > 0? 1: -1;\n" +
+                                "    startAngle *= rotStart;\n" +
+                                "    finishAngle *= rotFinish;\n" +
+                                "    ctx.arc(a[0], a[1]," +
+                                "        15, " +
+                                "        Math.min(startAngle, finishAngle)," +
+                                "        Math.max(startAngle, finishAngle)," +
+                                "        Math.max(startAngle, finishAngle) - Math.min(startAngle, finishAngle) > Math.PI" +
+                                "        )\n" +
+                                "    ctx.stroke()\n" +
+                                "    let angle = Math.abs(startAngle - finishAngle)\n" +
+                                "    angle = angle > Math.PI ? " +
+                                "        Math.PI * 2 -angle : angle; \n " +
+                                "    let minAngle = Math.min(startAngle, finishAngle);\n" +
+                                "    minAngle += Math.abs(startAngle - finishAngle) / 2;\n" +
+                                "    let neg = startAngle < 0 && finishAngle > 0? -1.5: 1;\n" +
+                                "    ctx.save()\n" +
+                                "    ctx.fillStyle = color\n" +
+                                "    ctx.fillText((angle / Math.PI * 180).toFixed(2), a[0] + neg * Math.cos(minAngle) * 28, a[1] + neg * Math.sin(minAngle) * 28);\n" +
+                                "    ctx.restore()\n" +
+                                "    return angle;" +
+                                "}\n" +
+                                "const writeRound = () => {\n" +
+                                "    let ab = [$B[0] - $A[0], $B[1] - $A[1]]\n" +
+                                "    let ac = [$A[0] - $C[0], $A[1] - $C[1]]\n" +
+                                "    let abPer = [0, 0]\n" +
+                                "    let acPer = [0, 0]\n" +
+                                "    abPer = [ab[1], -ab[0]]\n" +
+                                "    acPer = [ac[1], -ac[0]]\n" +
+                                "    if (ab[0] === 0 ) {\n" +
+                                "        abPer[0] = 1\n" +
+                                "        abPer[1] = 0\n" +
+                                "    }\n" +
+                                "    if (ac[0] === 0) {\n" +
+                                "        acPer[0] = 1\n" +
+                                "        acPer[1] = 0\n" +
+                                "    }\n" +
+                                "    let cAC = [($A[0] + $C[0]) / 2, ($A[1] + $C[1]) / 2]\n" +
+                                "    let cAB = [($A[0] + $B[0]) / 2, ($A[1] + $B[1]) / 2]\n" +
+                                "    let cAC2 = [cAC[0] + acPer[0], cAC[1] + acPer[1]]\n" +
+                                "    let cAB2 = [cAB[0] + abPer[0], cAB[1] + abPer[1]]\n" +
+
+                                "    let a1 = cAC2[1] - cAC[1]\n" +
+                                "    let b1 = cAC[0] - cAC2[0]\n" +
+                                "    let c1 = - cAC[0] * cAC2[1] + cAC[1] * cAC2[0]\n" +
+
+                                "    let a2 = cAB2[1] - cAB[1]\n" +
+                                "    let b2 = cAB[0] - cAB2[0]\n" +
+                                "    let c2 = - cAB[0] * cAB2[1] + cAB[1] * cAB2[0]\n" +
+
+                                "    let centerX = (b1 * c2 - b2 * c1) / (a1 * b2 - a2 * b1) \n" +
+                                "    let centerY = (a2 * c1 - a1 * c2) / (b2 * a1 - b1 * a2)\n" +
+                                "    let co = [centerX - $A[0], centerY - $A[1]] \n" +
+                                "    writeLen([centerX, centerY], $A, 'green')\n" +
+                                "    ctx.beginPath()\n" +
+                                "    ctx.moveTo(centerX, centerY)\n" +
+                                "    ctx.fillStyle = 'blue'\n" +
+                                "    ctx.font = '20px Serif'\n" +
+                                "    ctx.fillText('O', centerX, centerY)\n" +
+                                "    ctx.arc(centerX, centerY," +
+                                "        getLen($A, [centerX, centerY]), " +
+                                "        Math.acos(co[0] / getLen([centerX, centerY], $A)) - Math.PI, " +
+                                "        Math.acos(co[0] / getLen([centerX, centerY], $A)) + Math.PI," +
+                                "        )\n" +
+                                "    ctx.stroke()\n" +
+                                "}\n" +
+                                "ctx.save();\n" +
+                                "ctx.clearRect(0, 0, canvas.width, canvas.height);ctx.beginPath(); \n" +
+                                "ctx.moveTo($A[0], $A[1]);\n" +
+                                "ctx.lineTo($B[0], $B[1]);\n" +
+                                "ctx.lineTo($C[0], $C[1]);\n" +
+                                "ctx.lineTo($A[0], $A[1]);\n" +
+                                "ctx.stroke()\n" +
+                                "let defColor = $showMore? 'green': 'transparent' \n" +
+                                "$Aangle = writeAngle($A, $B, $C)\n" +
+                                "$Bangle = writeAngle($B, $A, $C)\n" +
+                                "$Cangle = writeAngle($C, $B, $A, defColor)\n" +
                                 "$AB = getLen($A, $B)\n" +
                                 "$AC = getLen($A, $C)\n" +
                                 "$BC = getLen($C, $B)\n" +

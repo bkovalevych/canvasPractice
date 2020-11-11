@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-//import responseTopics from './json_data';
+import { Nav} from "react-bootstrap";
 import styled from 'styled-components';
 import Steps from './steps';
 import {getTopicsLabels} from '../functions/topics'
@@ -33,9 +33,10 @@ export default function () {
             return "waiting";
         }
         return labels.current.map((val, index) =>
-            <Link key={index} onClick={() => {
+            <Nav.Link key={index}
+                  onClick={() => {
                 setSelectedTopic(index)
-            }}>{val.name}</Link>
+            }}>{val.name}</Nav.Link>
         )
     }
     return <Parent>
@@ -47,11 +48,7 @@ export default function () {
 const NormalText = styled.div`
     font-size: 20sp;
 `;
-const Link = styled.div`
-font-size: 20sp;
-cursor: pointer;
-color: blue;
-`
+
 
 const Parent = styled.div`
 display: grid;
