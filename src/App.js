@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import './App.scss';
-import Content from "./template/topics"
+import './app.scss';
+import Topics from "./pages/home"
 import Header from "./pages/header";
 import Footer from "./pages/footer";
 import {Switch, Route} from "react-router-dom";
@@ -16,16 +16,16 @@ import {getUserAction} from "./redux/actions/user";
 function App(props) {
     useEffect(() => { props.getUser() }, [])
     return (
-        <div className="App">
+        <>
             <Header/>
-            <div>
+             <div className="mainContent">
                 <Switch>
                     <Route exact path={routes.ROOT}>
-                        <Content/>
+                        <Topics/>
                     </Route>
                     <RedirectWrapper path={routes.EXERCISE} accessible={props.isLoggedIn}
                                      pathname={routes.SIGN_IN}>
-                        <Content/>
+                        <Topics/>
                     </RedirectWrapper>
                     <RedirectWrapper path={routes.PROFILE} accessible={props.isLoggedIn}
                                      pathname={routes.SIGN_IN}>
@@ -45,9 +45,9 @@ function App(props) {
                         </div>
                     </Route>
                 </Switch>
-            </div>
+                </div>
             <Footer/>
-        </div>
+        </>
     );
 }
 

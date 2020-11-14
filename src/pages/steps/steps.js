@@ -2,11 +2,11 @@ import React, {useEffect, useRef, useState} from "react"
 import {Step, Stepper, StepLabel} from "@material-ui/core"
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import TextCounter from "./textCounter"
-import Renderer from '../utils/renderer'
-import {getTopic} from "../functions/topics"
+import TextCounter from "../../template/textCounter"
+import Renderer from '../../utils/renderer'
+import {getTopic} from "../../functions/topics"
 
-export default function({idTopic, nextTopic}) {
+export const Steps = ({idTopic, nextTopic}) => {
     const [fetch, setFetch] = useState("idle");
     const [stepPosition, setStepPosition] = useState(0)
     const [done, setDone] = useState(false);

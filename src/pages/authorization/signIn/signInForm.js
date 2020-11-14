@@ -2,7 +2,7 @@ import {Button, Form, Nav} from "react-bootstrap";
 import React, {useCallback, useState} from "react";
 import routePaths from "../../../constants/routes";
 import {Link} from "react-router-dom";
-import "../auth.css"
+import "../auth.scss"
 
 export const SignInForm = ({signIn}) => {
 
@@ -24,8 +24,8 @@ export const SignInForm = ({signIn}) => {
 
     return (
         <>
-            <div className="elementOuterContainer">
-                <div className="elementInnerContainer">
+            <div className="authWrapper">
+                <div className="auth">
                     <Nav justify variant="tabs" activeKey={routePaths.SIGN_IN}>
                         <Nav.Item>
                             <Nav.Link eventKey={`${routePaths.SIGN_IN}`} as={Link}

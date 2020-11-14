@@ -1,9 +1,10 @@
 import React from "react";
+import "./style.scss";
 
 export const Footer = () => {
     return (
-        <div className="container-fluid">
-            <footer className="pt-4 my-md-5 pt-md-5 border-top">
+        <div className="footer">
+            <footer className="pt-4 my-md-5 pt-md-5 md-12 xs-2 border-top">
                 <div className="row">
                     <div className="col-12 col-md">
                         <div className="ml-4">
