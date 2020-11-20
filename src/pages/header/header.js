@@ -1,14 +1,13 @@
 import React from "react";
 import {Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import routePaths from "../../constants/routes"
-
+import routePaths from "../../constants/routes";
+import "./style.scss";
 
 export const Header = ({isLoggedIn, email, logout}) => {
 
-
     return (
-        <>
+        <div className="header">
             <Navbar expand="lg" bg="light" variant="light" collapseOnSelect={true}>
                 <Navbar.Brand as={Link} to="/">
                     EGeometry
@@ -32,6 +31,6 @@ export const Header = ({isLoggedIn, email, logout}) => {
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
-        </>
+        </div>
     )
 }

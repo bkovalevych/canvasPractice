@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { Nav} from "react-bootstrap";
 import styled from 'styled-components';
-import Steps from './steps';
-import {getTopicsLabels} from '../functions/topics'
+import Steps from '../steps';
+import {getTopicsLabels} from '../../functions/topics'
 
-export default function () {
+export const Topics = () => {
     const [selectedTopic, setSelectedTopic] = useState(null);
     const [fetch, setFetch] = useState("idle");
     const labels = useRef(null);
