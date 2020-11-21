@@ -3,6 +3,9 @@ const user = {
     email: "",
     isLoggedIn: false,
     isGetUserFetched: false,
+    firstName: "",
+    lastName: "",
+    id: "",
     topics: []
 };
 

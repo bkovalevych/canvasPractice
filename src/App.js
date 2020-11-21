@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import './app.scss';
+import './App.scss';
 import Topics from "./pages/home"
 import Header from "./pages/header";
 import Footer from "./pages/footer";

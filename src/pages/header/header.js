@@ -8,24 +8,23 @@ export const Header = ({isLoggedIn, email, logout}) => {
 
     return (
         <div className="header">
-            <Navbar expand="lg" bg="light" variant="light" collapseOnSelect={true}>
+            <Navbar expand="lg" bg="light" variant="light" collapseOnSelect={true} >
                 <Navbar.Brand as={Link} to="/">
                     EGeometry
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbar-nav"/>
                 <Navbar.Collapse id="navbar-nav">
-
                     <Nav className="mr-auto">
-                        <Nav.Link as={Link} to={routePaths.EXERCISE}>Exercise</Nav.Link>
+                        <Nav.Link as={Link} to={routePaths.EXERCISE}>Ресурси</Nav.Link>
                         {isLoggedIn ?
-                                <NavDropdown title="Account" id="account-tabs">
+                                <NavDropdown title="Акаунт" id="account-tabs">
                                     <NavDropdown.Item  as={Link} to={routePaths.PROFILE}>{email}</NavDropdown.Item>
-                                    <NavDropdown.Item onClick={() => logout()}>Logout</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() => logout()}>Вийти</NavDropdown.Item>
                                 </NavDropdown>
                             :
-                                <NavDropdown title="Account" id="account-tabs">
-                                    <NavDropdown.Item as={Link} to={routePaths.SIGN_IN}>Sign in</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to={routePaths.SIGN_UP}>Sign up</NavDropdown.Item>
+                                <NavDropdown title="Акаунт" id="account-tabs">
+                                    <NavDropdown.Item as={Link} to={routePaths.SIGN_IN}>Вхід</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to={routePaths.SIGN_UP}>Реєстрація</NavDropdown.Item>
                                 </NavDropdown>
                         }
                     </Nav>

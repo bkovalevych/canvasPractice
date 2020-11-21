@@ -12,14 +12,14 @@ export default ({text, update}) => {
         }
     }, [text])
     return <NormalText>
-        <div><Read>{text.substr(0, pos)}</Read>{text.substr(pos)}</div>
+        <div style={{overflowWrap: "break-word"}}><Read>{text.substr(0, pos)}</Read>{text.substr(pos)}</div>
         <input type="range"
                value={pos}
                onChange={e => {
                    update(parseInt(e.target.value) - pos)
                    setPos(parseInt(e.target.value))
                }} max={size} step={1}
-               style={{width: size * 8.5}}
+               style={{width: "90%"}}
         /><br/>
         {size === pos? <FontAwesomeIcon icon={faCheckCircle} color="#a1c98c" />  : ""}
     </NormalText>
@@ -36,5 +36,7 @@ font-size: 20px;
 padding: 20px;
 textAlign: center;
 margin: 20px;
-background: rgb(204,203,229)
+background: rgb(204,203,229);
+overflow-wrap: break-word;
+width: 90%;
 `;

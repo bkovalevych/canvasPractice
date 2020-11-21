@@ -89,7 +89,7 @@ export const Steps = ({idTopic, nextTopic}) => {
                             return;
                         }
                         setStepPosition(val => val + 1)}}
-                    >Дальше</Button>
+                    >Далі</Button>
                 </div>
                 <Typography>{getContent(stepPosition)}</Typography>
                 <div style={{
@@ -100,7 +100,7 @@ export const Steps = ({idTopic, nextTopic}) => {
                             nextTopic();
                             return;
                         }
-                        setStepPosition(val => val + 1)}}>Дальше</Button>
+                        setStepPosition(val => val + 1)}}>Далі</Button>
                 </div>
             </div>
 

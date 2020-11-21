@@ -1,13 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Nav} from "react-bootstrap";
-import styled from 'styled-components';
 import Steps from '../steps';
 import {getTopicsLabels} from '../../functions/topics'
+
 
 export const Topics = () => {
     const [selectedTopic, setSelectedTopic] = useState(null);
     const [fetch, setFetch] = useState("idle");
     const labels = useRef(null);
+    const sidePanel = useRef();
+    const content = useRef();
     const nextTopic = () => {
         if (labels && selectedTopic < labels.current.length) {
             setSelectedTopic(val => val + 1);
@@ -24,7 +25,7 @@ export const Topics = () => {
     },[fetch])
     const showTopicContent = () => {
         if (selectedTopic === null) {
-            return <NormalText>Выберите тему</NormalText>;
+            return <div className="normalText">Тема не обрана</div>;
         }
         return <Steps idTopic={selectedTopic} nextTopic={nextTopic}/>;
     }
@@ -33,30 +34,33 @@ export const Topics = () => {
             return "waiting";
         }
         return labels.current.map((val, index) =>
-            <Nav.Link key={index}
+            <div key={index}
+               className={index === selectedTopic? "selectedTopic": "normalTopic"}
                   onClick={() => {
                 setSelectedTopic(index)
-            }}>{val.name}</Nav.Link>
+            }}>{val.name}</div>
         )
     }
-    return <Parent>
-        <Links>{showTopicLabel()}</Links>
-        <div>{showTopicContent()}</div>
-    </Parent>
+    return <div className="parent">
+        <div className="sidepanelParent">
+            <button className="openbtn" onClick={() => {
+                sidePanel.current.style.width= "22%";
+                sidePanel.current.parentNode.style.width = "22%";
+                content.current.style.width = "70%";
+            }}>&#9776; Теми</button>
+            <div ref={sidePanel} className="sidepanel">
+                <div
+                   className="closebtn"
+                   onClick={() => {
+                       sidePanel.current.style.width = 0;
+                       sidePanel.current.parentNode.style.width = "8%";
+                       content.current.style.width = "90%";
+                   }}>
+                    &#9776; Теми
+                </div>
+                {showTopicLabel()}
+            </div>
+        </div>
+        <div className="content" ref={content}>{showTopicContent()}</div>
+    </div>
 }
-
-const NormalText = styled.div`
-    font-size: 20sp;
-`;
-
-
-const Parent = styled.div`
-display: grid;
-min-height: 100vh;
-grid-template-columns: 1fr 3fr;
-`
-
-const Links = styled.div`
-background: #a1c98c;
-padding: 20px;
-`

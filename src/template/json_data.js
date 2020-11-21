@@ -1,24 +1,18 @@
 export default [{
-    "name": "Тригонометрия начало",
+    "name": "Тригонометрія. Початок",
     "steps": [
         {
-            "type": "text",
-            "text": "Начнем наш новый раздел геометрии"
-        },
-        {
           "type": "text",
-          "text": "Тригонометрия - это учения о соотношении углов и сторон треугольника"
+          "text": ["Почнімо наш новий розділ геометрії. Тригонометрія - це вчення про співвідношення кутів та сторін трикутника"]
         },
         {
             "type": "text",
-            "text": ["Начнем с синуса и косинуса", "Введем некоторые обозначения для большей ясности", "Для начала представим точку A(1, 0) на координатной плоскости"]
+            "text": ["Дізнаємось про синус та косинус. Введемо деякі позначення для більшої ясності. Для початку дано точку A(1, 0) на координатній площині."]
         },
         {
             "type": "custom",
             "text": [
-                "Точка A будет вращаться относительно O",
-                "Синусом для угла вращения будет ордината (y значение) точки А",
-                "Косинусом для угла вращения будет абсциса (х значение) точки А",
+                "Точка A буде обертатись відносно O. Синусом для кута обертання буде ордината (y значення) точки А. Косинусом для кута обертання буде абсциса (х значення) точки А",
             ],
             "view": {
                 "layers_width": 400,
@@ -92,7 +86,7 @@ export default [{
                 "layers_width": 400,
                 "task_triggers": [
                     {
-                        "describe": "Найдите все значения угла при которых синус равен 0 в в диапазоне -720 - 720 градусов",
+                        "describe": "Знайдіть значення кутів при яких синус дорівнює нулю в діапазоні -720 - 720 градусів",
                         "test": {"$angle": "(v) => {\n " +
                                 "let val = Math.floor(v / Math.PI * 180);\n" +
                                 "if (val <= 720 && 700 <= val) {\n" +
@@ -238,15 +232,17 @@ export default [{
     ]
 },
     {
-        "name": "Теорема синусов",
+        "name": "Теорема синусів",
         "steps": [
             {
                 "type": "text",
-                "text": "Посмотрим, как можно использовать синусы"
+                "text": "Розглянемо приклад використання синусів"
             },
             {
                 "type": "custom",
-                "text": ["Попробуем решить задачу.", "Дан треугольник ABC", "Нам известны 2 угла и одна сторона AB", "Нужно найти остальные стороны"],
+                "text": [
+                    "Задача. Дано трикутник ABC",
+                    "Відомі 2 кути та одна сторона AB. Знайти всі інші сторони та радіус  кола описаного трикутника"],
                 "view": {
                     "layers_width": 400,
                     "layers_height": 400,
@@ -320,7 +316,7 @@ export default [{
                         {
                             "place": "place_control",
                             "type": "checkbox",
-                            "label": "Показать решение",
+                            "label": "Показати рішення",
                             "checked": false,
                             "onUpdate": "() => {if ($showMore == 0) {$showMore = 1; return true} else {$showMore = 0; return false}}"
                         },
@@ -341,19 +337,19 @@ export default [{
                               " ctx.fillStyle = 'black';\n" +
                               " ctx.font = '18px Serif';\n" +
                               " let r2 = $AB / Math.sin($Cangle)\n" +
-                              " let blocks = ['Найдем 3 угол', " +
+                              " let blocks = ['Знайдемо 3 кут', " +
                               "   '1) C = 180 - B - A = 180 - ' + " +
                               "       getAngle($Bangle) + ' - ' + " +
                               "       getAngle($Aangle) + ' = ' + getAngle($Cangle)," +
-                              "   'Отношение стороны к синусу противоположного'," +
-                              "   ' угла одинаково для всех сторон и равно 2R'," +
-                              "   '(теорема синусов)', " +
+                              "   'Відношення сторони до синусу протилежного'," +
+                              "   ' кута однаково для всіх сторін і дорівнює 2R'," +
+                              "   '(теорема синусів)', " +
                               "   '2) 2R = AB / sin(C) = ' + $AB.toFixed(2) + ' / ' +" +
                               "       Math.sin($Cangle).toFixed(2) + ' = ' + (r2).toFixed(2)," +
-                              "   '3) BC = 2R * sin(A) = ' + r2.toFixed() + ' * ' + Math.sin($A).toFixed() +" +
-                              "       ' = ' +  $BC.toFixed()," +
-                              "   '4) AC = 2R * sin(B) = ' + r2.toFixed() + ' * ' + Math.sin($B).toFixed() +" +
-                              "       ' = ' +  $AC.toFixed()" +
+                              "   '3) BC = 2R * sin(A) = ' + r2.toFixed(2) + ' * ' + Math.sin($Aangle).toFixed(2) +" +
+                              "       ' = ' +  $BC.toFixed(2)," +
+                              "   '4) AC = 2R * sin(B) = ' + r2.toFixed() + ' * ' + Math.sin($Bangle).toFixed(2) +" +
+                              "       ' = ' +  $AC.toFixed(2)" +
                               " ];\n" +
                               " blocks.forEach((a, index) => ctx.fillText(a, 10, (index + 1) * 30))\n" +
                               " ctx.restore()\n" +
@@ -368,7 +364,7 @@ export default [{
                             "ystep": 1,
                             "ymin": 0,
                             "ymax": 10,
-                            "visualNumbers": false,
+                            "visualNumbers": true,
                             "labelsX": null,
                             "labelsY": null
                         },
@@ -534,6 +530,7 @@ export default [{
                                 "    let len = getLen(a, b) \n" +
                                 "    ctx.save()\n" +
                                 "    ctx.fillStyle = color;\n" +
+                                "    ctx.font = '15px Serif'\n" +
                                 "    ctx.fillText(len.toFixed(2), (a[0] + b[0]) / 2, " +
                                 "        (a[1] + b[1]) / 2) \n" +
                                 "    ctx.restore();\n" +
@@ -560,6 +557,7 @@ export default [{
                                 "    minAngle += Math.abs(startAngle - finishAngle) / 2;\n" +
                                 "    let neg = startAngle < 0 && finishAngle > 0? -1.5: 1;\n" +
                                 "    ctx.save()\n" +
+                                "    ctx.font = '15px Serif'\n" +
                                 "    ctx.fillStyle = color\n" +
                                 "    ctx.fillText((angle / Math.PI * 180).toFixed(2), a[0] + neg * Math.cos(minAngle) * 28, a[1] + neg * Math.sin(minAngle) * 28);\n" +
                                 "    ctx.restore()\n" +
