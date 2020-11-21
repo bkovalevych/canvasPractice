@@ -3,7 +3,12 @@ import json_data from "../template/json_data";
 export const getTopicsLabels = () => {
     // TODO get request for labels
     return new Promise( resolve => {
-        resolve([{_id: 0, name: "Тригонометрія. Початок"}, {_id: 1, name: "Теорема синусів"}])
+        resolve([
+            {_id: 0, name: "Прикладна задача"},
+            {_id: 1, name: "Тригонометрія. Початок"},
+            {_id: 2, name: "Теорема синусів"}
+            ]
+        )
     })
 }
 

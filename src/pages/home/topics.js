@@ -5,7 +5,7 @@ import {getTopicsLabels} from '../../functions/topics'
 import style from "./topics.scss"
 
 export const Topics = () => {
-    const [selectedTopic, setSelectedTopic] = useState(null);
+    const [selectedTopic, setSelectedTopic] = useState(0);
     const [fetch, setFetch] = useState("idle");
     const labels = useRef(null);
     const sidePanel = useRef();

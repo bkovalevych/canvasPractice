@@ -1,11 +1,11 @@
 import {Button, Form, Nav} from "react-bootstrap";
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import routePaths from "../../../constants/routes";
 import {Link} from "react-router-dom";
 import "../auth.scss"
 
-export const SignUpForm = ({signUp}) => {
-
+export const SignUpForm = ({signUp, signIn, isSignedUp}) => {
+    const refForm = useRef();
     const submit = useCallback(event => {
         setValidated(true);
         event.preventDefault();
@@ -21,6 +21,18 @@ export const SignUpForm = ({signUp}) => {
         }
 
     }, [signUp]);
+
+    useEffect(() => {
+        if (isSignedUp === true) {
+            debugger;
+            let form = refForm.current;
+            let args = {
+                email: form.elements.email.value.trim(),
+                password: form.elements.password.value
+            }
+            signIn(args);
+        }
+    }, [isSignedUp])
 
     const [validated, setValidated] = useState(false)
 
@@ -40,7 +52,7 @@ export const SignUpForm = ({signUp}) => {
                     </Nav>
 
                     <div className="pt-4 pb-4">
-                        <Form noValidate validated={validated} onSubmit={submit}>
+                        <Form ref={refForm} noValidate validated={validated} onSubmit={submit}>
                             <Form.Group controlId="singUpForm">
                                 <Form.Label>Email адреса</Form.Label>
                                 <Form.Control

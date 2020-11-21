@@ -66,16 +66,19 @@ export default function({layers_width, layers_height, variables, places, layers,
                     defaultChecked={control.checked}
                 />{control.label}</label>
         }
-        return <input
-            key={index}
-            onChange={_update}
-            type={control.type}
-            min={control.min}
-            step={control.step}
-            max={control.max}
-            defaultValue={val}
-            style={place}
-        />
+        return <label style={{position: "absolute", ...place}}>
+            {control.label}
+            <input
+                key={index}
+                onChange={_update}
+                type={control.type}
+                min={control.min}
+                step={control.step}
+                max={control.max}
+                defaultValue={val}
+            />
+        </label>
+
     }
     const placeLayer = (layer, places, index) => {
         const place = places[layer.place];

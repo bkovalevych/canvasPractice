@@ -6,6 +6,7 @@ export default function (state = user, action) {
     case CNST.USER.SIGN_UP.SUCCESS:
       return {
         ...state,
+        isSignedUp: true,
         fetching: false,
       };
     case CNST.USER.SIGN_UP.ERROR:
