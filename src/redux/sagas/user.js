@@ -2,11 +2,14 @@ import {call, put} from "redux-saga/effects";
 import CNST from "../../constants";
 import axios from "axios";
 
-export const signUpRequest = ({email, password}) => {
+export const signUpRequest = ({email, password, firstName, lastName}) => {
     return axios
         .post(`/signUp`, {
             email: email,
             password: password,
+            firstName: firstName,
+            lastName: lastName,
+            username: email
         })
         .catch(function (error) {
             throw error.response.data;
@@ -44,6 +47,8 @@ export function* signIn(props) {
     try {
         const response = yield call(signInRequest, props.payload);
         if (response.status === 200) {
+            debugger;
+            localStorage.setItem("token", response.headers.authorization);
             yield put({type: CNST.USER.SIGN_IN.SUCCESS, payload: response});
         }
     } catch (error) {
@@ -57,7 +62,8 @@ export function* signIn(props) {
 }
 
 export const getUserRequest = () => {
-    return axios.get(`/profile`).catch(function (error) {
+    let id = 'c4998a30-a40a-4c3a-af37-839900261b26'
+    return axios.get(`/user/get/profile/${id}`).catch(function (error) {
         throw error.response.data;
     });
 };

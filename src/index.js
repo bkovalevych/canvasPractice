@@ -9,6 +9,16 @@ import "./axios.config";
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.scss';
+import axios from 'axios'
+
+
+axios.interceptors.request.use(function (config) {
+    debugger;
+    config.headers.authorization = localStorage.getItem("token");
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
 
 ReactDOM.render(
     <Provider store={store}>

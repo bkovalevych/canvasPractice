@@ -13,7 +13,7 @@ export const Steps = ({idTopic, nextTopic}) => {
     const refCount = useRef(0);
     const content = useRef(null)
     useEffect(() => {
-        setStepPosition(0);
+        setStepPosition(1);
         setFetch("idle")
     }, [idTopic])
     useEffect(() => {

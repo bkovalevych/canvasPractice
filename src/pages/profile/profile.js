@@ -1,10 +1,10 @@
 import React from "react";
 
-export const Profile = ({email}) => {
+export const Profile = (props) => {
     return (<>
         <div>
             <p>
-                {email}
+                {JSON.stringify(props)}
             </p>
         </div>
     </>)
