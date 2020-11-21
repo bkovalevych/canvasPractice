@@ -8,7 +8,7 @@ import {Provider} from "react-redux";
 import "./axios.config";
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import './app.scss';
+import './App.scss';
 
 ReactDOM.render(
     <Provider store={store}>
