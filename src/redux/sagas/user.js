@@ -47,7 +47,6 @@ export function* signIn(props) {
     try {
         const response = yield call(signInRequest, props.payload);
         if (response.status === 200) {
-            debugger;
             localStorage.setItem("token", response.headers.authorization);
             yield put({type: CNST.USER.SIGN_IN.SUCCESS, payload: response});
         }

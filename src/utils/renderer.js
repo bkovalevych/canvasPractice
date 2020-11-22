@@ -44,7 +44,8 @@ export default function({layers_width, layers_height, variables, places, layers,
         const updateFunction = eval(updateFunctionString);
         const _update = (e) => {
             const val = e.target.value;
-            updateTrigger()
+            updateTrigger();
+
             switch (control.type) {
                 case "range":
                     updateFunction(val);
@@ -52,6 +53,9 @@ export default function({layers_width, layers_height, variables, places, layers,
                 case "checkbox":
                     let checked = updateFunction(val)
                     e.target.checked = checked
+                    break;
+                case "number":
+                    updateFunction(val);
                     break;
             }
             updateLayers()
@@ -70,6 +74,7 @@ export default function({layers_width, layers_height, variables, places, layers,
             {control.label}
             <input
                 key={index}
+
                 onChange={_update}
                 type={control.type}
                 min={control.min}
