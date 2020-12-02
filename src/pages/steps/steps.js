@@ -5,13 +5,18 @@ import Button from "@material-ui/core/Button";
 import TextCounter from "../../template/textCounter"
 import Renderer from '../../utils/renderer'
 import {getTopic} from "../../functions/topics"
-
+import Formula from '../../utils/formulaViewer'
+import styles from './steps.module.scss'
+import {faClipboardList} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 export const Steps = ({idTopic, nextTopic}) => {
     const [fetch, setFetch] = useState("idle");
     const [stepPosition, setStepPosition] = useState(0)
     const [done, setDone] = useState(false);
     const refCount = useRef(0);
+    const formulasDiv = useRef();
     const content = useRef(null)
+    const [formulaOpened, setFormulaOpened] = useState(false);
     useEffect(() => {
         setStepPosition(1);
         setFetch("idle")
@@ -64,7 +69,30 @@ export const Steps = ({idTopic, nextTopic}) => {
 
             customBlock = <Renderer key={1} update={update}{...step.view}/>
         }
-        return [textBlock, customBlock]
+        return <div style={{height: step.view? step.view.layers_height: ""}}>
+            {step.formulas?
+                <><div className={styles.list_formulas} ref={formulasDiv}
+                     style={{width: formulaOpened? '30%': '0px'}}>
+                    Формули
+                    <ol>
+                        {step.formulas.map((val, index) => <li key={index}><Formula>{val}</Formula></li>)}
+                    </ol>
+                </div>
+                <FontAwesomeIcon className={styles.formula_expander} icon={faClipboardList} size="4x"
+                                 onClick={() => {
+                                     setFormulaOpened((val) => !val);
+                                 }}
+                />
+                </>
+                :
+                ""
+            }
+
+            {textBlock}
+            {customBlock}
+        </div>
+
+
     }
     if (fetch === 'waiting' || fetch === 'idle') {
         return "waiting";
@@ -92,16 +120,6 @@ export const Steps = ({idTopic, nextTopic}) => {
                     >Далі</Button>
                 </div>
                 <Typography>{getContent(stepPosition)}</Typography>
-                <div style={{
-                    textAlign: 'center'
-                }}>
-                    <Button disabled={stepPosition > content.current.steps.length || !done} onClick={() => {
-                        if (stepPosition + 1 >= content.current.steps.length) {
-                            nextTopic();
-                            return;
-                        }
-                        setStepPosition(val => val + 1)}}>Далі</Button>
-                </div>
             </div>
 
         </div>

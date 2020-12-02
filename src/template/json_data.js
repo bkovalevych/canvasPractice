@@ -8,6 +8,7 @@ export default [
                     "Наприклад, вам потрібно дізнатись висоту стовпа. У вашому розпорядженні є мірна стрічка, дзеркало"
             },
             {
+                "formulas": ["DE/EA = BC / AC"],
                 "text": "Позначимо стовп BC, DE - це ваш зріст",
                 "type": "custom",
                 "view": {
@@ -115,20 +116,20 @@ export default [
                             "marginTop": 95
                         },
                         "place_height": {
-                            "width": 150,
+                            "width": 100,
                             "height": 30,
                             "marginLeft": 0,
-                            "marginTop": 330
+                            "marginTop": 350
                         },
                         "place_visible": {
                             "width": 150,
                             "height": 30,
-                            "marginLeft": 180,
-                            "marginTop": 330
+                            "marginLeft": 240,
+                            "marginTop": 350
                         },
                         "place_width": {
                             "width": 400,
-                            "height": 30,
+                            "height": 20,
                             "marginLeft": 0,
                             "marginTop": 290
                         }
@@ -483,7 +484,7 @@ export default [
             ],
             "view": {
                 "layers_width": 400,
-                "layers_height": 400,
+
                 "variables": [
                     {
                         "name": "$angle",
@@ -512,11 +513,12 @@ export default [
                         "marginTop": 500
                     },
                     "place_control": {
-                        "width": 400,
+                        "width": 200,
                         "height": 30,
                         "marginLeft": 0,
-                        "marginTop": 425
+                        "marginTop": 405
                     }
+
                 },
                 "controls": [],
                 "layers": [
@@ -553,6 +555,7 @@ export default [
                 "layers_width": 400,
                 "task_triggers": [
                     {
+                        "place": "place_trigger",
                         "describe": "Знайдіть значення кутів при яких синус дорівнює нулю в діапазоні -720 - 720 градусів",
                         "test": {"$angle": "(v) => {\n " +
                                 "let val = Math.floor(v / Math.PI * 180);\n" +
@@ -606,14 +609,21 @@ export default [
                         "width": 200,
                         "height": 50,
                         "marginLeft": 420,
-                        "marginTop": -550
+                        "marginTop": 10
                     },
                     "place_control": {
-                        "width": "200%",
+                        "width": 800,
                         "height": 30,
                         "marginLeft": 0,
-                        "marginTop": 475
+                        "marginTop": 455
+                    },
+                    "place_trigger": {
+                        "width": 400,
+                        "height": 150,
+                        "marginLeft": 0,
+                        "marginTop": 510
                     }
+
                 },
                 "controls": [
                     {
@@ -713,7 +723,7 @@ export default [
                     "Відомі 2 кути та одна сторона AB. Знайти всі інші сторони та радіус  кола описаного трикутника"],
                 "view": {
                     "layers_width": 400,
-                    "layers_height": 400,
+
                     "variables": [
                         {
                             "name": "$AB",

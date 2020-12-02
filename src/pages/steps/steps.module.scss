@@ -1,0 +1,44 @@
+.formula_expander {
+  z-index: 11;
+  position: absolute;
+  right: 20px;
+  padding: 10px;
+  width: 15px;
+  background: #e2e1e1;
+  transition: .2s;
+  cursor: pointer;
+  border-bottom: #090909 solid 3px;
+}
+
+.formula_expander:hover {
+  color: white;
+  background: #323232;
+}
+
+.formula_expander_active {
+  background: forestgreen;
+}
+
+.list_formulas {
+  text-align: center;
+  background: #e2e1e1;
+  right: 20px;
+  overflow: hidden;
+  padding: 37px 0 5px 0;
+  position: absolute;
+  transition: 0.2s;
+  z-index: 10;
+}
+
+.list_formulas > ol {
+  text-align: left;
+  border-top: #090909 solid 3px;
+
+}
+
+.list_formulas > ol > li {
+  background: rgba(124, 198, 208, 0.45);
+  margin: 10px auto;
+  padding: 5px;
+  width: 80%;
+}
