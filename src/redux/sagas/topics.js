@@ -3,8 +3,8 @@ import CNST from "../../constants";
 import axios from "axios"
 
 export const getTopicsRequest = ({email}) => {
-    axios.get(`/topics/get/?email=${email}`).catch((err) => {
-        throw err.response.data;
+     axios.get(`/topics/get/?email=${email}`).catch((err) => {
+         throw err.response.data;
     })
 }
 

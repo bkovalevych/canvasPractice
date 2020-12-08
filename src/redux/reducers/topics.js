@@ -38,6 +38,7 @@ export default function (state = topics, action) {
                 ...state,
                 ...action.payload
             };
-
+        default:
+            return state;
     }
 }

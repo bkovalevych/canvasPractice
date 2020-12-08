@@ -38,6 +38,7 @@ export default function (state = steps, action) {
                 error: null,
                 isFetched: false,
             };
-
+        default:
+            return state;
     }
 }
