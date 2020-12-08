@@ -1,6 +1,13 @@
 export default [
     {
         "name": "Прикладна задача",
+        "isPreview": "false",
+        "points": 10,
+        "gainedPoints": 0,
+        "stepsCount": 2,
+        "currentStep": 0,
+        "isDone": "false",
+        "attempts": 0,
         "steps": [
             {
                 "type": "text",
@@ -8,7 +15,15 @@ export default [
                     "Наприклад, вам потрібно дізнатись висоту стовпа. У вашому розпорядженні є мірна стрічка, дзеркало"
             },
             {
-                "formulas": ["DE/EA = BC / AC"],
+                "decisions": [
+                    {
+                        "label": "Виразіть висоту дерева через формулу",
+                        "type": "formula",
+                        "answer": "^((ac|ca)\\*(de|ed))|((de|ed)\\*(ac|ca))\\/(ea|ae)$"
+                    }
+                ],
+                "formulas": [
+                    {"formula": "DE/EA = BC / AC", "tooltip": "Відношення сторін в трикутниках"}],
                 "text": "Позначимо стовп BC, DE - це ваш зріст",
                 "type": "custom",
                 "view": {
@@ -465,10 +480,17 @@ export default [
                 }
             }
         ]
-    }
-    ,{
-    "name": "Тригонометрія. Початок",
-    "steps": [
+    },
+    {
+        "gainedPoints": 0,
+        "isPreview": "true",
+        "points": 0,
+        "stepsCount": 4,
+        "currentStep": 1,
+        "isDone": "false",
+        "attempts": 0,
+        "name": "Тригонометрія. Початок",
+        "steps": [
         {
           "type": "text",
           "text": ["Почнімо наш новий розділ геометрії. Тригонометрія - це вчення про співвідношення кутів та сторін трикутника"]
@@ -549,6 +571,22 @@ export default [
             }
         },
         {
+            "decisions": [
+                {
+                    "label": "Синус від 0 градусів",
+                    "type": "value",
+                    "answer": "0"
+                },
+                {
+                    "label": "Косинус від 0 градусів",
+                    "type": "value",
+                    "answer": "1"
+                }
+            ],
+            "formulas": [
+                {"formula": "sinA = {\"color\": \"red\", \"text\": \"y\"}", "tooltip": "Синус"},
+                {"formula": "cosA = {\"color\": \"green\", \"text\": \"x\"}", "tooltip": "Косинус"}
+                ],
             "type": "custom",
             "view": {
 
@@ -706,11 +744,18 @@ export default [
                 ]
             }
         }
-
     ]
-},
+    },
+
     {
+        "gainedPoints": 0,
+        "points": 20,
+        "isPreview": "false",
         "name": "Теорема синусів",
+        "attempts": 1,
+        "isDone": "true",
+        "stepsCount": 2,
+        "currentStep": 0,
         "steps": [
             {
                 "type": "text",
@@ -1126,7 +1171,6 @@ export default [
                     ]
                 }
             }
-
         ]
     }
 ];

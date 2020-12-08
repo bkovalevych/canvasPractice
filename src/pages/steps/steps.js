@@ -6,6 +6,7 @@ import TextCounter from "../../template/textCounter"
 import Renderer from '../../utils/renderer'
 import {getTopic} from "../../functions/topics"
 import Formula from '../../utils/formulaViewer'
+import DecisionField from '../../utils/decisionField'
 import styles from './steps.module.scss'
 import {faClipboardList} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
@@ -17,6 +18,7 @@ export const Steps = ({idTopic, nextTopic}) => {
     const formulasDiv = useRef();
     const content = useRef(null)
     const [formulaOpened, setFormulaOpened] = useState(false);
+    const decisionRef = useRef([]);
     useEffect(() => {
         setStepPosition(1);
         setFetch("idle")
@@ -45,8 +47,10 @@ export const Steps = ({idTopic, nextTopic}) => {
 
     const parseContent = (step) => {
         if (!step) return;
-        let textBlock = ""
-        let customBlock = ""
+        let textBlock = "";
+        let customBlock = "";
+        let formulas = "";
+        let decisions = "";
         if (step.text) {
             refCount.current = typeof(step.text) === typeof ""?
                 step.text.length
@@ -69,27 +73,46 @@ export const Steps = ({idTopic, nextTopic}) => {
 
             customBlock = <Renderer key={1} update={update}{...step.view}/>
         }
-        return <div style={{height: step.view? step.view.layers_height: ""}}>
-            {step.formulas?
-                <><div className={styles.list_formulas} ref={formulasDiv}
-                     style={{width: formulaOpened? '30%': '0px'}}>
-                    Формули
-                    <ol>
-                        {step.formulas.map((val, index) => <li key={index}><Formula>{val}</Formula></li>)}
-                    </ol>
-                </div>
+        if (step.decisions) {
+            decisionRef.current = [];
+            let elements = step.decisions.map((decision, index) => {
+                decisionRef.current.push({answer: decision.answer, value: ""});
+                return <DecisionField key={index} value={decision.value} type={decision.type} answer={decision.answer} label={decision.label}/>
+            })
+            decisions = <div>{elements}</div>
+        }
+        if (step.formulas) {
+            formulas = <>
+                <div className={styles.list_formulas} ref={formulasDiv}
+                              style={{opacity: formulaOpened? '1': '0'}}>
+                Формули
+                <ol>
+                    {step.formulas.map(({formula, tooltip}, index) =>
+                        <li key={index}>
+                            {tooltip?
+                                <span className={styles.tooltip_text}>
+                                    {tooltip}
+                                </span>:
+                                ""
+                            }
+                            <Formula>{formula}</Formula>
+                        </li>
+                    )}
+                </ol>
+            </div>
                 <FontAwesomeIcon className={styles.formula_expander} icon={faClipboardList} size="4x"
                                  onClick={() => {
                                      setFormulaOpened((val) => !val);
                                  }}
                 />
-                </>
-                :
-                ""
-            }
-
+            </>
+        }
+        return <div>
+            {formulas}
             {textBlock}
+            {decisions}
             {customBlock}
+
         </div>
 
 
@@ -121,7 +144,6 @@ export const Steps = ({idTopic, nextTopic}) => {
                 </div>
                 <Typography>{getContent(stepPosition)}</Typography>
             </div>
-
         </div>
     )
 }

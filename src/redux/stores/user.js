@@ -6,8 +6,7 @@ const user = {
     isGetUserFetched: false,
     firstName: "",
     lastName: "",
-    id: "",
-    topics: []
+    id: ""
 };
 
 export default user;

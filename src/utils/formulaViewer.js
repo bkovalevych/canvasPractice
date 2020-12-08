@@ -3,7 +3,7 @@ import styles from './formulaViewer.module.scss'
 import styled from 'styled-components'
 
 export default ({children}) => {
-    let matches = children.matchAll(/\w+|\)|\(|\+|-|\/|\*|=/g);
+    let matches = children.matchAll(/\{.+\}|\w+|\)|\(|\+|-|\/|\*|=/g);
     let tokens = [];
     let stack = [];
     let height_stack = [];
@@ -63,8 +63,8 @@ export default ({children}) => {
                 stack.push(
                     <div className={styles.vertical}>
                         <div>{prev}</div>
-                        <span style={{width: 0, height: 0, fontSize: 0, position: 'absolute'}}>/</span>
-                        <div>{last}</div>
+                        <div><span style={{width: 0, height: 0, fontSize: 0, position: 'absolute'}}>/</span>
+                            {last}</div>
                     </div>)
                 height_stack.push(last_height + prev_height + 1)
             } else {
@@ -102,14 +102,25 @@ export default ({children}) => {
             </div>);
             height_stack.push(last_height)
             ++index;
+        }  else if (/\{.+\}/.test(value())) {
+
+            let valJSON = passValue()
+            try {
+                let t = JSON.parse(valJSON);
+                stack.push(<span style={{color: t.color}}>{t.text}</span>)
+            } catch (e) {
+
+            }
+
         } else if (/\w+/.test(value())) {
-            stack.push(<div>{val + passValue()}</div>)
+            stack.push(<div>{passValue()}</div>)
             height_stack.push(0)
         }
     }
 
     equation();
-    return stack;
+
+    return <div className={styles.horizontal}>{stack}</div>;
 }
 
 
