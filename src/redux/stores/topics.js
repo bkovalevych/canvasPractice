@@ -3,4 +3,5 @@ const topics = {
     error: null,
     topics:[]
 }
+
 export default topics;

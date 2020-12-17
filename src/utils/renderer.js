@@ -134,8 +134,14 @@ export default function({layers_width, layers_height, variables, places, layers,
             if (!layer.initDraw || layer.initDraw === "") return;
 
             const prepare = prepareRegex(layer.initDraw)
-            const f = eval(prepare);
-            f(canvas, ctx)
+            try {
+                const f = eval(prepare);
+                f(canvas, ctx)
+            } catch (e) {
+                console.log(e);
+            }
+
+
         })
         refUpdates.current = layers.map(layer => {
             if (!layer.update) {
