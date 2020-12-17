@@ -1,6 +1,13 @@
 export default [
     {
         "name": "Прикладна задача",
+        "isPreview": "false",
+        "points": 10,
+        "gainedPoints": 0,
+        "stepsCount": 2,
+        "currentStep": 0,
+        "isDone": "false",
+        "attempts": 0,
         "steps": [
             {
                 "type": "text",
@@ -8,6 +15,15 @@ export default [
                     "Наприклад, вам потрібно дізнатись висоту стовпа. У вашому розпорядженні є мірна стрічка, дзеркало"
             },
             {
+                "decisions": [
+                    {
+                        "label": "Виразіть висоту дерева через формулу",
+                        "type": "formula",
+                        "answer": "^((ac|ca)\\*(de|ed))|((de|ed)\\*(ac|ca))\\/(ea|ae)$"
+                    }
+                ],
+                "formulas": [
+                    {"formula": "DE/EA = BC / AC", "tooltip": "Відношення сторін в трикутниках"}],
                 "text": "Позначимо стовп BC, DE - це ваш зріст",
                 "type": "custom",
                 "view": {
@@ -51,12 +67,32 @@ export default [
                             "value": [50, 250]
                         },
                         {
-                            "name": "$D",
-                            "value": [67, 250]
+                            "name": "$human",
+                            "value": new Image(200, 50)
                         },
                         {
-                            "name": "$showMore",
+                            "name": "$tree",
+                            "value": new Image(200, 50)
+                        },
+                        {
+                            "name": "$D",
+                            "value": [50, 199]
+                        },
+                        {
+                            "name": "$showFirst",
                             "value": 0
+                        },
+                        {
+                            "name": "$showSecond",
+                            "value": 0
+                        },
+                        {
+                            "name": "$showThird",
+                            "value": 0
+                        },
+                        {
+                            "name": "$showVisible",
+                            "value": 1
                         },
                         {
                             "name": "$clicked",
@@ -73,39 +109,101 @@ export default [
                         "second_window": {
                             "width": 400,
                             "height": 300,
-                            "marginLeft": 450,
+                            "marginLeft": 460,
                             "marginTop": 0
                         },
-                        "place_control": {
-                            "width": 100,
+                        "place_first": {
+                            "width": 70,
                             "height": 30,
-                            "marginLeft": 180,
-                            "marginTop": 290
+                            "marginLeft": 410,
+                            "marginTop": 10
+                        },
+                        "place_second": {
+                            "width": 70,
+                            "height": 30,
+                            "marginLeft": 410,
+                            "marginTop": 65
+                        },
+                        "place_third": {
+                            "width": 70,
+                            "height": 30,
+                            "marginLeft": 410,
+                            "marginTop": 95
                         },
                         "place_height": {
+                            "width": 100,
+                            "height": 30,
+                            "marginLeft": 0,
+                            "marginTop": 350
+                        },
+                        "place_visible": {
                             "width": 150,
                             "height": 30,
+                            "marginLeft": 240,
+                            "marginTop": 350
+                        },
+                        "place_width": {
+                            "width": 400,
+                            "height": 20,
                             "marginLeft": 0,
                             "marginTop": 290
                         }
                     },
                     "controls": [
                         {
-                            "place": "place_control",
+                            "place": "place_visible",
                             "type": "checkbox",
-                            "label": "Показати рішення",
-                            "checked": false,
-                            "onUpdate": "() => {if ($showMore == 0) {$showMore = 1; return true} else {$showMore = 0; return false}}"
+                            "label": "Наглядно?",
+                            "checked": true,
+                            "onUpdate": "() => {$showVisible = ($showVisible + 1) % 2;\n return $showVisible === 1}"
                         },
                         {
-                            "min": -720,
-                            "max": 720,
+                            "place": "place_first",
+                            "type": "checkbox",
+                            "label": "1)",
+                            "checked": false,
+                            "onUpdate": "() => {$showFirst = ($showFirst + 1) % 2;\n return $showFirst === 1}"
+                        },
+                        {
+                            "place": "place_second",
+                            "type": "checkbox",
+                            "label": "2)",
+                            "checked": false,
+                            "onUpdate": "() => {$showSecond = ($showSecond + 1) % 2;\n return $showSecond === 1}"
+                        },
+                        {
+                            "place": "place_third",
+                            "type": "checkbox",
+                            "label": "3)",
+                            "checked": false,
+                            "onUpdate": "() => {$showThird = ($showThird + 1) % 2;\n return $showThird === 1}"
+                        },
+                        {
+                            "min": 100,
+                            "max": 200,
                             "step": 1,
                             "value": 170,
                             "place": "place_height",
                             "type": "number",
                             "label": "Ваш зріст",
-                            "onUpdate": "() => {if ($showMore == 0) {$showMore = 1; return true} else {$showMore = 0; return false}}"
+                            "onUpdate": "(val) => {\n" +
+                                "    let next = val * 3 / 10;\n" +
+                                "    $D[1] = $E[1] - next;\n" +
+                                "}"
+                        },
+                        {
+                            "min": 10,
+                            "max": 300,
+                            "step": 1,
+                            "value": 50,
+                            "place": "place_width",
+                            "type": "range",
+                            "label": "Відстань від стовпа",
+                            "onUpdate": "(val) => {\n" +
+                                "    let next = parseFloat(val);\n" +
+                                "    $E[0] = next;\n" +
+                                "    $D[0] = next;\n" +
+                                "}"
                         }
                     ],
                     "layers": [
@@ -119,26 +217,43 @@ export default [
                                 " const getAngle = (val) => {\n" +
                                 "     return (val / Math.PI * 180).toFixed(2);\n" +
                                 " }\n" +
-                                " if (!$showMore) return;\n" +
+                                " let blocks = [];\n" +
+                                " if ($showFirst) {\n" +
+                                "     blocks = blocks.concat([" +
+                                "         'Розмістимо дзеркало так, щоб було видно вершину стовба BC'" +
+                                "     ])\n" +
+                                " }\n" +
+                                " if ($showSecond) {\n" +
+                                "     blocks = blocks.concat([" +
+                                "         'Кут падіння дорівнює куту відображення'," +
+                                "         'EAD = CAB'" +
+                                "     ])\n" +
+                                " }\n" +
+                                " if ($showThird) {\n" +
+                                "     blocks = blocks.concat([" +
+                                "         'Кут AED = куту ACB = 90'," +
+                                "         'Кут ADE = куту ABC'," +
+                                "         'Висновок: AED подібний ACB'" +
+                                "     ])\n" +
+                                " }\n" +
+                                " if ($showThird) {\n" +
+                                "     blocks = blocks.concat([" +
+                                "         'BC = AC'," +
+                                "         'DE   AE'" +
+                                "         " +
+                                "     ])\n" +
+                                " }\n" +
                                 " ctx.save()\n" +
                                 " ctx.fillStyle = 'black';\n" +
                                 " ctx.font = '18px Serif';\n" +
-                                " let r2 = $AB / Math.sin($Cangle)\n" +
-                                " let blocks = ['Знайдемо 3 кут', " +
-                                "   '1) C = 180 - B - A = 180 - ' + " +
-                                "       getAngle($Bangle) + ' - ' + " +
-                                "       getAngle($Aangle) + ' = ' + getAngle($Cangle)," +
-                                "   'Відношення сторони до синусу протилежного'," +
-                                "   ' кута однаково для всіх сторін і дорівнює 2R'," +
-                                "   '(теорема синусів)', " +
-                                "   '2) 2R = AB / sin(C) = ' + $AB.toFixed(2) + ' / ' +" +
-                                "       Math.sin($Cangle).toFixed(2) + ' = ' + (r2).toFixed(2)," +
-                                "   '3) BC = 2R * sin(A) = ' + r2.toFixed(2) + ' * ' + Math.sin($Aangle).toFixed(2) +" +
-                                "       ' = ' +  $BC.toFixed(2)," +
-                                "   '4) AC = 2R * sin(B) = ' + r2.toFixed() + ' * ' + Math.sin($Bangle).toFixed(2) +" +
-                                "       ' = ' +  $AC.toFixed(2)" +
-                                " ];\n" +
-                                " blocks.forEach((a, index) => ctx.fillText(a, 10, (index + 1) * 30))\n" +
+                                " let row = 1;\n" +
+                                " let widthText = 46;\n" +
+                                " for (let text of blocks) {\n" +
+                                "     for (let i = 0; i < text.length; i += widthText, ++row) {\n" +
+                                "         ctx.fillText(text.substr(i, widthText), 10, row * 30)\n" +
+                                "     }\n" +
+                                " }\n" +
+
                                 " ctx.restore()\n" +
                                 "}"
                         },
@@ -158,52 +273,26 @@ export default [
                         {
                             "place": "first_window",
                             "type": "custom",
-                            "onMouseDown": "(e) => {\n" +
-                                "let x = e.offsetX\n" +
-                                "let y = e.offsetY\n" +
-                                "let arr = []\n" +
-                                "arr.push($A)\n" +
-                                "arr.push($B)\n" +
-                                "arr.push($C)\n" +
-                                "arr.forEach((point, index) => {\n" +
-                                "   let nearX = point[0] - 5 < x && point[0] + 5 > x; \n" +
-                                "   let nearY = point[1] - 5 < y && point[1] + 5 > y; \n" +
-                                "   if (nearX && nearY) {\n" +
-                                "       let val = index + 1\n" +
-                                "       $clicked = val;\n" +
-                                "   }" +
-                                "})" +
-                                "}\n",
-                            "onMouseMove": "(e) => {\n" +
-                                "let x = e.movementX;\n" +
-                                "let y = e.movementY;\n" +
-                                "switch($clicked) {\n" +
-                                "  case 1:\n" +
-                                "      $A[0] = $A[0] + x\n" +
-                                "      $A[1] = $A[1] + y\n" +
-                                "  break;\n" +
-                                "  case 2:\n" +
-                                "      $B[0] = $B[0] + x\n" +
-                                "      $B[1] = $B[1] + y\n" +
-                                "  break;\n" +
-                                "  case 3:\n" +
-                                "      $C[0] = $C[0] + x\n" +
-                                "      $C[1] = $C[1] + y\n" +
-                                "  break;\n" +
-                                "}" +
-                                "}\n",
-                            "onMouseUp": "(e) => {\n" +
-                                "$clicked = 0;\n" +
-                                "}\n",
                             "initDraw": "(canvas, ctx) => {\n" +
+                                "$human.src = 'human.png';\n" +
+                                "$tree.src = 'tree.png';\n" +
+                                "$tree.addEventListener('load', () => {" +
+                                "   ctx.drawImage($tree, $B[0] - 50, $B[1])\n" +
+                                "})\n" +
+                                "$human.addEventListener('load', () => {" +
+                                "   ctx.drawImage($human, $D[0] - 25, $D[1], 50, $E[1] - $D[1])\n" +
+                                "})\n" +
                                 "const getLen = (a, b) => {" +
                                 "  return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)\n" +
+                                "}\n" +
+                                "const showLen = (val) => {\n" +
+                                "  return (val / 3 * 10).toFixed();" +
                                 "}\n" +
                                 "const writeLen = (a, b, color='black') => {\n" +
                                 "    let len = getLen(a, b) \n" +
                                 "    ctx.save()\n" +
                                 "    ctx.fillStyle = color;\n" +
-                                "    ctx.fillText(len.toFixed(2), (a[0] + b[0]) / 2, " +
+                                "    ctx.fillText(showLen(len), (a[0] + b[0]) / 2, " +
                                 "        (a[1] + b[1]) / 2) \n" +
                                 "    ctx.restore();\n" +
                                 "}\n" +
@@ -241,43 +330,78 @@ export default [
                                 "ctx.lineTo($C[0], $C[1]);\n" +
                                 "ctx.lineTo($A[0], $A[1]);\n" +
                                 "ctx.lineTo($E[0], $E[1]);\n" +
+                                "ctx.lineTo($D[0], $D[1]);\n" +
                                 "ctx.stroke()\n" +
-                                "let defColor = $showMore? 'green': 'transparent' \n" +
-                                "$Aangle = writeAngle($A, $B, $C)\n" +
-                                "$Bangle = writeAngle($B, $A, $C)\n" +
-                                "$Cangle = writeAngle($C, $B, $A, defColor)\n" +
-                                "$AB = getLen($A, $B)\n" +
+                                "$AE = getLen($A, $E)\n" +
                                 "$AC = getLen($A, $C)\n" +
-                                "$BC = getLen($C, $B)\n" +
-                                "writeLen($A, $B)\n" +
-                                "writeLen($A, $C, defColor)\n" +
-                                "writeLen($C, $B, defColor)\n" +
-                                "if ($showMore) writeRound()\n" +
+                                "$DE = getLen($D, $E)\n" +
+                                "$BC = getLen($B, $C)\n" +
+                                "writeLen($D, $E)\n" +
                                 "ctx.beginPath() \n" +
                                 "ctx.fillStyle = 'red'\n" +
-                                "ctx.arc($A[0], $A[1], 5, 0, Math.PI * 4) \n" +
                                 "ctx.moveTo($B[0], $B[1]) \n" +
                                 "ctx.arc($B[0], $B[1], 5, 0, Math.PI * 2) \n" +
                                 "ctx.moveTo($C[0], $C[1]) \n" +
                                 "ctx.arc($C[0], $C[1], 5, 0, Math.PI * 2) \n" +
+                                "ctx.moveTo($D[0], $D[1]) \n" +
+                                "ctx.arc($D[0], $D[1], 5, 0, Math.PI * 2) \n" +
+                                "ctx.moveTo($E[0], $E[1]) \n" +
+                                "ctx.arc($E[0], $E[1], 5, 0, Math.PI * 2) \n" +
                                 "ctx.fill() \n" +
                                 "ctx.font = '21px Serif'\n" +
                                 "ctx.fillStyle = 'blue'\n" +
-                                "ctx.fillText('A', $A[0] - 15, $A[1]);\n" +
                                 "ctx.fillText('B', $B[0] - 15, $B[1]);\n" +
                                 "ctx.fillText('C', $C[0] - 15, $C[1]);\n" +
+                                "ctx.fillText('D', $D[0] - 15, $D[1]);\n" +
+                                "ctx.fillText('E', $E[0] - 15, $E[1]);\n" +
                                 "ctx.restore(); \n}",
                             "update": "(canvas, ctx) => {\n" +
                                 "const getLen = (a, b) => {" +
                                 "  return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)\n" +
                                 "}\n" +
+                                "const showLen = (val) => {\n" +
+                                "  return (val / 3 * 10).toFixed();" +
+                                "}\n" +
+                                "const showDecision = () => {\n" +
+                                "    if ($showFirst) {\n" +
+                                "        const relativeLen = getLen($E, $C) / (getLen($D, $E) / getLen($B, $C) + 1);\n" +
+                                "        $A = [$C[0] - relativeLen, 250]\n" +
+                                "        ctx.save()\n" +
+                                "        ctx.fillStyle = 'red'\n" +
+                                "        ctx.beginPath()\n" +
+                                "        ctx.moveTo($A[0], $A[1]) \n" +
+                                "        ctx.arc($A[0], $A[1], 5, 0, Math.PI * 2) \n" +
+                                "        ctx.fill()\n" +
+                                "        ctx.setLineDash([7, 7]);\n" +
+                                "        ctx.beginPath()\n" +
+                                "        ctx.moveTo($A[0], 0);\n" +
+                                "        ctx.lineTo($A[0], 300);\n" +
+                                "        ctx.stroke()\n" +
+                                "        ctx.strokeStyle = 'blue'\n" +
+                                "        ctx.beginPath()\n" +
+                                "        ctx.moveTo($D[0], $D[1]);\n" +
+                                "        ctx.lineTo($A[0], $A[1]);\n" +
+                                "        ctx.lineTo($B[0], $B[1]);\n" +
+                                "        ctx.stroke();\n" +
+                                "        writeLen($E, $A, 'black')\n" +
+                                "        writeLen($A, $C, 'black')\n" +
+                                "        ctx.font = '21px Serif'\n" +
+                                "        ctx.fillStyle = 'blue'\n" +
+                                "        ctx.fillText('A', $A[0] - 10, $A[1] + 30) \n" +
+                                "        ctx.restore()\n" +
+                                "    }\n" +
+                                "    if ($showSecond) {\n" +
+                                "        writeAngle($A, $D, $E, 'green')\n" +
+                                "        writeAngle($A, $B, $C, 'green')\n" +
+                                "        ctx.restore()\n" +
+                                "    }\n" +
+                                "}\n" +
                                 "const writeLen = (a, b, color='black') => {\n" +
                                 "    let len = getLen(a, b) \n" +
                                 "    ctx.save()\n" +
                                 "    ctx.fillStyle = color;\n" +
-                                "    ctx.font = '15px Serif'\n" +
-                                "    ctx.fillText(len.toFixed(2), (a[0] + b[0]) / 2, " +
-                                "        (a[1] + b[1]) / 2) \n" +
+                                "    ctx.fillText(showLen(len), (a[0] + b[0]) / 2, " +
+                                "        (a[1] + b[1]) / 2 + 10) \n" +
                                 "    ctx.restore();\n" +
                                 "}\n" +
                                 "const writeAngle = (a, b, c, color='black') => {\n " +
@@ -302,87 +426,49 @@ export default [
                                 "    minAngle += Math.abs(startAngle - finishAngle) / 2;\n" +
                                 "    let neg = startAngle < 0 && finishAngle > 0? -1.5: 1;\n" +
                                 "    ctx.save()\n" +
-                                "    ctx.font = '15px Serif'\n" +
                                 "    ctx.fillStyle = color\n" +
                                 "    ctx.fillText((angle / Math.PI * 180).toFixed(2), a[0] + neg * Math.cos(minAngle) * 28, a[1] + neg * Math.sin(minAngle) * 28);\n" +
                                 "    ctx.restore()\n" +
                                 "    return angle;" +
                                 "}\n" +
-                                "const writeRound = () => {\n" +
-                                "    let ab = [$B[0] - $A[0], $B[1] - $A[1]]\n" +
-                                "    let ac = [$A[0] - $C[0], $A[1] - $C[1]]\n" +
-                                "    let abPer = [0, 0]\n" +
-                                "    let acPer = [0, 0]\n" +
-                                "    abPer = [ab[1], -ab[0]]\n" +
-                                "    acPer = [ac[1], -ac[0]]\n" +
-                                "    if (ab[0] === 0 ) {\n" +
-                                "        abPer[0] = 1\n" +
-                                "        abPer[1] = 0\n" +
-                                "    }\n" +
-                                "    if (ac[0] === 0) {\n" +
-                                "        acPer[0] = 1\n" +
-                                "        acPer[1] = 0\n" +
-                                "    }\n" +
-                                "    let cAC = [($A[0] + $C[0]) / 2, ($A[1] + $C[1]) / 2]\n" +
-                                "    let cAB = [($A[0] + $B[0]) / 2, ($A[1] + $B[1]) / 2]\n" +
-                                "    let cAC2 = [cAC[0] + acPer[0], cAC[1] + acPer[1]]\n" +
-                                "    let cAB2 = [cAB[0] + abPer[0], cAB[1] + abPer[1]]\n" +
 
-                                "    let a1 = cAC2[1] - cAC[1]\n" +
-                                "    let b1 = cAC[0] - cAC2[0]\n" +
-                                "    let c1 = - cAC[0] * cAC2[1] + cAC[1] * cAC2[0]\n" +
 
-                                "    let a2 = cAB2[1] - cAB[1]\n" +
-                                "    let b2 = cAB[0] - cAB2[0]\n" +
-                                "    let c2 = - cAB[0] * cAB2[1] + cAB[1] * cAB2[0]\n" +
-
-                                "    let centerX = (b1 * c2 - b2 * c1) / (a1 * b2 - a2 * b1) \n" +
-                                "    let centerY = (a2 * c1 - a1 * c2) / (b2 * a1 - b1 * a2)\n" +
-                                "    let co = [centerX - $A[0], centerY - $A[1]] \n" +
-                                "    writeLen([centerX, centerY], $A, 'green')\n" +
-                                "    ctx.beginPath()\n" +
-                                "    ctx.moveTo(centerX, centerY)\n" +
-                                "    ctx.fillStyle = 'blue'\n" +
-                                "    ctx.font = '20px Serif'\n" +
-                                "    ctx.fillText('O', centerX, centerY)\n" +
-                                "    ctx.arc(centerX, centerY," +
-                                "        getLen($A, [centerX, centerY]), " +
-                                "        Math.acos(co[0] / getLen([centerX, centerY], $A)) - Math.PI, " +
-                                "        Math.acos(co[0] / getLen([centerX, centerY], $A)) + Math.PI," +
-                                "        )\n" +
-                                "    ctx.stroke()\n" +
-                                "}\n" +
-                                "ctx.save();\n" +
                                 "ctx.clearRect(0, 0, canvas.width, canvas.height);ctx.beginPath(); \n" +
-                                "ctx.moveTo($A[0], $A[1]);\n" +
-                                "ctx.lineTo($B[0], $B[1]);\n" +
+                                "if ($showVisible) {\n" +
+                                "    ctx.drawImage($tree, $B[0] - 50, $B[1])\n" +
+                                "    ctx.globalAlpha = 0.7;\n" +
+                                "    ctx.drawImage($human, $D[0] - 25, $D[1], 50, $E[1] - $D[1])\n" +
+                                "    ctx.globalAlpha = 1;\n" +
+                                "}\n" +
+                                "writeLen($E, $D, 'black')\n" +
+                                "ctx.moveTo($B[0], $B[1]);\n" +
                                 "ctx.lineTo($C[0], $C[1]);\n" +
-                                "ctx.lineTo($A[0], $A[1]);\n" +
+                                "ctx.lineTo($E[0], $E[1]);\n" +
+                                "ctx.lineTo($D[0], $D[1]);\n" +
                                 "ctx.stroke()\n" +
-                                "let defColor = $showMore? 'green': 'transparent' \n" +
-                                "$Aangle = writeAngle($A, $B, $C)\n" +
-                                "$Bangle = writeAngle($B, $A, $C)\n" +
-                                "$Cangle = writeAngle($C, $B, $A, defColor)\n" +
-                                "$AB = getLen($A, $B)\n" +
+                                "showDecision();\n" +
+                                "$AE = getLen($A, $E)\n" +
                                 "$AC = getLen($A, $C)\n" +
-                                "$BC = getLen($C, $B)\n" +
-                                "writeLen($A, $B)\n" +
-                                "writeLen($A, $C, defColor)\n" +
-                                "writeLen($C, $B, defColor)\n" +
-                                "if ($showMore) writeRound()\n" +
+                                "$DE = getLen($D, $E)\n" +
+                                "$BC = getLen($B, $C)\n" +
+                                "ctx.save();\n" +
                                 "ctx.beginPath() \n" +
                                 "ctx.fillStyle = 'red'\n" +
-                                "ctx.arc($A[0], $A[1], 5, 0, Math.PI * 4) \n" +
                                 "ctx.moveTo($B[0], $B[1]) \n" +
                                 "ctx.arc($B[0], $B[1], 5, 0, Math.PI * 2) \n" +
                                 "ctx.moveTo($C[0], $C[1]) \n" +
                                 "ctx.arc($C[0], $C[1], 5, 0, Math.PI * 2) \n" +
+                                "ctx.moveTo($D[0], $D[1]) \n" +
+                                "ctx.arc($D[0], $D[1], 5, 0, Math.PI * 2) \n" +
+                                "ctx.moveTo($E[0], $E[1]) \n" +
+                                "ctx.arc($E[0], $E[1], 5, 0, Math.PI * 2) \n" +
                                 "ctx.fill() \n" +
                                 "ctx.font = '21px Serif'\n" +
                                 "ctx.fillStyle = 'blue'\n" +
-                                "ctx.fillText('A', $A[0] - 15, $A[1]);\n" +
                                 "ctx.fillText('B', $B[0] - 15, $B[1]);\n" +
                                 "ctx.fillText('C', $C[0] - 15, $C[1]);\n" +
+                                "ctx.fillText('D', $D[0] - 15, $D[1]);\n" +
+                                "ctx.fillText('E', $E[0] - 15, $E[1]);\n" +
                                 "ctx.restore(); \n}"
                         },
                         {
@@ -394,10 +480,17 @@ export default [
                 }
             }
         ]
-    }
-    ,{
-    "name": "Тригонометрія. Початок",
-    "steps": [
+    },
+    {
+        "gainedPoints": 0,
+        "isPreview": "true",
+        "points": 0,
+        "stepsCount": 4,
+        "currentStep": 1,
+        "isDone": "false",
+        "attempts": 0,
+        "name": "Тригонометрія. Початок",
+        "steps": [
         {
           "type": "text",
           "text": ["Почнімо наш новий розділ геометрії. Тригонометрія - це вчення про співвідношення кутів та сторін трикутника"]
@@ -413,7 +506,7 @@ export default [
             ],
             "view": {
                 "layers_width": 400,
-                "layers_height": 400,
+
                 "variables": [
                     {
                         "name": "$angle",
@@ -442,11 +535,12 @@ export default [
                         "marginTop": 500
                     },
                     "place_control": {
-                        "width": 400,
+                        "width": 200,
                         "height": 30,
                         "marginLeft": 0,
-                        "marginTop": 425
+                        "marginTop": 405
                     }
+
                 },
                 "controls": [],
                 "layers": [
@@ -477,12 +571,29 @@ export default [
             }
         },
         {
+            "decisions": [
+                {
+                    "label": "Синус від 0 градусів",
+                    "type": "value",
+                    "answer": "0"
+                },
+                {
+                    "label": "Косинус від 0 градусів",
+                    "type": "value",
+                    "answer": "1"
+                }
+            ],
+            "formulas": [
+                {"formula": "sinA = {\"color\": \"red\", \"text\": \"y\"}", "tooltip": "Синус"},
+                {"formula": "cosA = {\"color\": \"green\", \"text\": \"x\"}", "tooltip": "Косинус"}
+                ],
             "type": "custom",
             "view": {
 
                 "layers_width": 400,
                 "task_triggers": [
                     {
+                        "place": "place_trigger",
                         "describe": "Знайдіть значення кутів при яких синус дорівнює нулю в діапазоні -720 - 720 градусів",
                         "test": {"$angle": "(v) => {\n " +
                                 "let val = Math.floor(v / Math.PI * 180);\n" +
@@ -536,14 +647,21 @@ export default [
                         "width": 200,
                         "height": 50,
                         "marginLeft": 420,
-                        "marginTop": -550
+                        "marginTop": 10
                     },
                     "place_control": {
-                        "width": "200%",
+                        "width": 800,
                         "height": 30,
                         "marginLeft": 0,
-                        "marginTop": 475
+                        "marginTop": 455
+                    },
+                    "place_trigger": {
+                        "width": 400,
+                        "height": 150,
+                        "marginLeft": 0,
+                        "marginTop": 510
                     }
+
                 },
                 "controls": [
                     {
@@ -626,11 +744,18 @@ export default [
                 ]
             }
         }
-
     ]
-},
+    },
+
     {
+        "gainedPoints": 0,
+        "points": 20,
+        "isPreview": "false",
         "name": "Теорема синусів",
+        "attempts": 1,
+        "isDone": "true",
+        "stepsCount": 2,
+        "currentStep": 0,
         "steps": [
             {
                 "type": "text",
@@ -643,7 +768,7 @@ export default [
                     "Відомі 2 кути та одна сторона AB. Знайти всі інші сторони та радіус  кола описаного трикутника"],
                 "view": {
                     "layers_width": 400,
-                    "layers_height": 400,
+
                     "variables": [
                         {
                             "name": "$AB",
@@ -1046,7 +1171,6 @@ export default [
                     ]
                 }
             }
-
         ]
     }
 ];

@@ -39,4 +39,5 @@ margin: 20px;
 background: rgb(204,203,229);
 overflow-wrap: break-word;
 width: 90%;
+margin-left: 5%;
 `;

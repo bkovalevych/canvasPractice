@@ -2,13 +2,14 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import Steps from '../steps';
 import {getTopicsLabels} from '../../functions/topics'
-import style from "./topics.scss"
+import style from "./topics.module.scss"
 
 export const Topics = () => {
     const [selectedTopic, setSelectedTopic] = useState(0);
     const [fetch, setFetch] = useState("idle");
     const labels = useRef(null);
     const sidePanel = useRef();
+    const rightSidePanel = useRef();
     const content = useRef();
     const nextTopic = () => {
         if (labels && selectedTopic < labels.current.length) {
@@ -26,7 +27,7 @@ export const Topics = () => {
     },[fetch])
     const showTopicContent = () => {
         if (selectedTopic === null) {
-            return <div className="normalText">Тема не обрана</div>;
+            return <div className={style.normalText}>Тема не обрана</div>;
         }
         return <Steps idTopic={selectedTopic} nextTopic={nextTopic}/>;
     }
@@ -36,22 +37,22 @@ export const Topics = () => {
         }
         return labels.current.map((val, index) =>
             <div key={index}
-               className={index === selectedTopic? "selectedTopic": "normalTopic"}
+               className={index === selectedTopic? style.selectedTopic: style.normalTopic}
                   onClick={() => {
                 setSelectedTopic(index)
             }}>{val.name}</div>
         )
     }
-    return <div className="parent">
-        <div className="sidepanelParent">
-            <button className="openbtn" onClick={() => {
+    return <div className={style.parent}>
+        <div className={style.sidepanelParent}>
+            <button className={style.openbtn} onClick={() => {
                 sidePanel.current.style.width= "22%";
                 sidePanel.current.parentNode.style.width = "22%";
                 content.current.style.width = "70%";
             }}>&#9776; Теми</button>
-            <div ref={sidePanel} className="sidepanel">
+            <div ref={sidePanel} className={style.sidepanel}>
                 <div
-                   className="closebtn"
+                   className={style.closebtn}
                    onClick={() => {
                        sidePanel.current.style.width = 0;
                        sidePanel.current.parentNode.style.width = "8%";
@@ -62,6 +63,7 @@ export const Topics = () => {
                 {showTopicLabel()}
             </div>
         </div>
-        <div className="content" ref={content}>{showTopicContent()}</div>
+        <div className={style.content} ref={content}>{showTopicContent()}</div>
+        <div ref={rightSidePanel} className={style.rightSidePanel} />
     </div>
 }

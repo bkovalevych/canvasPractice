@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from "react"
 import drawCells from './holst'
 import styled from "styled-components";
+import Formula from '../utils/formulaViewer'
 
 export default function({layers_width, layers_height, variables, places, layers, controls, task_triggers, update}) {
     const refVariables = useRef({});
@@ -44,7 +45,8 @@ export default function({layers_width, layers_height, variables, places, layers,
         const updateFunction = eval(updateFunctionString);
         const _update = (e) => {
             const val = e.target.value;
-            updateTrigger()
+            updateTrigger();
+
             switch (control.type) {
                 case "range":
                     updateFunction(val);
@@ -52,6 +54,9 @@ export default function({layers_width, layers_height, variables, places, layers,
                 case "checkbox":
                     let checked = updateFunction(val)
                     e.target.checked = checked
+                    break;
+                case "number":
+                    updateFunction(val);
                     break;
             }
             updateLayers()
@@ -66,10 +71,14 @@ export default function({layers_width, layers_height, variables, places, layers,
                     defaultChecked={control.checked}
                 />{control.label}</label>
         }
-        return <label style={{position: "absolute", ...place}}>
+        return <label style={{position: "absolute",
+            marginLeft: place.marginLeft,
+            marginTop: place.marginTop,
+            }}>
             {control.label}
             <input
                 key={index}
+                style={{width: place.width, height: place.height}}
                 onChange={_update}
                 type={control.type}
                 min={control.min}
@@ -86,7 +95,6 @@ export default function({layers_width, layers_height, variables, places, layers,
         const height = place.height;
         layer.key = index;
         layer.placement = place;
-
         return (
             <canvas width={width}
                     height={height}
@@ -126,8 +134,14 @@ export default function({layers_width, layers_height, variables, places, layers,
             if (!layer.initDraw || layer.initDraw === "") return;
 
             const prepare = prepareRegex(layer.initDraw)
-            const f = eval(prepare);
-            f(canvas, ctx)
+            try {
+                const f = eval(prepare);
+                f(canvas, ctx)
+            } catch (e) {
+                console.log(e);
+            }
+
+
         })
         refUpdates.current = layers.map(layer => {
             if (!layer.update) {
@@ -178,9 +192,10 @@ export default function({layers_width, layers_height, variables, places, layers,
         if (!task_triggers || task_triggers.length === 0) {
             return "";
         }
+
         refTriggers.current = [];
         return task_triggers.map((val, index) => {
-
+            const place = places[val.place]
             refTriggers.current.push({})
             for (let key in val.test) {
                 if (val.test.hasOwnProperty(key)) {
@@ -189,7 +204,7 @@ export default function({layers_width, layers_height, variables, places, layers,
                 }
             }
 
-            return <NormalText key={index}>{val.describe}</NormalText>
+            return <NormalText style={{...place}} key={index}>{val.describe}</NormalText>
         })
     }
 
@@ -214,7 +229,8 @@ export default function({layers_width, layers_height, variables, places, layers,
                 )}
             </div>
 
-            <div ref={refBlockTriggers}>
+            <div style={{position: "relative"}}
+                 ref={refBlockTriggers}>
                 {placeTriggers()}
             </div>
         </div>
@@ -229,6 +245,7 @@ const NormalText = styled.div`
 font-size: 20px;
 padding: 20px;
 textAlign: center;
+position: absolute;
 margin: 20px;
 background: rgb(204,203,229)
 `;

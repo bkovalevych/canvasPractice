@@ -13,7 +13,6 @@ import axios from 'axios'
 
 
 axios.interceptors.request.use(function (config) {
-    debugger;
     config.headers.authorization = localStorage.getItem("token");
     return config;
 }, function (error) {

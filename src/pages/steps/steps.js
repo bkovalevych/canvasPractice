@@ -5,13 +5,20 @@ import Button from "@material-ui/core/Button";
 import TextCounter from "../../template/textCounter"
 import Renderer from '../../utils/renderer'
 import {getTopic} from "../../functions/topics"
-
+import Formula from '../../utils/formulaViewer'
+import DecisionField from '../../utils/decisionField'
+import styles from './steps.module.scss'
+import {faClipboardList} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 export const Steps = ({idTopic, nextTopic}) => {
     const [fetch, setFetch] = useState("idle");
     const [stepPosition, setStepPosition] = useState(0)
     const [done, setDone] = useState(false);
     const refCount = useRef(0);
+    const formulasDiv = useRef();
     const content = useRef(null)
+    const [formulaOpened, setFormulaOpened] = useState(false);
+    const decisionRef = useRef([]);
     useEffect(() => {
         setStepPosition(1);
         setFetch("idle")
@@ -40,8 +47,10 @@ export const Steps = ({idTopic, nextTopic}) => {
 
     const parseContent = (step) => {
         if (!step) return;
-        let textBlock = ""
-        let customBlock = ""
+        let textBlock = "";
+        let customBlock = "";
+        let formulas = "";
+        let decisions = "";
         if (step.text) {
             refCount.current = typeof(step.text) === typeof ""?
                 step.text.length
@@ -64,7 +73,49 @@ export const Steps = ({idTopic, nextTopic}) => {
 
             customBlock = <Renderer key={1} update={update}{...step.view}/>
         }
-        return [textBlock, customBlock]
+        if (step.decisions) {
+            decisionRef.current = [];
+            let elements = step.decisions.map((decision, index) => {
+                decisionRef.current.push({answer: decision.answer, value: ""});
+                return <DecisionField key={index} value={decision.value} type={decision.type} answer={decision.answer} label={decision.label}/>
+            })
+            decisions = <div>{elements}</div>
+        }
+        if (step.formulas) {
+            formulas = <>
+                <div className={styles.list_formulas} ref={formulasDiv}
+                              style={{opacity: formulaOpened? '1': '0'}}>
+                Формули
+                <ol>
+                    {step.formulas.map(({formula, tooltip}, index) =>
+                        <li key={index}>
+                            {tooltip?
+                                <span className={styles.tooltip_text}>
+                                    {tooltip}
+                                </span>:
+                                ""
+                            }
+                            <Formula>{formula}</Formula>
+                        </li>
+                    )}
+                </ol>
+            </div>
+                <FontAwesomeIcon className={styles.formula_expander} icon={faClipboardList} size="4x"
+                                 onClick={() => {
+                                     setFormulaOpened((val) => !val);
+                                 }}
+                />
+            </>
+        }
+        return <div>
+            {formulas}
+            {textBlock}
+            {decisions}
+            {customBlock}
+
+        </div>
+
+
     }
     if (fetch === 'waiting' || fetch === 'idle') {
         return "waiting";
@@ -92,18 +143,7 @@ export const Steps = ({idTopic, nextTopic}) => {
                     >Далі</Button>
                 </div>
                 <Typography>{getContent(stepPosition)}</Typography>
-                <div style={{
-                    textAlign: 'center'
-                }}>
-                    <Button disabled={stepPosition > content.current.steps.length || !done} onClick={() => {
-                        if (stepPosition + 1 >= content.current.steps.length) {
-                            nextTopic();
-                            return;
-                        }
-                        setStepPosition(val => val + 1)}}>Далі</Button>
-                </div>
             </div>
-
         </div>
     )
 }

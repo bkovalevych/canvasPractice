@@ -1,0 +1,13 @@
+export default {
+    GET_TOPICS: {
+        FETCH: "GET_TOPICS_FETCH",
+        SUCCESS: "GET_TOPICS_SUCCESS",
+        ERROR: "GET_TOPICS_ERROR"
+    },
+    UPDATE_TOPIC: {
+        FETCH: "UPDATE_TOPIC_FETCH",
+        SUCCESS: "UPDATE_TOPIC_SUCCESS",
+        ERROR: "UPDATE_TOPIC_ERROR"
+    }
+
+}
