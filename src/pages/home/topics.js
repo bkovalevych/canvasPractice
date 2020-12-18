@@ -43,27 +43,27 @@ export const Topics = () => {
             }}>{val.name}</div>
         )
     }
-    return <div className={style.parent}>
-        <div className={style.sidepanelParent}>
-            <button className={style.openbtn} onClick={() => {
-                sidePanel.current.style.width= "22%";
-                sidePanel.current.parentNode.style.width = "22%";
-                content.current.style.width = "70%";
+    return <p className={style.parent}>
+        <p className={style.sidepanelParent}>
+            <button className={style.openbtn} onClick={(e) => {
+                e.target.parentNode.parentNode.style.gridTemplateColumns = "300px 10fr 100px"
+                sidePanel.current.style.display = 'block';
+                e.target.style.display = "none"
             }}>&#9776; Теми</button>
             <div ref={sidePanel} className={style.sidepanel}>
                 <div
                    className={style.closebtn}
-                   onClick={() => {
-                       sidePanel.current.style.width = 0;
-                       sidePanel.current.parentNode.style.width = "8%";
-                       content.current.style.width = "90%";
+                   onClick={(e) => {
+                       e.target.parentNode.parentNode.parentNode.style.gridTemplateColumns = "100px 10fr 100px"
+                       sidePanel.current.style.display = 'none';
+                       e.target.parentNode.parentNode.children[0].style.display = "block"
                    }}>
                     &#9776; Теми
                 </div>
                 {showTopicLabel()}
             </div>
-        </div>
-        <div className={style.content} ref={content}>{showTopicContent()}</div>
-        <div ref={rightSidePanel} className={style.rightSidePanel} />
-    </div>
+        </p>
+        <p className={style.content} ref={content}>{showTopicContent()}</p>
+        <p ref={rightSidePanel} className={style.rightSidePanel} />
+    </p>
 }

@@ -27,8 +27,8 @@ export default [
                 "text": "Позначимо стовп BC, DE - це ваш зріст",
                 "type": "custom",
                 "view": {
-                    "layers_width": 500,
-                    "layers_height": 400,
+                    "layers_width": 700,
+                    "layers_height": 600,
                     "variables": [
                         {
                             "name": "$DE",
@@ -506,7 +506,7 @@ export default [
             ],
             "view": {
                 "layers_width": 400,
-
+                "layers_height": 500,
                 "variables": [
                     {
                         "name": "$angle",
@@ -589,7 +589,7 @@ export default [
                 ],
             "type": "custom",
             "view": {
-
+                "layers_height": 600,
                 "layers_width": 400,
                 "task_triggers": [
                     {
@@ -768,7 +768,7 @@ export default [
                     "Відомі 2 кути та одна сторона AB. Знайти всі інші сторони та радіус  кола описаного трикутника"],
                 "view": {
                     "layers_width": 400,
-
+                    "layers_height": 500,
                     "variables": [
                         {
                             "name": "$AB",

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react"
 import drawCells from './holst'
 import styled from "styled-components";
-import Formula from '../utils/formulaViewer'
+
 
 export default function({layers_width, layers_height, variables, places, layers, controls, task_triggers, update}) {
     const refVariables = useRef({});
@@ -91,14 +91,12 @@ export default function({layers_width, layers_height, variables, places, layers,
     }
     const placeLayer = (layer, places, index) => {
         const place = places[layer.place];
-        const width = place.width
-        const height = place.height;
         layer.key = index;
         layer.placement = place;
         return (
-            <canvas width={width}
-                    height={height}
-
+            <canvas
+                width={place.width}
+                height={place.height}
                     style={{
                         position: 'absolute' ,
                         marginLeft: place.marginLeft,
@@ -126,7 +124,6 @@ export default function({layers_width, layers_height, variables, places, layers,
             const ctx = canvas.getContext("2d");
             ctx.clearRect(-1000, -1000, 2000, 2000);
             if (layer.type === 'cells') {
-
                 drawCells({ctx, canvas,...layer})
                 return
             }
@@ -154,39 +151,39 @@ export default function({layers_width, layers_height, variables, places, layers,
         })
     }, [layers])
     useEffect(() => {
-        if (refCanvases.current != null) {
-            layers.forEach((layer, index) => {
-                let result = {};
-                ["onMouseUp", "onMouseDown", "onMouseMove"].map(handler => {
-                    if (layer[handler] && layer[handler] !== "") {
-                        const prepare = prepareRegex(layer[handler])
-                        const funcHandler = eval(prepare);
-                        result[handler] = (e) => {
-                            funcHandler(e)
-                            updateLayers();
-                        };
-                    }
-                })
-                if (Object.keys(result).length > 0) {
-                    listeners.current = result
+        if (refCanvases.current != null) return;
+        layers.forEach((layer, index) => {
+            let result = {};
+            ["onMouseUp", "onMouseDown", "onMouseMove"].map(handler => {
+                if (layer[handler] && layer[handler] !== "") {
+                    const prepare = prepareRegex(layer[handler])
+                    const funcHandler = eval(prepare);
+                    result[handler] = (e) => {
+                        funcHandler(e)
+                        updateLayers();
+                    };
                 }
-                refCanvases.current.children[index].addEventListener("mousedown" , (e)=> {
-                    if (listeners.current && listeners.current.onMouseDown) {
-                        listeners.current.onMouseDown(e)
-                    }
-                })
-                refCanvases.current.children[index].addEventListener("mouseup" , (e)=> {
-                    if (listeners.current && listeners.current.onMouseUp) {
-                        listeners.current.onMouseUp(e)
-                    }
-                })
-                refCanvases.current.children[index].addEventListener("mousemove" , (e)=> {
-                    if (listeners.current && listeners.current.onMouseMove) {
-                        listeners.current.onMouseMove(e)
-                    }
-                })
             })
-        }
+            if (Object.keys(result).length > 0) {
+                listeners.current = result
+            }
+            refCanvases.current.children[index].addEventListener("mousedown" , (e)=> {
+                if (listeners.current && listeners.current.onMouseDown) {
+                    listeners.current.onMouseDown(e)
+                }
+            })
+            refCanvases.current.children[index].addEventListener("mouseup" , (e)=> {
+                if (listeners.current && listeners.current.onMouseUp) {
+                    listeners.current.onMouseUp(e)
+                }
+            })
+            refCanvases.current.children[index].addEventListener("mousemove" , (e)=> {
+                if (listeners.current && listeners.current.onMouseMove) {
+                    listeners.current.onMouseMove(e)
+                }
+            })
+        })
+
     }, [refCanvases])
     const placeTriggers = () => {
         if (!task_triggers || task_triggers.length === 0) {
@@ -212,9 +209,9 @@ export default function({layers_width, layers_height, variables, places, layers,
         <div
             style={{
                 position: "relative",
-                width: `${layers_width}px`,
-                height: `${layers_height}px`,
-                margin: "35px 0 0 35px"
+                margin: "35px 0 0 35px",
+                height: layers_height,
+                width: layers_width
         }}>
             <div
                 ref={refCanvases}
@@ -229,7 +226,7 @@ export default function({layers_width, layers_height, variables, places, layers,
                 )}
             </div>
 
-            <div style={{position: "relative"}}
+            <div
                  ref={refBlockTriggers}>
                 {placeTriggers()}
             </div>
