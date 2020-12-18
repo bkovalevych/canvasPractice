@@ -13,7 +13,11 @@ export default ({type, value, answer, label}) => {
         setCurrentValue(e.target.value);
     }
     const onCheck = (checkValue=false) => {
-        let prepareValue = currentValue.replaceAll(/\s+/g, "").toLowerCase();
+        let prepareValue = "";
+        if (currentValue) {
+            prepareValue = currentValue.replaceAll(/\s+/g, "").toLowerCase();
+        }
+
         if (!checkValue && answerReg.test(prepareValue) || checkValue && currentValue === answer) {
             setStateAnswer("ok")
         } else {
