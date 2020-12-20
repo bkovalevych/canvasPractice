@@ -54,22 +54,28 @@ export function* signIn(props) {
         yield put({
             type: CNST.USER.SIGN_IN.ERROR,
             payload: {
-                // errors: error,
+                 errors: error,
             },
         });
     }
 }
 
-export const getUserRequest = () => {
-    let id = 'c4998a30-a40a-4c3a-af37-839900261b26'
-    return axios.get(`/user/get/profile/${id}`).catch(function (error) {
+export const getUserRequest = ({email}) => {
+    debugger;
+    return axios.get(`/user/get/${email}`).then(response => {
+        if (response.status !== 200) throw new Error("bad request");
+        return response.data;
+    }).then(id =>
+       axios.get(`/user/get/profile/${id}`)
+    ).catch(function (error) {
         throw error.response.data;
     });
 };
 
-export function* getUser() {
+export function* getUser(props) {
     try {
-        const response = yield call(getUserRequest);
+        debugger;
+        const response = yield call(getUserRequest, props.payload);
         yield put({type: CNST.USER.GET_PROFILE.SUCCESS, payload: response.data});
     } catch (error) {
         // removeToken();

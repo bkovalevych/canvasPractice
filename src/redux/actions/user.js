@@ -14,8 +14,9 @@ export function signInAction(data) {
   };
 }
 
-export function getUserAction() {
+export function getUserAction(data) {
   return {
+    payload: data,
     type: CNST.USER.GET_PROFILE.FETCH,
   };
 }
