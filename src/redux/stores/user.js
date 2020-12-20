@@ -6,7 +6,10 @@ const user = {
     isGetUserFetched: false,
     firstName: "",
     lastName: "",
-    id: ""
+    id: "",
+    error: false,
+    errorTitle: "",
+    errorText: ""
 };
 
 export default user;

@@ -108,3 +108,9 @@ export function* logout(props) {
         });
     }
 }
+
+export function* errorHandled() {
+    yield put({
+        type :CNST.USER.INTERFACE.ERROR_HAS_BEEN_HANDLED
+    })
+}

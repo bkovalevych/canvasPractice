@@ -26,3 +26,9 @@ export function logoutAction() {
     type: CNST.USER.LOGOUT.FETCH
   }
 }
+
+export function errorHasBeenHandled() {
+  return {
+    type: CNST.USER.INTERFACE.ERROR_HAS_BEEN_HANDLED
+  }
+}

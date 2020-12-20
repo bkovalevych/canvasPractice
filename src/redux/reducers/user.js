@@ -14,6 +14,9 @@ export default function (state = user, action) {
         ...state,
         ...action.payload,
         fetching: false,
+        error: true,
+        errorText: CNST.STRING_RESOURCES.SIGN_UP_ERROR.TEXT,
+        errorTitle: CNST.STRING_RESOURCES.SIGN_UP_ERROR.TITLE
       };
     case CNST.USER.SIGN_UP.FETCH:
       return {
@@ -39,6 +42,9 @@ export default function (state = user, action) {
         fetching: false,
         isGetUserFetched: false,
         isLoggedIn: false,
+        error: true,
+        errorText: CNST.STRING_RESOURCES.UNKNOWN_ERROR.TEXT,
+        errorTitle: CNST.STRING_RESOURCES.UNKNOWN_ERROR.TITLE
       };
     case CNST.USER.SIGN_IN.SUCCESS:
       return {
@@ -51,6 +57,9 @@ export default function (state = user, action) {
         ...state,
         ...action.payload,
         fetching: false,
+        error: true,
+        errorText: CNST.STRING_RESOURCES.SIGN_IN_ERROR.TEXT,
+        errorTitle: CNST.STRING_RESOURCES.SIGN_IN_ERROR.TITLE
       };
     case CNST.USER.SIGN_IN.FETCH:
       return {
@@ -78,7 +87,17 @@ export default function (state = user, action) {
         email: "",
         isLoggedIn: false,
         isGetUserFetched: false,
-        topics: []
+        topics: [],
+        error: true,
+        errorText: CNST.STRING_RESOURCES.UNKNOWN_ERROR.TEXT,
+        errorTitle: CNST.STRING_RESOURCES.UNKNOWN_ERROR.TITLE
+      };
+    case CNST.USER.INTERFACE.ERROR_HAS_BEEN_HANDLED:
+      return {
+        ...state,
+        error: false,
+        errorText: "",
+        errorTitle: ""
       };
     default:
       return state;
