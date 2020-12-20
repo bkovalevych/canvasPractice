@@ -11,6 +11,7 @@ import get from "lodash/get";
 import {connect} from "react-redux";
 import SignIn from "./pages/authorization/signIn"
 import SignUp from "./pages/authorization/signUp"
+import ErrorModal from "./pages/errorModal";
 import {getUserAction} from "./redux/actions/user";
 
 function App(props) {
@@ -18,6 +19,7 @@ function App(props) {
     return (
         <>
             <Header/>
+            <ErrorModal/>
              <div className="mainContent">
                 <Switch>
                     <Route exact path={routes.ROOT}>
