@@ -20,6 +20,7 @@ export default {
     ERROR: "LOGOUT_ERROR"
   },
   INTERFACE: {
+    HANDLE_ERROR: "ERROR_HANDLE",
     ERROR_HAS_BEEN_HANDLED: "ERROR_HAS_BEEN_HANDLED"
   }
 };

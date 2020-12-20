@@ -29,6 +29,6 @@ export function logoutAction() {
 
 export function errorHasBeenHandled() {
   return {
-    type: CNST.USER.INTERFACE.ERROR_HAS_BEEN_HANDLED
+    type: CNST.USER.INTERFACE.HANDLE_ERROR
   }
 }

@@ -16,5 +16,5 @@ export default function* rootSaga() {
   yield takeLatest(CNST.TOPICS.GET_TOPICS.FETCH, getTopics);
   yield takeLatest(CNST.STEPS.GET_STEPS.FETCH, getSteps);
 
-  yield takeLatest(CNST.USER.INTERFACE.ERROR_HAS_BEEN_HANDLED, errorHandled);
+  yield takeLatest(CNST.USER.INTERFACE.HANDLE_ERROR, errorHandled);
 }

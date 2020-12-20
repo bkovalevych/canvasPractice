@@ -74,7 +74,6 @@ export const getUserRequest = ({email}) => {
 
 export function* getUser(props) {
     try {
-        debugger;
         const response = yield call(getUserRequest, props.payload);
         yield put({type: CNST.USER.GET_PROFILE.SUCCESS, payload: response.data});
     } catch (error) {
@@ -111,6 +110,6 @@ export function* logout(props) {
 
 export function* errorHandled() {
     yield put({
-        type :CNST.USER.INTERFACE.ERROR_HAS_BEEN_HANDLED
-    })
+        type: CNST.USER.INTERFACE.ERROR_HAS_BEEN_HANDLED
+    });
 }
