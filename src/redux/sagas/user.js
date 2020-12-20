@@ -61,7 +61,6 @@ export function* signIn(props) {
 }
 
 export const getUserRequest = ({email}) => {
-    debugger;
     return axios.get(`/user/get/${email}`).then(response => {
         if (response.status !== 200) throw new Error("bad request");
         return response.data;
@@ -78,9 +77,11 @@ export function* getUser(props) {
         yield put({type: CNST.USER.GET_PROFILE.SUCCESS, payload: response.data});
     } catch (error) {
         // removeToken();
-        yield put({
-            type: CNST.USER.GET_PROFILE.ERROR,
-        });
+        if(props.payload.firstCheck === null || props.payload.firstCheck === true){
+            yield put({
+                type: CNST.USER.GET_PROFILE.ERROR,
+            });
+        }
     }
 }
 

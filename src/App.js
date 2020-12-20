@@ -15,7 +15,7 @@ import ErrorModal from "./pages/errorModal";
 import {getUserAction} from "./redux/actions/user";
 
 function App(props) {
-    useEffect(() => { props.getUser() }, [])
+    useEffect(() => { props.getUser({firstCheck: true}) }, [])
     return (
         <>
             <Header/>
@@ -60,7 +60,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = (dispatch) => ({
-    getUser: () => dispatch(getUserAction())
+    getUser: (data) => dispatch(getUserAction(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
