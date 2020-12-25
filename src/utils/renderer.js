@@ -64,7 +64,7 @@ export default function({layers_width, layers_height, variables, places, layers,
         }
         switch (control.type) {
             case "checkbox":
-                return <label style={{position: "absolute", ...place}}><input
+                return <label style={{position: "absolute", ...place}} key={index}><input
                     key={index}
                     onChange={_update}
                     type={control.type}
@@ -74,7 +74,9 @@ export default function({layers_width, layers_height, variables, places, layers,
         return <label style={{position: "absolute",
             marginLeft: place.marginLeft,
             marginTop: place.marginTop,
-            }}>
+            }}
+                      key={index}
+        >
             {control.label}
             <input
                 key={index}
@@ -102,7 +104,7 @@ export default function({layers_width, layers_height, variables, places, layers,
                         marginLeft: place.marginLeft,
                         marginTop: place.marginTop
                     }}
-                    key={index}
+                key={index}
             />
         )
 
@@ -137,8 +139,6 @@ export default function({layers_width, layers_height, variables, places, layers,
             } catch (e) {
                 console.log(e);
             }
-
-
         })
         refUpdates.current = layers.map(layer => {
             if (!layer.update) {
@@ -151,11 +151,13 @@ export default function({layers_width, layers_height, variables, places, layers,
         })
     }, [layers])
     useEffect(() => {
-        if (refCanvases.current != null) return;
+        if (refCanvases.current === null) return;
+
         layers.forEach((layer, index) => {
             let result = {};
-            ["onMouseUp", "onMouseDown", "onMouseMove"].map(handler => {
+            ["onMouseUp", "onMouseDown", "onMouseMove"].forEach(handler => {
                 if (layer[handler] && layer[handler] !== "") {
+                    console.log("nu i nah")
                     const prepare = prepareRegex(layer[handler])
                     const funcHandler = eval(prepare);
                     result[handler] = (e) => {
@@ -169,6 +171,7 @@ export default function({layers_width, layers_height, variables, places, layers,
             }
             refCanvases.current.children[index].addEventListener("mousedown" , (e)=> {
                 if (listeners.current && listeners.current.onMouseDown) {
+
                     listeners.current.onMouseDown(e)
                 }
             })
@@ -183,7 +186,6 @@ export default function({layers_width, layers_height, variables, places, layers,
                 }
             })
         })
-
     }, [refCanvases])
     const placeTriggers = () => {
         if (!task_triggers || task_triggers.length === 0) {

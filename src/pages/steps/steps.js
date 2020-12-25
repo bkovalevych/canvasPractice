@@ -20,7 +20,7 @@ export const Steps = ({idTopic, nextTopic}) => {
     const [formulaOpened, setFormulaOpened] = useState(false);
     const decisionRef = useRef([]);
     useEffect(() => {
-        setStepPosition(1);
+        setStepPosition(0);
         setFetch("idle")
     }, [idTopic])
     useEffect(() => {
@@ -60,7 +60,7 @@ export const Steps = ({idTopic, nextTopic}) => {
             textBlock = <div key={0} style={{textAlign: "center"}}>
                 {typeof(step.text) === typeof ""?
                     <TextCounter text={step.text} update={update}/>:
-                    step.text.map(text => <TextCounter text={text} update={update}/>)
+                    step.text.map((text, index) => <TextCounter key={index} text={text} update={update}/>)
                 }
             </div>
         }
@@ -142,7 +142,7 @@ export const Steps = ({idTopic, nextTopic}) => {
                         setStepPosition(val => val + 1)}}
                     >Далі</Button>
                 </div>
-                <Typography>{getContent(stepPosition)}</Typography>
+                <Typography component={'span'}>{getContent(stepPosition)}</Typography>
             </div>
         </div>
     )

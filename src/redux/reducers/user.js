@@ -68,17 +68,17 @@ export default function (state = user, action) {
         fetching: true,
       };
     case CNST.USER.LOGOUT.SUCCESS:
+      localStorage.removeItem("token");
       return {
         fetching: false,
         email: "",
+        firstName: "",
+        lastName: "",
         isLoggedIn: false,
         isGetUserFetched: false,
-        topics: []
       };
     case CNST.USER.LOGOUT.FETCH:
       return {
-        ...state,
-        ...action.payload,
         fetching: true,
       };
     case CNST.USER.LOGOUT.ERROR:

@@ -1,5 +1,5 @@
 const topics = {
-    isFetched: false,
+    fetching: false,
     error: null,
     topics:[]
 }

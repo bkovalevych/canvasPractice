@@ -61,6 +61,9 @@ export function* signIn(props) {
 }
 
 export const getUserRequest = ({email}) => {
+    if (!email) {
+        return;
+    }
     return axios.get(`/user/get/${email}`).then(response => {
         if (response.status !== 200) throw new Error("bad request");
         return response.data;
@@ -85,28 +88,10 @@ export function* getUser(props) {
     }
 }
 
-export const logoutRequest = () => {
-    return axios
-        .post(`/logout`)
-        .catch(function (error) {
-            throw error.response.data;
-        });
-};
+
 
 export function* logout(props) {
-    try {
-        const response = yield call(logoutRequest, props.payload);
-        if (response.status === 200) {
-            yield put({type: CNST.USER.LOGOUT.SUCCESS, payload: response});
-        }
-    } catch (error) {
-        yield put({
-            type: CNST.USER.LOGOUT.ERROR,
-            payload: {
-                // errors: error,
-            },
-        });
-    }
+    yield put({type: CNST.USER.LOGOUT.SUCCESS});
 }
 
 export function* errorHandled() {

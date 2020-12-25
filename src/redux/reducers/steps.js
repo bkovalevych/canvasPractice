@@ -5,7 +5,8 @@ export default function (state = steps, action) {
     switch (action.type) {
         case CNST.STEPS.UPDATE_STEP.SUCCESS:
             return {
-                ...state
+                ...state,
+                ...action.payload
             };
         case CNST.STEPS.UPDATE_STEP.ERROR:
             return {
@@ -21,22 +22,22 @@ export default function (state = steps, action) {
                 ...state,
                 ...action.payload,
                 error: null,
-                isFetched: true,
+                fetching: true,
                 steps: []
             };
         case CNST.STEPS.GET_STEPS.ERROR:
             return {
                 ...state,
                 error: action.payload,
-                isFetched: false,
+                fetching: false,
                 steps: []
             };
         case CNST.STEPS.GET_STEPS.SUCCESS:
             return {
                 ...state,
-                ...action.payload,
+                steps: action.payload,
                 error: null,
-                isFetched: false,
+                fetching: false,
             };
         default:
             return state;

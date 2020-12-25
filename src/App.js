@@ -13,7 +13,7 @@ import SignIn from "./pages/authorization/signIn"
 import SignUp from "./pages/authorization/signUp"
 import ErrorModal from "./pages/errorModal";
 import {getUserAction} from "./redux/actions/user";
-
+import TopicsForUser from "./pages/homeForRegisteredUser"
 function App(props) {
     useEffect(() => { props.getUser({firstCheck: true}) }, [])
     return (
@@ -27,7 +27,7 @@ function App(props) {
                     </Route>
                     <RedirectWrapper path={routes.EXERCISE} accessible={props.isLoggedIn}
                                      pathname={routes.SIGN_IN}>
-                        <Topics/>
+                        <TopicsForUser/>
                     </RedirectWrapper>
                     <RedirectWrapper path={routes.PROFILE} accessible={props.isLoggedIn}
                                      pathname={routes.SIGN_IN}>

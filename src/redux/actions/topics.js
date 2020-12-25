@@ -1,15 +1,15 @@
 import CNST from "../../constants/"
 
-export function getTopics(email) {
+export function getTopics() {
     return {
-        type: CNST.STEPS.GET_STEPS.FETCH,
-        payload: {email}
+        type: CNST.TOPICS.GET_TOPICS.FETCH
     }
 }
 
-export function updateTopic(email, idTopic, topic) {
+export function updateTopic({idTopic, topic}) {
     return {
-        type: CNST.STEPS.UPDATE_STEP.FETCH,
-        payload: {email, idTopic, topic}
+        type: CNST.TOPICS.UPDATE_TOPIC.FETCH,
+        payload: {idTopic, topic}
     }
 }
+
