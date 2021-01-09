@@ -70,6 +70,7 @@ export default function (state = user, action) {
     case CNST.USER.LOGOUT.SUCCESS:
       localStorage.removeItem("token");
       localStorage.removeItem('email');
+      localStorage.setItem("points", "0");
       return {
         fetching: false,
         email: "",
@@ -78,6 +79,11 @@ export default function (state = user, action) {
         isLoggedIn: false,
         isGetUserFetched: false,
       };
+    case CNST.USER.CHANGE_POINTS:
+      return {
+        ...state,
+        ...action.payload
+      }
     case CNST.USER.LOGOUT.FETCH:
       return {
         fetching: true,

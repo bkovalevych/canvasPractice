@@ -4,6 +4,11 @@ import topics from "../stores/topics";
 export default function (state = topics, action) {
     switch (action.type) {
         case CNST.TOPICS.GET_TOPICS.SUCCESS:
+            let points = 0;
+            for (let topic of action.payload) {
+                points += topic.gainedPoints;
+            }
+            localStorage.setItem("points", points.toString());
             return {
                 ...state,
                 error: null,

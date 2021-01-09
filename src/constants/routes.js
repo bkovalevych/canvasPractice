@@ -3,5 +3,6 @@ export default {
     SIGN_IN: "/signin",
     SIGN_UP: "/signup",
     PROFILE: "/profile",
-    EXERCISE: "/exercise"
+    EXERCISE: "/exercise",
+    RATING: "/rating"
 }

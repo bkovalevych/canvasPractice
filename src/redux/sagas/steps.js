@@ -102,8 +102,16 @@ export function* updateStep(props) {
         }
     }
 
+    let points = 0;
+    for (let topic of topics) {
+        points += topic.gainedPoints;
+    }
+    localStorage.setItem("points", points.toString());
     localStorage.setItem("data", JSON.stringify(topics))
-
+    yield put({
+        type: CNST.USER.CHANGE_POINTS,
+        payload: {points}
+    })
     yield put({
         type: CNST.STEPS.UPDATE_STEP.SUCCESS,
         payload: {idTopic, idStep, step: topics[idTopic].steps[idTopic]}

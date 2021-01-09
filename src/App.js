@@ -14,6 +14,8 @@ import SignUp from "./pages/authorization/signUp"
 import ErrorModal from "./pages/errorModal";
 import {getUserAction} from "./redux/actions/user";
 import TopicsForUser from "./pages/homeForRegisteredUser"
+import Rating from './pages/rating'
+
 function App(props) {
     useEffect(() => { props.getUser({firstCheck: true}) }, [])
     return (
@@ -31,6 +33,10 @@ function App(props) {
                             <Topics/>
                         }
                     </Route>
+                    <RedirectWrapper path={routes.RATING} accessible={props.isLoggedIn}
+                                     pathname={routes.SIGN_IN}>
+                        <Rating/>
+                    </RedirectWrapper>
                     <RedirectWrapper path={routes.PROFILE} accessible={props.isLoggedIn}
                                      pathname={routes.SIGN_IN}>
                         <Profile/>

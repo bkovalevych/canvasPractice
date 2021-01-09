@@ -9,7 +9,8 @@ const user = {
     id: "",
     error: false,
     errorTitle: "",
-    errorText: ""
+    errorText: "",
+    points: parseInt(localStorage.getItem('points'))
 };
 
 export default user;

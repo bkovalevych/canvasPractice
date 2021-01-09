@@ -19,7 +19,7 @@ export default [
             },
             {
                 "isDone": false,
-                "points": 9,
+                "points": 8,
                 "gainedPoints": 0,
                 "decisions": [
                     {
@@ -27,10 +27,10 @@ export default [
                         "label": "Виразіть висоту дерева через формулу",
                         "type": "formula",
                         "pointsWithTooltip": 5,
-                        "points": 9,
+                        "points": 8,
                         "answer": "^((ac|ca)\\*(de|ed))|((de|ed)\\*(ac|ca))\\/(ea|ae)$",
                         "fillValue": "AC * DE / EA",
-                        "tooltip": "З підказкою отримаєте тільки 5 балів, а не 9"
+                        "tooltip": "З підказкою отримаєте тільки 5 балів, а не 8"
                     }
                 ],
                 "formulas": [
@@ -781,7 +781,7 @@ export default [
 
     {
         "gainedPoints": 0,
-        "points": 0,
+        "points": 2,
         "isPreview": true,
         "name": "Теорема синусів",
         "attempts": 1,
@@ -803,6 +803,11 @@ export default [
                 "type": "custom",
                 "text":
                     "Задача. Дано трикутник ABC. Відомі 2 кути та одна сторона AB. Знайти всі інші сторони та радіус  кола описаного трикутника",
+                "formulas": [
+                    {
+                        "formula": "AB/sinC = AC / sinB = BC / sinA = 2R", "tooltip": "Теорема синусів"
+                    }
+                    ],
                 "view": {
                     "layers_width": 400,
                     "layers_height": 500,

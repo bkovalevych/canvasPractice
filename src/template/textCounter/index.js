@@ -8,6 +8,7 @@ export const mapStateToProps = (state, props) => {
         points: get(state, `steps.steps[${props.idStep}].points`, 0),
         gainedPoints: get(state, `steps.steps[${props.idStep}].gainedPoints`, 0),
         isDone: get(state, `steps.steps[${props.idStep}].isDone`, false),
+        isPreview: get(state, `steps.steps[${props.idStep}].isPreview`, false),
         ...props
     };
 };

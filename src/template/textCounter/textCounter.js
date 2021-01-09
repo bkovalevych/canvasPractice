@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {faCheckCircle} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export default ({text, update, points, gainedPoints, isDone, updateStep, idStep, idTopic}) => {
+export default ({text, update, isPreview, isDone, updateStep, idStep, idTopic}) => {
     const [pos, setPos] = useState(isDone? text.length: 0);
     const size = text.length;
 
@@ -26,7 +26,8 @@ export default ({text, update, points, gainedPoints, isDone, updateStep, idStep,
                onChange={e => {
                    const newValue = parseInt(e.target.value);
                    if (newValue === size) {
-                       updateStep( {idTopic: idTopic, idStep: idStep, step: {gainedPoints: 1, isDone: true}});
+                       const points = isPreview? 0: 1;
+                       updateStep( {idTopic: idTopic, idStep: idStep, step: {gainedPoints: points, isDone: true}});
                    }
                    update(parseInt(e.target.value) - pos)
                    setPos(newValue)
