@@ -10,6 +10,12 @@ export default function({layers_width, layers_height, variables, places, layers,
     const listeners = useRef();
     variables.forEach(({name, value}) => {
         refVariables.current[name] = value;
+        if (typeof value === "string" && value.startsWith("new Image")) {
+            const coords = /\((\d+), (\d+)\)/g.exec(value)
+            const x = parseInt(coords[1]);
+            const y = parseInt(coords[2]);
+            refVariables.current[name] = new Image(x, y);
+        }
     })
     const refUpdates = useRef();
     const refTriggers = useRef();

@@ -11,9 +11,16 @@ export const getStepsRequest = ({id}) => {
 };
 
 export function* getSteps(props) {
+    let topics = localStorage.getItem("data");
+    if (!topics) {
+        topics = data;
+        localStorage.setItem("data", JSON.stringify(data));
+    } else {
+        topics = JSON.parse(topics);
+    }
     yield put({
         type: CNST.STEPS.GET_STEPS.SUCCESS,
-        payload: data[props.idTopic]
+        payload: topics[props.payload.idTopic]
     })
     // try {
     //     const response = yield call(getStepsRequest, props.payload);
@@ -48,12 +55,63 @@ export const updateStepRequest = ({idTopic, idStep, step}) => {
 }
 
 export function* updateStep(props) {
+    let topics = JSON.parse(localStorage.getItem("data"))
+    const {idTopic, idStep} = props.payload;
+    if (typeof props.payload.idDecision === 'number') {
+        const {idDecision, points} = props.payload;
+        const isDone = topics[idTopic].steps[idStep].decisions[idDecision].isDone;
+        if (!isDone) {
+            topics[idTopic].steps[idStep].decisions[idDecision].isDone = true;
+            topics[idTopic].steps[idStep].gainedPoints += points;
+            topics[idTopic].gainedPoints += points;
+        }
+        let count = topics[idTopic].steps[idStep].decisions.length;
+        for (let decision of topics[idTopic].steps[idStep].decisions) {
+            if (decision.isDone) {
+                --count;
+            }
+        }
+        if (count === 0 && (topics[idTopic].steps[idStep].text && topics[idTopic].steps[idStep].isDone || !topics[idTopic].steps[idStep].text)) {
+            if (topics[idTopic]['steps'].length - 1 === idStep) {
+                topics[idTopic].isDone = true;
+                ++topics[idTopic].attempts;
+            } else {
+                ++topics[idTopic].currentStep
+            }
+        }
+    } else {
+        const {step} = props.payload;
+
+        let points = step.gainedPoints - topics[idTopic]["steps"][idStep].gainedPoints
+        topics[idTopic]["steps"][idStep] = {...topics[idTopic]["steps"][idStep], ...step};
+        topics[idTopic].gainedPoints += points;
+        let count = topics[idTopic].steps[idStep].decisions? topics[idTopic].steps[idStep].decisions.length: 0;
+        if (topics[idTopic].steps[idStep].decisions) {
+            for (let decision of topics[idTopic].steps[idStep].decisions) {
+                if (decision.isDone) {
+                    --count;
+                }
+            }
+        }
+
+        if (count === 0 && topics[idTopic]['steps'].length - 1 === idStep) {
+            topics[idTopic].isDone = true;
+            ++topics[idTopic].attempts;
+        } else {
+            ++topics[idTopic].currentStep
+        }
+    }
+
+    localStorage.setItem("data", JSON.stringify(topics))
+
     yield put({
         type: CNST.STEPS.UPDATE_STEP.SUCCESS,
-
+        payload: {idTopic, idStep, step: topics[idTopic].steps[idTopic]}
     })
+    delete topics[idTopic].steps;
     yield put({
-       type: CNST.TOPICS.UP
+        type: CNST.TOPICS.UPDATE_TOPIC.SUCCESS,
+        payload: {idTopic, topic: topics[idTopic]}
     });
     // try {
     //     const response = yield call(updateStepRequest, props.payload);

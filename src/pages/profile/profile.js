@@ -11,7 +11,6 @@ export const Profile = ({getProfile, email, isGetUserFetched, fetching, errors, 
     if (fetching) {
         return <Loader/>;
     } else if (isGetUserFetched) {
-        debugger
         return (<>
             <div className="container pt-5 pb-5">
                 <div className="row">
@@ -37,8 +36,8 @@ export const Profile = ({getProfile, email, isGetUserFetched, fetching, errors, 
                         <div className="card border-dark">
                             <h5 className="card-header bg-dark text-white">Завдання</h5>
                             {
-                                [1, 2, 3, 4, 5].map(el => {
-                                    return <div className="card-body">
+                                [1, 2, 3, 4, 5].map((el,index) => {
+                                    return <div key={"cards" + index} className="card-body">
                                         <h5 className="card-title">Special title treatment</h5>
                                         <p className="card-text">With supporting text below as a natural lead-in to
                                             additional

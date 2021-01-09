@@ -7,9 +7,16 @@ export function getSteps(idTopic) {
     }
 }
 
-export function updateStep(idTopic, idStep, step) {
+export function updateStep({idTopic, idStep, step}) {
     return {
         type: CNST.STEPS.UPDATE_STEP.FETCH,
         payload: {idTopic, idStep, step}
+    }
+}
+
+export function updateDecision({idTopic, idStep, idDecision, points}) {
+    return {
+        type: CNST.STEPS.UPDATE_STEP.FETCH,
+        payload: {idTopic, idStep, idDecision, points}
     }
 }

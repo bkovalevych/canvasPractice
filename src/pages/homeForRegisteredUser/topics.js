@@ -1,30 +1,41 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import Steps from '../steps';
 import {getTopicsLabels} from '../../functions/topics'
 import style from "./topics.module.scss"
 
-export const Topics = () => {
+export const Topics = ({topics, getTopics, updateTopic}) => {
     const [selectedTopic, setSelectedTopic] = useState(null);
     const [fetch, setFetch] = useState("idle");
-    const labels = useRef(null);
+    const [labels, setLabels] = useState([]);
     const sidePanel = useRef();
     const rightSidePanel = useRef();
     const content = useRef();
+
+    const updateSetLabels = useCallback(() => {
+        setLabels(topics.topics);
+    }, [topics])
+
     const nextTopic = () => {
-        if (labels && selectedTopic < labels.current.length) {
+        if (labels && selectedTopic + 1 < labels.length) {
             setSelectedTopic(val => val + 1);
+            return true;
         }
+        return false;
     }
     useEffect(() => {
         if (fetch === 'idle') {
-            getTopicsLabels().then(topics => {
-                labels.current = topics
-                setFetch("done")
-            })
+            getTopics();
             setFetch('waiting');
         }
     },[fetch])
+    useEffect(() => {
+        if (fetch === "waiting") {
+            setFetch("done");
+            updateSetLabels();
+        }
+    }, [topics])
+
     const showTopicContent = () => {
         if (selectedTopic === null) {
             return <div className={style.normalText}>Тема не обрана</div>;
@@ -35,7 +46,7 @@ export const Topics = () => {
         if (fetch === 'idle' || fetch === 'waiting') {
             return "waiting";
         }
-        return labels.current.map((val, index) =>
+        return labels.map((val, index) =>
             <div key={index}
                className={index === selectedTopic? style.selectedTopic: style.normalTopic}
                  onClick={() => {

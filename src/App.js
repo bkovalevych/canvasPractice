@@ -23,12 +23,14 @@ function App(props) {
              <div className="mainContent">
                 <Switch>
                     <Route exact path={routes.ROOT}>
-                        <Topics/>
+                        Вы в корне проекта
                     </Route>
-                    <RedirectWrapper path={routes.EXERCISE} accessible={props.isLoggedIn}
-                                     pathname={routes.SIGN_IN}>
-                        <TopicsForUser/>
-                    </RedirectWrapper>
+                    <Route path={routes.EXERCISE}>
+                        {props.isLoggedIn?
+                            <TopicsForUser/>:
+                            <Topics/>
+                        }
+                    </Route>
                     <RedirectWrapper path={routes.PROFILE} accessible={props.isLoggedIn}
                                      pathname={routes.SIGN_IN}>
                         <Profile/>

@@ -2,15 +2,15 @@ import React, {useEffect, useRef, useState} from "react"
 import {Step, Stepper, StepLabel} from "@material-ui/core"
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import TextCounter from "../../template/textCounter"
+import TextCounter from "../../template/textCounter/index"
 import Renderer from '../../utils/renderer'
-import {getTopic} from "../../functions/topics"
+// import {getTopic} from "../../functions/topics"
 import Formula from '../../utils/formulaViewer'
 import DecisionField from '../../utils/decisionField'
 import styles from './steps.module.scss'
 import {faClipboardList} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-export const Steps = ({idTopic, nextTopic}) => {
+export const Steps = ({idTopic, nextTopic, steps, updateStep, getSteps, updateDecision}) => {
     const [fetch, setFetch] = useState("idle");
     const [stepPosition, setStepPosition] = useState(0)
     const [done, setDone] = useState(false);
@@ -23,18 +23,35 @@ export const Steps = ({idTopic, nextTopic}) => {
         setStepPosition(0);
         setFetch("idle")
     }, [idTopic])
+
     useEffect(() => {
         if(fetch === 'idle') {
-            getTopic(idTopic).then(topic => {
-                content.current = topic
-                setFetch("done")
-            })
+            getSteps(idTopic)
+            // getTopic(idTopic).then(topic => {
+            //     content.current = topic
+            //     setFetch("done")
+            // })
             setFetch('waiting');
         }
     }, [fetch])
+
     useEffect(() => {
-        setDone(false);
+        if (steps.steps[stepPosition]) {
+            setDone(steps.steps[stepPosition].isDone);
+        } else {
+            setDone(false);
+        }
+
     }, [stepPosition])
+
+    useEffect(() => {
+        if (fetch === "waiting") {
+            content.current = steps;
+            setDone(steps.steps[stepPosition].isDone);
+            setFetch("done");
+        }
+    }, [steps])
+
     const getContent = (index) => {
         return parseContent(content.current.steps[index]);
     }
@@ -59,8 +76,8 @@ export const Steps = ({idTopic, nextTopic}) => {
 
             textBlock = <div key={0} style={{textAlign: "center"}}>
                 {typeof(step.text) === typeof ""?
-                    <TextCounter text={step.text} update={update}/>:
-                    step.text.map((text, index) => <TextCounter key={index} text={text} update={update}/>)
+                    <TextCounter text={step.text} update={update} idTopic={idTopic} idStep={stepPosition} />:
+                    step.text.map((text, index) => <TextCounter key={index} text={text} update={update} idTopic={idTopic} idStep={stepPosition}/>)
                 }
             </div>
         }
@@ -77,14 +94,14 @@ export const Steps = ({idTopic, nextTopic}) => {
             decisionRef.current = [];
             let elements = step.decisions.map((decision, index) => {
                 decisionRef.current.push({answer: decision.answer, value: ""});
-                return <DecisionField key={index} value={decision.value} type={decision.type} answer={decision.answer} label={decision.label}/>
+                return <DecisionField key={index} idDecision={index} idTopic={idTopic} idStep={stepPosition} updateDecision={updateDecision} {...decision}/>
             })
             decisions = <div>{elements}</div>
         }
         if (step.formulas) {
             formulas = <>
                 <div className={styles.list_formulas} ref={formulasDiv}
-                              style={{opacity: formulaOpened? '1': '0'}}>
+                              style={{display: formulaOpened? 'block': 'none'}}>
                 Формули
                 <ol>
                     {step.formulas.map(({formula, tooltip}, index) =>
@@ -136,7 +153,9 @@ export const Steps = ({idTopic, nextTopic}) => {
                     <Button disabled={stepPosition === 0}  onClick={() => setStepPosition(val => val - 1)}>Назад</Button>
                     <Button disabled={stepPosition > content.current.steps.length || !done} onClick={() => {
                         if (stepPosition + 1 >= content.current.steps.length) {
-                            nextTopic();
+                            if(!nextTopic()) {
+                                alert("Теми скінчились")
+                            }
                             return;
                         }
                         setStepPosition(val => val + 1)}}

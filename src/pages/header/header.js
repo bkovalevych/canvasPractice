@@ -9,7 +9,9 @@ export const Header = ({isLoggedIn, email, logout}) => {
     return (
         <div className="header">
             <Navbar expand="lg" bg="light" variant="light" collapseOnSelect={true} >
-                <Navbar.Brand as={Link} to="/">
+                <Navbar.Brand
+                    // as={Link} to="/"
+                >
                     EGeometry
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbar-nav"/>

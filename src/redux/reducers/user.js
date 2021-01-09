@@ -69,6 +69,7 @@ export default function (state = user, action) {
       };
     case CNST.USER.LOGOUT.SUCCESS:
       localStorage.removeItem("token");
+      localStorage.removeItem('email');
       return {
         fetching: false,
         email: "",

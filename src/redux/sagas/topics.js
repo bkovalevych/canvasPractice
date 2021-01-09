@@ -13,9 +13,16 @@ export const getTopicsRequest = () => {
 }
 
 export function* getTopics(props) {
+    let topics = localStorage.getItem("data");
+    if (!topics) {
+        topics = data;
+        localStorage.setItem("data", JSON.stringify(data))
+    } else {
+        topics = JSON.parse(topics);
+    }
     yield put({
         type: CNST.TOPICS.GET_TOPICS.SUCCESS,
-        payload: data
+        payload: topics
     })
 
     // try {

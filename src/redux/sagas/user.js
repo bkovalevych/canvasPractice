@@ -48,6 +48,7 @@ export function* signIn(props) {
         const response = yield call(signInRequest, props.payload);
         if (response.status === 200) {
             localStorage.setItem("token", response.headers.authorization);
+            localStorage.setItem("email", props.payload.email);
             yield put({type: CNST.USER.SIGN_IN.SUCCESS, payload: response});
         }
     } catch (error) {
@@ -61,6 +62,9 @@ export function* signIn(props) {
 }
 
 export const getUserRequest = ({email}) => {
+    if (!email) {
+        email = localStorage.getItem("email");
+    }
     if (!email) {
         return;
     }

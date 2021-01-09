@@ -10,7 +10,7 @@ export default [
         "attempts": 0, // количество попыток ( на случай, если человек захочет пройти заново)
         "steps": [
             {
-                "isDone": "false",
+                "isDone": false,
                 "points": 1,
                 "gainedPoints": 0,
                 "type": "text",
@@ -18,23 +18,24 @@ export default [
                     "Наприклад, вам потрібно дізнатись висоту дерева. У вашому розпорядженні є мірна стрічка, дзеркало"
             },
             {
-                "isDone": "false",
+                "isDone": false,
                 "points": 9,
                 "gainedPoints": 0,
                 "decisions": [
                     {
+                        "isDone": false,
                         "label": "Виразіть висоту дерева через формулу",
                         "type": "formula",
-                        "pointsWIthTooltip": 5,
+                        "pointsWithTooltip": 5,
                         "points": 9,
                         "answer": "^((ac|ca)\\*(de|ed))|((de|ed)\\*(ac|ca))\\/(ea|ae)$",
                         "fillValue": "AC * DE / EA",
-                        "tooltip": "Якщо зкористаєтесь підказкою, то отримаєте тільки 5 балів, а не 9"
+                        "tooltip": "З підказкою отримаєте тільки 5 балів, а не 9"
                     }
                 ],
                 "formulas": [
                     {"formula": "DE/EA = BC / AC", "tooltip": "Відношення сторін в трикутниках"}],
-                "text": "Позначимо стовп BC, DE - це ваш зріст",
+                "text": "Позначимо дерево BC, DE - це ваш зріст",
                 "type": "custom",
                 "view": {
                     "layers_width": 700,
@@ -78,11 +79,11 @@ export default [
                         },
                         {
                             "name": "$human",
-                            "value": new Image(200, 50)
+                            "value": "new Image(200, 50)"
                         },
                         {
                             "name": "$tree",
-                            "value": new Image(200, 50)
+                            "value": "new Image(200, 50)"
                         },
                         {
                             "name": "$D",
@@ -492,9 +493,9 @@ export default [
         ]
     },
     {
-        "gainedPoints": 15,
+        "gainedPoints": 0,
         "isPreview": false,
-        "points": 0,
+        "points": 15,
         "stepsCount": 4,
         "currentStep": 0,
         "isDone": false,
@@ -502,27 +503,26 @@ export default [
         "name": "Тригонометрія. Початок",
         "steps": [
         {
-            "isDone": "false",
+            "isDone": false,
             "points": 1,
             "gainedPoints": 0,
             "type": "text",
-            "text": ["Почнімо наш новий розділ геометрії. Тригонометрія - це вчення про співвідношення кутів та сторін трикутника"]
+            "text": "Почнімо наш новий розділ геометрії. Тригонометрія - це вчення про співвідношення кутів та сторін трикутника"
         },
         {
-            "isDone": "false",
+            "isDone": false,
             "points": 1,
             "gainedPoints": 0,
             "type": "text",
-            "text": ["Дізнаємось про синус та косинус. Введемо деякі позначення для більшої ясності. Для початку дано точку A(1, 0) на координатній площині."]
+            "text": "Дізнаємось про синус та косинус. Введемо деякі позначення для більшої ясності. Для початку дано точку A(1, 0) на координатній площині."
         },
         {
-            "isDone": "false",
+            "isDone": false,
             "points": 1,
             "gainedPoints": 0,
             "type": "custom",
-            "text": [
+            "text":
                 "Точка A буде обертатись відносно O. Синусом для кута обертання буде ордината (y значення) точки А. Косинусом для кута обертання буде абсциса (х значення) точки А",
-            ],
             "view": {
                 "layers_width": 400,
                 "layers_height": 500,
@@ -590,24 +590,26 @@ export default [
             }
         },
         {
-            "isDone": "false",
+            "isDone": false,
             "points": 12,
             "gainedPoints": 0,
             "decisions": [
                 {
-                    "pointsWIthTooltip": 3,
+                    "isDone": false,
+                    "pointsWithTooltip": 3,
                     "points": 6,
                     "fillValue": "0",
-                    "tooltip": "Якщо зкористаєтесь підказкою, то отримаєте тільки 3 бала, а не 6",
+                    "tooltip": "З підказкою отримаєте тільки 3 бала, а не 6",
                     "label": "Синус від 0 градусів",
                     "type": "value",
                     "answer": "0"
                 },
                 {
-                    "pointsWIthTooltip": 3,
+                    "isDone": false,
+                    "pointsWithTooltip": 3,
                     "points": 6,
                     "fillValue": "1",
-                    "tooltip": "Якщо зкористаєтесь підказкою, то отримаєте тільки 3 бала, а не 6",
+                    "tooltip": "З підказкою отримаєте тільки 3 бала, а не 6",
                     "label": "Косинус від 0 градусів",
                     "type": "value",
                     "answer": "1"
@@ -779,26 +781,28 @@ export default [
 
     {
         "gainedPoints": 0,
-        "points": 20,
-        "isPreview": "true",
+        "points": 0,
+        "isPreview": true,
         "name": "Теорема синусів",
         "attempts": 1,
-        "isDone": "true",
+        "isDone": true,
         "stepsCount": 2,
         "currentStep": 0,
         "steps": [
             {
+                "isDone": false,
+                "points": 0,
+                "gainedPoints": 0,
                 "type": "text",
                 "text": "Розглянемо приклад використання синусів"
             },
             {
-                "isDone": "false",
-                "points": 2,
+                "isDone": false,
+                "points": 0,
                 "gainedPoints": 0,
                 "type": "custom",
-                "text": [
-                    "Задача. Дано трикутник ABC",
-                    "Відомі 2 кути та одна сторона AB. Знайти всі інші сторони та радіус  кола описаного трикутника"],
+                "text":
+                    "Задача. Дано трикутник ABC. Відомі 2 кути та одна сторона AB. Знайти всі інші сторони та радіус  кола описаного трикутника",
                 "view": {
                     "layers_width": 400,
                     "layers_height": 500,
