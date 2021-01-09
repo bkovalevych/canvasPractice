@@ -4,16 +4,22 @@ import topics from "../stores/topics";
 export default function (state = topics, action) {
     switch (action.type) {
         case CNST.TOPICS.GET_TOPICS.SUCCESS:
+            let points = 0;
+            for (let topic of action.payload) {
+                points += topic.gainedPoints;
+            }
+            localStorage.setItem("points", points.toString());
             return {
                 ...state,
                 error: null,
-                isFetched: false
+                fetching: false,
+                topics: action.payload
             };
         case CNST.TOPICS.GET_TOPICS.ERROR:
             return {
                 ...state,
                 error: action.payload,
-                isFetched: false,
+                fetching: false,
                 topics: []
             };
         case CNST.TOPICS.GET_TOPICS.FETCH:
@@ -21,7 +27,7 @@ export default function (state = topics, action) {
                 ...state,
                 ...action.payload,
                 error: null,
-                isFetched: true,
+                fetching: true,
                 topics: []
             };
         case CNST.TOPICS.UPDATE_TOPIC.FETCH:
@@ -34,9 +40,12 @@ export default function (state = topics, action) {
                 ...state
             };
         case CNST.TOPICS.UPDATE_TOPIC.SUCCESS:
+            const {idTopic, topic} = action.payload;
+            state.topics[idTopic] = {...state.topics[idTopic], ...topic}
             return {
-                ...state,
-                ...action.payload
+                fetching: false,
+                error: null,
+                ...state
             };
         default:
             return state;

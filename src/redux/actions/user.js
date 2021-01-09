@@ -14,8 +14,9 @@ export function signInAction(data) {
   };
 }
 
-export function getUserAction() {
+export function getUserAction(data) {
   return {
+    payload: data,
     type: CNST.USER.GET_PROFILE.FETCH,
   };
 }
@@ -23,5 +24,11 @@ export function getUserAction() {
 export function logoutAction() {
   return {
     type: CNST.USER.LOGOUT.FETCH
+  }
+}
+
+export function errorHasBeenHandled() {
+  return {
+    type: CNST.USER.INTERFACE.HANDLE_ERROR
   }
 }

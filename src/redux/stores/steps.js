@@ -1,5 +1,5 @@
 const steps = {
-    isFetched: false,
+    fetching: false,
     error: null,
     _id: null,
     gainedPoints: 0,

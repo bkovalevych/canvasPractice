@@ -4,31 +4,44 @@ import steps from "../stores/steps";
 export default function (state = steps, action) {
     switch (action.type) {
         case CNST.STEPS.UPDATE_STEP.SUCCESS:
-            return {
-                ...state
-            };
+            // const {idStep, step} = action.payload;
+            // const points = step.gainedPoints - state.steps[idStep].gainedPoints;
+            // state.gainedPoints += points;
+            // state.steps[idStep] = {...state.steps[idStep], ...step};
+            return state;
         case CNST.STEPS.UPDATE_STEP.ERROR:
             return {
                 ...state
             };
         case CNST.STEPS.UPDATE_STEP.FETCH:
-            return {
-                ...state,
-                ...action.payload
-            };
+            if (typeof action.payload.idDecision === 'number') {
+                const {idTopic, idStep, idDecision, points} = action.payload;
+                const isDone = state.steps[idStep].decisions[idDecision].isDone;
+                if (!isDone) {
+                    state.steps[idStep].decisions[idDecision].isDone = true;
+                    state.steps[idStep].gainedPoints += points;
+                    state.gainedPoints += points;
+                }
+            } else {
+                const {idStep, step} = action.payload;
+                const points = step.gainedPoints - state.steps[idStep].gainedPoints;
+                state.gainedPoints += points;
+                state.steps[idStep] = {...state.steps[idStep], ...step};
+            }
+            return state;
         case CNST.STEPS.GET_STEPS.FETCH:
             return {
                 ...state,
                 ...action.payload,
                 error: null,
-                isFetched: true,
+                fetching: true,
                 steps: []
             };
         case CNST.STEPS.GET_STEPS.ERROR:
             return {
                 ...state,
                 error: action.payload,
-                isFetched: false,
+                fetching: false,
                 steps: []
             };
         case CNST.STEPS.GET_STEPS.SUCCESS:
@@ -36,7 +49,7 @@ export default function (state = steps, action) {
                 ...state,
                 ...action.payload,
                 error: null,
-                isFetched: false,
+                fetching: false,
             };
         default:
             return state;

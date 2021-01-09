@@ -1,15 +1,22 @@
 import CNST from "../../constants/"
 
-export function getSteps(email, idTopic) {
+export function getSteps(idTopic) {
     return {
         type: CNST.STEPS.GET_STEPS.FETCH,
-        payload: {email, idTopic}
+        payload: {idTopic}
     }
 }
 
-export function updateStep(email, idTopic, idStep, step) {
+export function updateStep({idTopic, idStep, step}) {
     return {
         type: CNST.STEPS.UPDATE_STEP.FETCH,
-        payload: {email, idTopic, idStep, step}
+        payload: {idTopic, idStep, step}
+    }
+}
+
+export function updateDecision({idTopic, idStep, idDecision, points}) {
+    return {
+        type: CNST.STEPS.UPDATE_STEP.FETCH,
+        payload: {idTopic, idStep, idDecision, points}
     }
 }

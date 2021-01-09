@@ -1,6 +1,6 @@
 import { takeLatest } from "redux-saga/effects";
 import CNST from "../../constants";
-import {getUser, signIn, signUp, logout} from "./user";
+import {getUser, signIn, signUp, logout, errorHandled} from "./user";
 import {getTopics, updateTopic} from "./topics"
 import {getSteps, updateStep} from "./steps"
 
@@ -15,4 +15,6 @@ export default function* rootSaga() {
 
   yield takeLatest(CNST.TOPICS.GET_TOPICS.FETCH, getTopics);
   yield takeLatest(CNST.STEPS.GET_STEPS.FETCH, getSteps);
+
+  yield takeLatest(CNST.USER.INTERFACE.HANDLE_ERROR, errorHandled);
 }

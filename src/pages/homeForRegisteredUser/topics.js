@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import Steps from '../steps';
+import {getTopicsLabels} from '../../functions/topics'
 import style from "./topics.module.scss"
 
 export const Topics = ({topics, getTopics, updateTopic}) => {
@@ -14,6 +15,7 @@ export const Topics = ({topics, getTopics, updateTopic}) => {
     const updateSetLabels = useCallback(() => {
         setLabels(topics.topics);
     }, [topics])
+
     const nextTopic = () => {
         if (labels && selectedTopic + 1 < labels.length) {
             setSelectedTopic(val => val + 1);
@@ -24,16 +26,15 @@ export const Topics = ({topics, getTopics, updateTopic}) => {
     useEffect(() => {
         if (fetch === 'idle') {
             getTopics();
-            setFetch("waiting");
+            setFetch('waiting');
         }
-    }, [fetch])
+    },[fetch])
     useEffect(() => {
-        if (fetch === 'waiting') {
+        if (fetch === "waiting") {
             setFetch("done");
             updateSetLabels();
         }
     }, [topics])
-
 
     const showTopicContent = () => {
         if (selectedTopic === null) {
@@ -48,18 +49,9 @@ export const Topics = ({topics, getTopics, updateTopic}) => {
         return labels.map((val, index) =>
             <div key={index}
                className={index === selectedTopic? style.selectedTopic: style.normalTopic}
-                 style={{color: val.isPreview !== true? "#747373": "#000"}}
                  onClick={() => {
-                      if (val.isPreview === true)
-                          setSelectedTopic(index)
-                  }}>{val.name}<span>{val.gainedPoints}/{val.points}</span>
-                {val.isPreview === false?
-                    <div className={style.tooltip_text}>
-                        Щоб відкрити тему, потрібно зареєструватися
-                    </div>:
-                    ""
-                }
-                  </div>
+                     setSelectedTopic(index)
+                  }}>{val.name} <span>{val.gainedPoints}/{val.points}</span></div>
         )
     }
     return <div className={style.parent}>

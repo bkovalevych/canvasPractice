@@ -48,57 +48,58 @@ export function* signIn(props) {
         const response = yield call(signInRequest, props.payload);
         if (response.status === 200) {
             localStorage.setItem("token", response.headers.authorization);
+            localStorage.setItem("email", props.payload.email);
             yield put({type: CNST.USER.SIGN_IN.SUCCESS, payload: response});
         }
     } catch (error) {
         yield put({
             type: CNST.USER.SIGN_IN.ERROR,
             payload: {
-                // errors: error,
+                 errors: error,
             },
         });
     }
 }
 
-export const getUserRequest = () => {
-    let id = 'c4998a30-a40a-4c3a-af37-839900261b26'
-    return axios.get(`/user/get/profile/${id}`).catch(function (error) {
+export const getUserRequest = ({email}) => {
+    if (!email) {
+        email = localStorage.getItem("email");
+    }
+    if (!email) {
+        return;
+    }
+    return axios.get(`/user/get/${email}`).then(response => {
+        if (response.status !== 200) throw new Error("bad request");
+        return response.data;
+    }).then(id =>
+       axios.get(`/user/get/profile/${id}`)
+    ).catch(function (error) {
         throw error.response.data;
     });
 };
 
-export function* getUser() {
+export function* getUser(props) {
     try {
-        const response = yield call(getUserRequest);
+        const response = yield call(getUserRequest, props.payload);
         yield put({type: CNST.USER.GET_PROFILE.SUCCESS, payload: response.data});
     } catch (error) {
         // removeToken();
-        yield put({
-            type: CNST.USER.GET_PROFILE.ERROR,
-        });
+        if(props.payload.firstCheck == false){
+            yield put({
+                type: CNST.USER.GET_PROFILE.ERROR,
+            });
+        }
     }
 }
 
-export const logoutRequest = () => {
-    return axios
-        .post(`/logout`)
-        .catch(function (error) {
-            throw error.response.data;
-        });
-};
+
 
 export function* logout(props) {
-    try {
-        const response = yield call(logoutRequest, props.payload);
-        if (response.status === 200) {
-            yield put({type: CNST.USER.LOGOUT.SUCCESS, payload: response});
-        }
-    } catch (error) {
-        yield put({
-            type: CNST.USER.LOGOUT.ERROR,
-            payload: {
-                // errors: error,
-            },
-        });
-    }
+    yield put({type: CNST.USER.LOGOUT.SUCCESS});
+}
+
+export function* errorHandled() {
+    yield put({
+        type: CNST.USER.INTERFACE.ERROR_HAS_BEEN_HANDLED
+    });
 }

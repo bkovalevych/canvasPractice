@@ -11,21 +11,31 @@ import get from "lodash/get";
 import {connect} from "react-redux";
 import SignIn from "./pages/authorization/signIn"
 import SignUp from "./pages/authorization/signUp"
+import ErrorModal from "./pages/errorModal";
 import {getUserAction} from "./redux/actions/user";
+import TopicsForUser from "./pages/homeForRegisteredUser"
+import Rating from './pages/rating'
 
 function App(props) {
-    useEffect(() => { props.getUser() }, [])
+    useEffect(() => { props.getUser({firstCheck: true}) }, [])
     return (
         <>
             <Header/>
+            <ErrorModal/>
              <div className="mainContent">
                 <Switch>
                     <Route exact path={routes.ROOT}>
-                        <Topics/>
+                        Вы в корне проекта
                     </Route>
-                    <RedirectWrapper path={routes.EXERCISE} accessible={props.isLoggedIn}
+                    <Route path={routes.EXERCISE}>
+                        {props.isLoggedIn?
+                            <TopicsForUser/>:
+                            <Topics/>
+                        }
+                    </Route>
+                    <RedirectWrapper path={routes.RATING} accessible={props.isLoggedIn}
                                      pathname={routes.SIGN_IN}>
-                        <Topics/>
+                        <Rating/>
                     </RedirectWrapper>
                     <RedirectWrapper path={routes.PROFILE} accessible={props.isLoggedIn}
                                      pathname={routes.SIGN_IN}>
@@ -58,7 +68,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = (dispatch) => ({
-    getUser: () => dispatch(getUserAction())
+    getUser: (data) => dispatch(getUserAction(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

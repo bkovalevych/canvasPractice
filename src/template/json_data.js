@@ -1,30 +1,41 @@
 export default [
     {
         "name": "Прикладна задача",
-        "isPreview": "false",
-        "points": 10,
-        "gainedPoints": 0,
-        "stepsCount": 2,
-        "currentStep": 0,
-        "isDone": "false",
-        "attempts": 0,
+        "isPreview": false,
+        "points": 10, // Сколько можно максимум получить
+        "gainedPoints": 0, // Текущие баллы
+        "stepsCount": 2, // Количество шагов
+        "currentStep": 0, // текущий шаг; текущий прогресс
+        "isDone": false,
+        "attempts": 0, // количество попыток ( на случай, если человек захочет пройти заново)
         "steps": [
             {
+                "isDone": false,
+                "points": 1,
+                "gainedPoints": 0,
                 "type": "text",
                 "text": "В цьому прикладі розглянемо як дізнатися висоту недосяжного об'єкта. " +
-                    "Наприклад, вам потрібно дізнатись висоту стовпа. У вашому розпорядженні є мірна стрічка, дзеркало"
+                    "Наприклад, вам потрібно дізнатись висоту дерева. У вашому розпорядженні є мірна стрічка, дзеркало"
             },
             {
+                "isDone": false,
+                "points": 8,
+                "gainedPoints": 0,
                 "decisions": [
                     {
+                        "isDone": false,
                         "label": "Виразіть висоту дерева через формулу",
                         "type": "formula",
-                        "answer": "^((ac|ca)\\*(de|ed))|((de|ed)\\*(ac|ca))\\/(ea|ae)$"
+                        "pointsWithTooltip": 5,
+                        "points": 8,
+                        "answer": "^((ac|ca)\\*(de|ed))|((de|ed)\\*(ac|ca))\\/(ea|ae)$",
+                        "fillValue": "AC * DE / EA",
+                        "tooltip": "З підказкою отримаєте тільки 5 балів, а не 8"
                     }
                 ],
                 "formulas": [
                     {"formula": "DE/EA = BC / AC", "tooltip": "Відношення сторін в трикутниках"}],
-                "text": "Позначимо стовп BC, DE - це ваш зріст",
+                "text": "Позначимо дерево BC, DE - це ваш зріст",
                 "type": "custom",
                 "view": {
                     "layers_width": 700,
@@ -68,11 +79,11 @@ export default [
                         },
                         {
                             "name": "$human",
-                            "value": new Image(200, 50)
+                            "value": "new Image(200, 50)"
                         },
                         {
                             "name": "$tree",
-                            "value": new Image(200, 50)
+                            "value": "new Image(200, 50)"
                         },
                         {
                             "name": "$D",
@@ -483,27 +494,35 @@ export default [
     },
     {
         "gainedPoints": 0,
-        "isPreview": "true",
-        "points": 0,
+        "isPreview": false,
+        "points": 15,
         "stepsCount": 4,
-        "currentStep": 1,
-        "isDone": "false",
+        "currentStep": 0,
+        "isDone": false,
         "attempts": 0,
         "name": "Тригонометрія. Початок",
         "steps": [
         {
-          "type": "text",
-          "text": ["Почнімо наш новий розділ геометрії. Тригонометрія - це вчення про співвідношення кутів та сторін трикутника"]
-        },
-        {
+            "isDone": false,
+            "points": 1,
+            "gainedPoints": 0,
             "type": "text",
-            "text": ["Дізнаємось про синус та косинус. Введемо деякі позначення для більшої ясності. Для початку дано точку A(1, 0) на координатній площині."]
+            "text": "Почнімо наш новий розділ геометрії. Тригонометрія - це вчення про співвідношення кутів та сторін трикутника"
         },
         {
+            "isDone": false,
+            "points": 1,
+            "gainedPoints": 0,
+            "type": "text",
+            "text": "Дізнаємось про синус та косинус. Введемо деякі позначення для більшої ясності. Для початку дано точку A(1, 0) на координатній площині."
+        },
+        {
+            "isDone": false,
+            "points": 1,
+            "gainedPoints": 0,
             "type": "custom",
-            "text": [
+            "text":
                 "Точка A буде обертатись відносно O. Синусом для кута обертання буде ордината (y значення) точки А. Косинусом для кута обертання буде абсциса (х значення) точки А",
-            ],
             "view": {
                 "layers_width": 400,
                 "layers_height": 500,
@@ -571,13 +590,26 @@ export default [
             }
         },
         {
+            "isDone": false,
+            "points": 12,
+            "gainedPoints": 0,
             "decisions": [
                 {
+                    "isDone": false,
+                    "pointsWithTooltip": 3,
+                    "points": 6,
+                    "fillValue": "0",
+                    "tooltip": "З підказкою отримаєте тільки 3 бала, а не 6",
                     "label": "Синус від 0 градусів",
                     "type": "value",
                     "answer": "0"
                 },
                 {
+                    "isDone": false,
+                    "pointsWithTooltip": 3,
+                    "points": 6,
+                    "fillValue": "1",
+                    "tooltip": "З підказкою отримаєте тільки 3 бала, а не 6",
                     "label": "Косинус від 0 градусів",
                     "type": "value",
                     "answer": "1"
@@ -591,23 +623,23 @@ export default [
             "view": {
                 "layers_height": 600,
                 "layers_width": 400,
-                "task_triggers": [
-                    {
-                        "place": "place_trigger",
-                        "describe": "Знайдіть значення кутів при яких синус дорівнює нулю в діапазоні -720 - 720 градусів",
-                        "test": {"$angle": "(v) => {\n " +
-                                "let val = Math.floor(v / Math.PI * 180);\n" +
-                                "if (val <= 720 && 700 <= val) {\n" +
-                                "    $testValues = $testValues | 1;\n" +
-                                "}\n" +
-                                "if (val >= -720 && -700 >= val) {\n" +
-                                "    $testValues = $testValues | 2;\n" +
-                                "}\n" +
-                                "return $testValues === 3\n" +
-                                "}"
-                        }
-                    }
-                ],
+                // "task_triggers": [
+                //     {
+                //         "place": "place_trigger",
+                //         "describe": "Знайдіть значення кутів при яких синус дорівнює нулю в діапазоні -720 - 720 градусів",
+                //         "test": {"$angle": "(v) => {\n " +
+                //                 "let val = Math.floor(v / Math.PI * 180);\n" +
+                //                 "if (val <= 720 && 700 <= val) {\n" +
+                //                 "    $testValues = $testValues | 1;\n" +
+                //                 "}\n" +
+                //                 "if (val >= -720 && -700 >= val) {\n" +
+                //                 "    $testValues = $testValues | 2;\n" +
+                //                 "}\n" +
+                //                 "return $testValues === 3\n" +
+                //                 "}"
+                //         }
+                //     }
+                // ],
                 "variables": [
                     {
                         "name": "$showTan",
@@ -749,23 +781,33 @@ export default [
 
     {
         "gainedPoints": 0,
-        "points": 20,
-        "isPreview": "false",
+        "points": 2,
+        "isPreview": true,
         "name": "Теорема синусів",
         "attempts": 1,
-        "isDone": "true",
+        "isDone": true,
         "stepsCount": 2,
         "currentStep": 0,
         "steps": [
             {
+                "isDone": false,
+                "points": 0,
+                "gainedPoints": 0,
                 "type": "text",
                 "text": "Розглянемо приклад використання синусів"
             },
             {
+                "isDone": false,
+                "points": 0,
+                "gainedPoints": 0,
                 "type": "custom",
-                "text": [
-                    "Задача. Дано трикутник ABC",
-                    "Відомі 2 кути та одна сторона AB. Знайти всі інші сторони та радіус  кола описаного трикутника"],
+                "text":
+                    "Задача. Дано трикутник ABC. Відомі 2 кути та одна сторона AB. Знайти всі інші сторони та радіус  кола описаного трикутника",
+                "formulas": [
+                    {
+                        "formula": "AB/sinC = AC / sinB = BC / sinA = 2R", "tooltip": "Теорема синусів"
+                    }
+                    ],
                 "view": {
                     "layers_width": 400,
                     "layers_height": 500,
