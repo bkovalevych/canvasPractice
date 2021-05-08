@@ -5,50 +5,29 @@ import Header from "./pages/header";
 import Footer from "./pages/footer";
 import {Switch, Route} from "react-router-dom";
 import routes from "./constants/routes";
-import RedirectWrapper from "./utils/redirectWrapper";
-import Profile from "./pages/profile";
+import Details_good from "./pages/details_good"
 import get from "lodash/get";
 import {connect} from "react-redux";
-import SignIn from "./pages/authorization/signIn"
-import SignUp from "./pages/authorization/signUp"
-import ErrorModal from "./pages/errorModal";
+import Basket from "./pages/basket"
+
 import {getUserAction} from "./redux/actions/user";
-import TopicsForUser from "./pages/homeForRegisteredUser"
-import Rating from './pages/rating'
 
 function App(props) {
-    useEffect(() => { props.getUser({firstCheck: true}) }, [])
+    // useEffect(() => { props.getUser({firstCheck: true}) }, [])
     return (
         <>
             <Header/>
-            <ErrorModal/>
              <div className="mainContent">
                 <Switch>
                     <Route exact path={routes.ROOT}>
-                        Вы в корне проекта
+                        <Topics/>
                     </Route>
-                    <Route path={routes.EXERCISE}>
-                        {props.isLoggedIn?
-                            <TopicsForUser/>:
-                            <Topics/>
-                        }
+                    <Route path={routes.BASKET}>
+                        <Basket/>
                     </Route>
-                    <RedirectWrapper path={routes.RATING} accessible={props.isLoggedIn}
-                                     pathname={routes.SIGN_IN}>
-                        <Rating/>
-                    </RedirectWrapper>
-                    <RedirectWrapper path={routes.PROFILE} accessible={props.isLoggedIn}
-                                     pathname={routes.SIGN_IN}>
-                        <Profile/>
-                    </RedirectWrapper>
-                    <RedirectWrapper path={routes.SIGN_IN} accessible={!props.isLoggedIn}
-                                     pathname={routes.PROFILE}>
-                        <SignIn/>
-                    </RedirectWrapper>
-                    <RedirectWrapper path={routes.SIGN_UP} accessible={!props.isLoggedIn}
-                                     pathname={routes.PROFILE}>
-                        <SignUp/>
-                    </RedirectWrapper>
+                    <Route path={`${routes.DETAILS}/:goodId`}>
+                        <Details_good />
+                    </Route>
                     <Route>
                         <div>
                             <h1>NOT FOUND</h1>
@@ -63,12 +42,12 @@ function App(props) {
 
 export const mapStateToProps = (state) => {
     return {
-        isLoggedIn: get(state, "user.isLoggedIn", false)
+
     };
 };
 
 export const mapDispatchToProps = (dispatch) => ({
-    getUser: (data) => dispatch(getUserAction(data))
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

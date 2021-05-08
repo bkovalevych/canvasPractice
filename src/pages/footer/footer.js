@@ -1,62 +1,43 @@
 import React from "react";
-import "./style.scss";
+import "./../../style/style.scss";
 
 export const Footer = () => {
     return (
-        <div className="footer">
-            <footer className="pt-4 my-md-5 pt-md-5 md-12 xs-2 border-top">
-                <div className="row">
-                    <div className="col-12 col-md">
-                        <div className="ml-4">
-                            <p>EGeometry</p>
-                            <small className="d-block mb-3 text-muted">© 2020</small>
-                        </div>
-                    </div>
-                    <div className="col-6 col-md">
-                        <h5>Features</h5>
-                        <ul className="list-unstyled text-small">
-                            <li><a className="text-muted" href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Cool
-                                stuff</a></li>
-                            <li><a className="text-muted" href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Random
-                                feature</a></li>
-                            <li><a className="text-muted" href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Team
-                                feature</a></li>
-                            <li><a className="text-muted" href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Stuff
-                                for developers</a></li>
-                            <li><a className="text-muted" href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Another
-                                one</a></li>
-                            <li><a className="text-muted" href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Last
-                                time</a></li>
-                        </ul>
-                    </div>
-                    <div className="col-6 col-md">
-                        <h5>Resources</h5>
-                        <ul className="list-unstyled text-small">
-                            <li><a className="text-muted"
-                                   href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Resource</a></li>
-                            <li><a className="text-muted" href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Resource
-                                name</a></li>
-                            <li><a className="text-muted" href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Another
-                                resource</a></li>
-                            <li><a className="text-muted" href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Final
-                                resource</a></li>
-                        </ul>
-                    </div>
-                    <div className="col-6 col-md">
-                        <h5>About</h5>
-                        <ul className="list-unstyled text-small">
-                            <li><a className="text-muted"
-                                   href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Team</a></li>
-                            <li><a className="text-muted"
-                                   href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Locations</a></li>
-                            <li><a className="text-muted"
-                                   href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Privacy</a></li>
-                            <li><a className="text-muted"
-                                   href="https://getbootstrap.com/docs/4.5/examples/pricing/#">Terms</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </footer>
+        <div className="row bg-pink">
+            <div className="col-6">
+                <nav className="navbar navbar-light ">
+                    <ul className="nav justify-content-end">
+                        <li className="nav-item">
+                            <a className="nav-link active" aria-current="page" href="#">О нас</a>
+                        </li>
+
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                               aria-expanded="false">Товары</a>
+                            <ul className="dropdown-menu">
+                                <li><a className="dropdown-item" href="#">Action</a></li>
+                                <li><a className="dropdown-item" href="#">Another action</a></li>
+                                <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                <li>
+                                    <hr className="dropdown-divider" />
+                                </li>
+                                <li><a className="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+
+                        <li className="nav-item">
+                            <a className="nav-link" href="#">Акции</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="#">Контакты</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div className="col-sm">
+                <button type="button" className="btn btn-outline-secondary">Позвонить</button>
+
+            </div>
         </div>
     )
 }

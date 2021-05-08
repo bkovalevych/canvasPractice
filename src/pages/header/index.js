@@ -6,8 +6,7 @@ import {logoutAction} from "../../redux/actions/user";
 
 export const mapStateToProps = (state) => {
     return {
-        isLoggedIn: get(state, "user.isLoggedIn", false),
-        email: get(state, "user.email", "@Username")
+        countGoodsInBasket: get(state, "goods.count", 0)
     };
 };
 

@@ -1,7 +1,7 @@
 import {call, put} from "redux-saga/effects";
 import CNST from "../../constants";
 import axios from "axios";
-import data from "../../template/json_data"
+
 export const getStepsRequest = ({id}) => {
     return axios
         .get(`/steps/get/?idTopic=${id}`) // id юзера будет зашит в хедере
@@ -13,8 +13,8 @@ export const getStepsRequest = ({id}) => {
 export function* getSteps(props) {
     let topics = localStorage.getItem("data");
     if (!topics) {
-        topics = data;
-        localStorage.setItem("data", JSON.stringify(data));
+        //topics = data;
+        //localStorage.setItem("data", JSON.stringify(data));
     } else {
         topics = JSON.parse(topics);
     }

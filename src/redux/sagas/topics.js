@@ -1,7 +1,7 @@
 import {call, put} from "redux-saga/effects";
 import CNST from "../../constants";
 import axios from "axios"
-import data from "../../template/json_data";
+
 
 export const getTopicsRequest = () => {
     // Получить топики (БЕЗ ПОЛЯ steps) для конкретного юзера,
@@ -15,10 +15,10 @@ export const getTopicsRequest = () => {
 export function* getTopics(props) {
     let topics = localStorage.getItem("data");
     if (!topics) {
-        topics = data;
-        localStorage.setItem("data", JSON.stringify(data))
+        //topics = data;
+        //localStorage.setItem("data", JSON.stringify(data))
     } else {
-        topics = JSON.parse(topics);
+        //topics = JSON.parse(topics);
     }
     yield put({
         type: CNST.TOPICS.GET_TOPICS.SUCCESS,

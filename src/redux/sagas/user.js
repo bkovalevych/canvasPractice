@@ -84,7 +84,7 @@ export function* getUser(props) {
         yield put({type: CNST.USER.GET_PROFILE.SUCCESS, payload: response.data});
     } catch (error) {
         // removeToken();
-        if(props.payload.firstCheck == false){
+        if(props.payload.firstCheck === false){
             yield put({
                 type: CNST.USER.GET_PROFILE.ERROR,
             });

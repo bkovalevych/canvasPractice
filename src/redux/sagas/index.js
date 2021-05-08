@@ -3,6 +3,7 @@ import CNST from "../../constants";
 import {getUser, signIn, signUp, logout, errorHandled} from "./user";
 import {getTopics, updateTopic} from "./topics"
 import {getSteps, updateStep} from "./steps"
+import {updateBasket} from "./goods"
 
 export default function* rootSaga() {
   yield takeLatest(CNST.USER.SIGN_IN.FETCH, signIn);
@@ -15,6 +16,8 @@ export default function* rootSaga() {
 
   yield takeLatest(CNST.TOPICS.GET_TOPICS.FETCH, getTopics);
   yield takeLatest(CNST.STEPS.GET_STEPS.FETCH, getSteps);
+
+  //yield takeLatest("fetch", updateBasket);
 
   yield takeLatest(CNST.USER.INTERFACE.HANDLE_ERROR, errorHandled);
 }
